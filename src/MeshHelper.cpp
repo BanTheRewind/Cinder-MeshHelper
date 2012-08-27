@@ -114,7 +114,7 @@ TriMesh MeshHelper::createCircleTriMesh( size_t segments )
 	return mesh;
 }
 
-TriMesh MeshHelper::createConeTriMesh( size_t segments, bool closeFace )
+TriMesh MeshHelper::createConeTriMesh( size_t segments, bool closeBase )
 {
 	vector<size_t> indices;
 	vector<Vec3f> normals;
@@ -201,7 +201,7 @@ TriMesh MeshHelper::createConeTriMesh( size_t segments, bool closeFace )
 		texCoords.push_back( texCoord3 );
 	}
 
-	if ( closeFace ) {
+	if ( closeBase ) {
 		Vec3f normal( 0.0f, -1.0f, 0.0f );
 		for ( size_t t = 0; t < segments; t++ ) {
 			size_t n = t + 1 >= segments ? 0 : t + 1;
@@ -724,9 +724,9 @@ gl::VboMesh MeshHelper::createCircleVboMesh( size_t segments )
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
-gl::VboMesh MeshHelper::createConeVboMesh( size_t segments, bool closeFace )
+gl::VboMesh MeshHelper::createConeVboMesh( size_t segments, bool closeBase )
 {
-	TriMesh mesh = createConeTriMesh( segments, closeFace );
+	TriMesh mesh = createConeTriMesh( segments, closeBase );
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
