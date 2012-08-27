@@ -473,7 +473,7 @@ TriMesh MeshHelper::createCylinderTriMesh( size_t segments )
 			normal.y = 0.0f;
 			srcNormals.push_back( normal );
 
-			Vec2f texCoord( normal.x, position.y + 0.5f );
+			Vec2f texCoord( theta, position.y + 0.5f );
 			srcTexCoords.push_back( texCoord );
 		}
 	}
