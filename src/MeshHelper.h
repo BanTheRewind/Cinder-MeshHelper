@@ -47,11 +47,9 @@ public:
 	//! Create TriMesh from vectors of vertex data
 	static ci::TriMesh		createTriMesh( std::vector<size_t> &indices, const std::vector<ci::Vec3f> &positions, 
 								const std::vector<ci::Vec3f> &normals, const std::vector<ci::Vec2f> &texCoords );
-	
 
 	//! Create circle TriMesh with a radius of 1.0 and \a segments
 	static ci::TriMesh		createCircleTriMesh( size_t segments );
-	
 	//! Create cone TriMesh with a radius and height of 1.0 and \a segments
 	static ci::TriMesh		createConeTriMesh( size_t segments );
 	//! Create cube TriMesh with an edge length of 1.0
