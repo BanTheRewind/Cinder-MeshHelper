@@ -61,40 +61,6 @@ TriMesh MeshHelper::createTriMesh( vector<size_t> &indices, const vector<Vec3f> 
 	return mesh;
 }
 
-gl::VboMesh MeshHelper::createVboMesh( const vector<size_t> &indices, const vector<Vec3f> &positions, 
-	const vector<Vec3f> &normals, const vector<Vec2f> &texCoords, GLenum primitiveType )
-{
-	ci::gl::VboMesh::Layout layout;
-	if ( indices.size() > 0 ) {
-		layout.setStaticIndices();
-	}
-	if ( normals.size() > 0 ) {
-		layout.setStaticNormals();
-	}
-	if ( positions.size() > 0 ) {
-		layout.setStaticPositions();
-	}
-	if ( texCoords.size() > 0 ) {
-		layout.setStaticTexCoords2d();
-	}
-
-	gl::VboMesh mesh( positions.size(), indices.size(), layout, primitiveType );
-	if ( indices.size() > 0 ) {
-		mesh.bufferIndices( indices );
-	}
-	if ( normals.size() > 0 ) {
-		mesh.bufferNormals( normals );
-	}
-	if ( positions.size() > 0 ) {
-		mesh.bufferPositions( positions );
-	}
-	if ( texCoords.size() > 0 ) {
-		mesh.bufferTexCoords2d( 0, texCoords );
-	}
-
-	return mesh;
-}
-
 TriMesh MeshHelper::createCircleTriMesh( size_t segments )
 {
 	vector<size_t> indices;
@@ -146,12 +112,6 @@ TriMesh MeshHelper::createCircleTriMesh( size_t segments )
 	texCoords.clear();
 
 	return mesh;
-}
-
-gl::VboMesh MeshHelper::createCircleVboMesh( size_t segments )
-{
-	TriMesh mesh = createCircleTriMesh( segments );
-	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
 TriMesh MeshHelper::createConeTriMesh( size_t segments )
@@ -272,12 +232,6 @@ TriMesh MeshHelper::createConeTriMesh( size_t segments )
 	texCoords.clear();
 
 	return mesh;
-}
-
-gl::VboMesh MeshHelper::createConeVboMesh( size_t segments )
-{
-	TriMesh mesh = createConeTriMesh( segments );
-	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
 TriMesh MeshHelper::createCubeTriMesh()
@@ -440,12 +394,6 @@ TriMesh MeshHelper::createCubeTriMesh()
 	return mesh;
 }
 
-gl::VboMesh MeshHelper::createCubeVboMesh()
-{
-	TriMesh mesh = createCubeTriMesh();
-	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
-}
-
 TriMesh MeshHelper::createCylinderTriMesh( size_t segments )
 {
 	vector<size_t> indices;
@@ -566,12 +514,6 @@ TriMesh MeshHelper::createCylinderTriMesh( size_t segments )
 	return mesh;
 }
 
-gl::VboMesh MeshHelper::createCylinderVboMesh( size_t segments )
-{
-	TriMesh mesh = createCylinderTriMesh( segments );
-	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
-}
-
 TriMesh MeshHelper::createSphereTriMesh( size_t segments )
 {
 	vector<size_t> indices;
@@ -627,12 +569,6 @@ TriMesh MeshHelper::createSphereTriMesh( size_t segments )
 	return mesh;
 }
 
-gl::VboMesh MeshHelper::createSphereVboMesh( size_t segments )
-{
-	TriMesh mesh = createSphereTriMesh( segments );
-	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
-}
-
 TriMesh MeshHelper::createSquareTriMesh()
 {
 	vector<size_t> indices;
@@ -685,8 +621,76 @@ TriMesh MeshHelper::createSquareTriMesh()
 
 }
 
+#if ! defined( CINDER_COCOA_TOUCH )
+
+gl::VboMesh MeshHelper::createVboMesh( const vector<size_t> &indices, const vector<Vec3f> &positions, 
+	const vector<Vec3f> &normals, const vector<Vec2f> &texCoords, GLenum primitiveType )
+{
+	ci::gl::VboMesh::Layout layout;
+	if ( indices.size() > 0 ) {
+		layout.setStaticIndices();
+	}
+	if ( normals.size() > 0 ) {
+		layout.setStaticNormals();
+	}
+	if ( positions.size() > 0 ) {
+		layout.setStaticPositions();
+	}
+	if ( texCoords.size() > 0 ) {
+		layout.setStaticTexCoords2d();
+	}
+
+	gl::VboMesh mesh( positions.size(), indices.size(), layout, primitiveType );
+	if ( indices.size() > 0 ) {
+		mesh.bufferIndices( indices );
+	}
+	if ( normals.size() > 0 ) {
+		mesh.bufferNormals( normals );
+	}
+	if ( positions.size() > 0 ) {
+		mesh.bufferPositions( positions );
+	}
+	if ( texCoords.size() > 0 ) {
+		mesh.bufferTexCoords2d( 0, texCoords );
+	}
+
+	return mesh;
+}
+
+gl::VboMesh MeshHelper::createCircleVboMesh( size_t segments )
+{
+	TriMesh mesh = createCircleTriMesh( segments );
+	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
+}
+
+gl::VboMesh MeshHelper::createConeVboMesh( size_t segments )
+{
+	TriMesh mesh = createConeTriMesh( segments );
+	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
+}
+
+gl::VboMesh MeshHelper::createCubeVboMesh()
+{
+	TriMesh mesh = createCubeTriMesh();
+	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
+}
+
+gl::VboMesh MeshHelper::createCylinderVboMesh( size_t segments )
+{
+	TriMesh mesh = createCylinderTriMesh( segments );
+	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
+}
+
+gl::VboMesh MeshHelper::createSphereVboMesh( size_t segments )
+{
+	TriMesh mesh = createSphereTriMesh( segments );
+	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
+}
+
 gl::VboMesh MeshHelper::createSquareVboMesh()
 {
 	TriMesh mesh = createSquareTriMesh();
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
+
+#endif

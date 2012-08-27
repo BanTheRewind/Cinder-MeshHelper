@@ -35,7 +35,9 @@
 
 #pragma once
 
-#include "cinder/gl/Vbo.h"
+#if ! defined( CINDER_COCOA_TOUCH )
+	#include "cinder/gl/Vbo.h"
+#endif
 #include "cinder/TriMesh.h"
 #include <map>
 
@@ -45,33 +47,39 @@ public:
 	//! Create TriMesh from vectors of vertex data
 	static ci::TriMesh		createTriMesh( std::vector<size_t> &indices, const std::vector<ci::Vec3f> &positions, 
 								const std::vector<ci::Vec3f> &normals, const std::vector<ci::Vec2f> &texCoords );
+	
+
+	//! Create circle TriMesh with a radius of 1.0 and \a segments
+	static ci::TriMesh		createCircleTriMesh( size_t segments );
+	
+	//! Create cone TriMesh with a radius and height of 1.0 and \a segments
+	static ci::TriMesh		createConeTriMesh( size_t segments );
+	//! Create cube TriMesh with an edge length of 1.0
+	static ci::TriMesh		createCubeTriMesh();
+	//! Create cylinder TriMesh with a radius and height of 1.0 and \a segments
+	static ci::TriMesh		createCylinderTriMesh( size_t segments );
+	//! Create sphere TriMesh with a radius of 1.0 and \a segments
+	static ci::TriMesh		createSphereTriMesh( size_t segments );
+	//! Create square TriMesh with an edge length of 1.0
+	static ci::TriMesh		createSquareTriMesh();
+
+#if ! defined( CINDER_COCOA_TOUCH )
 	//! Create VboMesh from vectors of vertex data
 	static ci::gl::VboMesh	createVboMesh( const std::vector<size_t> &indices, const std::vector<ci::Vec3f> &positions, 
 								const std::vector<ci::Vec3f> &normals, const std::vector<ci::Vec2f> &texCoords, 
 								GLenum primitiveType = GL_TRIANGLES );
-
-	//! Create circle TriMesh with a radius of 1.0 and \a segments
-	static ci::TriMesh		createCircleTriMesh( size_t segments );
+	
 	//! Create circle VboMesh with a radius of 1.0 and \a segments
 	static ci::gl::VboMesh	createCircleVboMesh( size_t segments );
-	//! Create cone TriMesh with a radius and height of 1.0 and \a segments
-	static ci::TriMesh		createConeTriMesh( size_t segments );
 	//! Create cone VboMesh with a radius and height of 1.0 and \a segments
 	static ci::gl::VboMesh	createConeVboMesh( size_t segments );
-	//! Create cube TriMesh with an edge length of 1.0
-	static ci::TriMesh		createCubeTriMesh();
 	//! Create cube VboMesh with an edge length of 1.0
 	static ci::gl::VboMesh	createCubeVboMesh();
-	//! Create cylinder TriMesh with a radius and height of 1.0 and \a segments
-	static ci::TriMesh		createCylinderTriMesh( size_t segments );
 	//! Create cylinder VboMesh with a radius and height of 1.0 and \a segments
 	static ci::gl::VboMesh	createCylinderVboMesh( size_t segments );
-	//! Create sphere TriMesh with a radius of 1.0 and \a segments
-	static ci::TriMesh		createSphereTriMesh( size_t segments );
 	//! Create sphere VboMesh with a radius of 1.0 and \a segments
 	static ci::gl::VboMesh	createSphereVboMesh( size_t segments );
-	//! Create square TriMesh with an edge length of 1.0
-	static ci::TriMesh		createSquareTriMesh();
 	//! Create square VboMesh with an edge length of 1.0
 	static ci::gl::VboMesh	createSquareVboMesh();
+#endif
 };
