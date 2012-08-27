@@ -396,7 +396,7 @@ TriMesh MeshHelper::createCubeTriMesh()
 	return mesh;
 }
 
-TriMesh MeshHelper::createCylinderTriMesh( size_t segments )
+TriMesh MeshHelper::createCylinderTriMesh( size_t segments, bool closeTop, bool closeBase )
 {
 	vector<size_t> indices;
 	vector<Vec3f> normals;
@@ -434,23 +434,25 @@ TriMesh MeshHelper::createCylinderTriMesh( size_t segments )
 	srcPositions.push_back( Vec3f( 0.0f, 0.5f, 0.0f ) );
 	srcTexCoords.push_back( Vec2f( 0.0f, 0.0f ) );
 	srcTexCoords.push_back( Vec2f( 0.0f, 1.0f ) );
-	int32_t bottomCenter = (int32_t)srcPositions.size() - 1;
-	int32_t topCenter = bottomCenter - 1;
+	int32_t topCenter = (int32_t)srcPositions.size() - 1;
+	int32_t bottomCenter = topCenter - 1;
 
-	for ( size_t t = 0; t < segments; t++ ) {
-		size_t n = t + 1 >= segments ? 0 : t + 1;
+	if ( closeTop ) {
+		for ( size_t t = 0; t < segments; t++ ) {
+			size_t n = t + 1 >= segments ? 0 : t + 1;
 
-		normals.push_back( srcNormals[ bottomCenter ] );
-		normals.push_back( srcNormals[ bottomCenter ] );
-		normals.push_back( srcNormals[ bottomCenter ] );
+			normals.push_back( srcNormals[ topCenter ] );
+			normals.push_back( srcNormals[ topCenter ] );
+			normals.push_back( srcNormals[ topCenter ] );
 
-		positions.push_back( srcPositions[ bottomCenter ] );
-		positions.push_back( srcPositions[ segments + t ] );
-		positions.push_back( srcPositions[ segments + n ] );
+			positions.push_back( srcPositions[ topCenter ] );
+			positions.push_back( srcPositions[ segments + t ] );
+			positions.push_back( srcPositions[ segments + n ] );
 
-		texCoords.push_back( srcTexCoords[ bottomCenter ] );
-		texCoords.push_back( srcTexCoords[ bottomCenter ] );
-		texCoords.push_back( srcTexCoords[ bottomCenter ] );
+			texCoords.push_back( srcTexCoords[ topCenter ] );
+			texCoords.push_back( srcTexCoords[ topCenter ] );
+			texCoords.push_back( srcTexCoords[ topCenter ] );
+		}
 	}
 
 	for ( size_t t = 0; t < segments; t++ ) {
@@ -483,20 +485,22 @@ TriMesh MeshHelper::createCylinderTriMesh( size_t segments )
 		texCoords.push_back( srcTexCoords[ index3 ] );
 	}
 
-	for ( size_t t = 0; t < segments; t++ ) {
-		size_t n = t + 1 >= segments ? 0 : t + 1;
+	if ( closeBase ) {
+		for ( size_t t = 0; t < segments; t++ ) {
+			size_t n = t + 1 >= segments ? 0 : t + 1;
 
-		normals.push_back( srcNormals[ topCenter ] );
-		normals.push_back( srcNormals[ topCenter ] );
-		normals.push_back( srcNormals[ topCenter ] );
+			normals.push_back( srcNormals[ bottomCenter ] );
+			normals.push_back( srcNormals[ bottomCenter ] );
+			normals.push_back( srcNormals[ bottomCenter ] );
 
-		positions.push_back( srcPositions[ topCenter ] );
-		positions.push_back( srcPositions[ t ] );
-		positions.push_back( srcPositions[ n ] );
+			positions.push_back( srcPositions[ bottomCenter ] );
+			positions.push_back( srcPositions[ t ] );
+			positions.push_back( srcPositions[ n ] );
 
-		texCoords.push_back( srcTexCoords[ topCenter ] );
-		texCoords.push_back( srcTexCoords[ topCenter ] );
-		texCoords.push_back( srcTexCoords[ topCenter ] );
+			texCoords.push_back( srcTexCoords[ bottomCenter ] );
+			texCoords.push_back( srcTexCoords[ bottomCenter ] );
+			texCoords.push_back( srcTexCoords[ bottomCenter ] );
+		}
 	}
 
 	for ( size_t i = 0; i < positions.size(); i++ ) {
@@ -736,9 +740,9 @@ gl::VboMesh MeshHelper::createCubeVboMesh()
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
-gl::VboMesh MeshHelper::createCylinderVboMesh( size_t segments )
+gl::VboMesh MeshHelper::createCylinderVboMesh( size_t segments, bool closeTop, bool closeBase )
 {
-	TriMesh mesh = createCylinderTriMesh( segments );
+	TriMesh mesh = createCylinderTriMesh( segments, closeTop, closeBase );
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
