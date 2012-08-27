@@ -41,7 +41,6 @@
 #include "cinder/gl/Texture.h"
 #include "cinder/gl/Vbo.h"
 #include "cinder/params/Params.h"
-#include "cinder/TriMesh.h"
 
 class VboMeshSampleApp : public ci::app::AppBasic 
 {
