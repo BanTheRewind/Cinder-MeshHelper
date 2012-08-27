@@ -4,11 +4,13 @@ meshes in Cinder.
 
 TODO
  - XCode projects / lib for OSX and iOS
+ - Different radii for top and bottom of cylinder
+ - Flags for closed/open faces on cylinder
  - Torus
 
 -----------------------------------------
 
-Version 0.0.1
+Version 0.0.2
 
 -----------------------------------------
 

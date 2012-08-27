@@ -114,7 +114,7 @@ TriMesh MeshHelper::createCircleTriMesh( size_t segments )
 	return mesh;
 }
 
-TriMesh MeshHelper::createConeTriMesh( size_t segments )
+TriMesh MeshHelper::createConeTriMesh( size_t segments, bool closeFace )
 {
 	vector<size_t> indices;
 	vector<Vec3f> normals;
@@ -201,21 +201,23 @@ TriMesh MeshHelper::createConeTriMesh( size_t segments )
 		texCoords.push_back( texCoord3 );
 	}
 
-	Vec3f normal( 0.0f, -1.0f, 0.0f );
-	for ( size_t t = 0; t < segments; t++ ) {
-		size_t n = t + 1 >= segments ? 0 : t + 1;
+	if ( closeFace ) {
+		Vec3f normal( 0.0f, -1.0f, 0.0f );
+		for ( size_t t = 0; t < segments; t++ ) {
+			size_t n = t + 1 >= segments ? 0 : t + 1;
 
-		normals.push_back( normal );
-		normals.push_back( normal );
-		normals.push_back( normal );
+			normals.push_back( normal );
+			normals.push_back( normal );
+			normals.push_back( normal );
 
-		positions.push_back( srcPositions[ topCenter ] + offset );
-		positions.push_back( srcPositions[ t ] + offset );
-		positions.push_back( srcPositions[ n ] + offset );
+			positions.push_back( srcPositions[ topCenter ] + offset );
+			positions.push_back( srcPositions[ t ] + offset );
+			positions.push_back( srcPositions[ n ] + offset );
 
-		texCoords.push_back( srcTexCoords[ topCenter ] );
-		texCoords.push_back( srcTexCoords[ topCenter ] );
-		texCoords.push_back( srcTexCoords[ topCenter ] );
+			texCoords.push_back( srcTexCoords[ topCenter ] );
+			texCoords.push_back( srcTexCoords[ topCenter ] );
+			texCoords.push_back( srcTexCoords[ topCenter ] );
+		}
 	}
 
 	for ( size_t i = 0; i < positions.size(); i++ ) {
@@ -514,8 +516,6 @@ TriMesh MeshHelper::createCylinderTriMesh( size_t segments )
 	return mesh;
 }
 
-
-
 TriMesh MeshHelper::createRingTriMesh( size_t segments, float secondRadius )
 {
 	vector<size_t> indices;
@@ -724,9 +724,9 @@ gl::VboMesh MeshHelper::createCircleVboMesh( size_t segments )
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
-gl::VboMesh MeshHelper::createConeVboMesh( size_t segments )
+gl::VboMesh MeshHelper::createConeVboMesh( size_t segments, bool closeFace )
 {
-	TriMesh mesh = createConeTriMesh( segments );
+	TriMesh mesh = createConeTriMesh( segments, closeFace );
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 

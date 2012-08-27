@@ -50,8 +50,9 @@ public:
 
 	//! Create circle TriMesh with a radius of 1.0 and \a segments
 	static ci::TriMesh		createCircleTriMesh( size_t segments = 12 );
-	//! Create cone TriMesh with a radius and height of 1.0 and \a segments
-	static ci::TriMesh		createConeTriMesh( size_t segments = 12 );
+	/*! Create cone TriMesh with a radius and height of 1.0 and \a segments. 
+		Face is closed when \a closeFace is set to true. */
+	static ci::TriMesh		createConeTriMesh( size_t segments = 12, bool closeFace = true );
 	//! Create cube TriMesh with an edge length of 1.0
 	static ci::TriMesh		createCubeTriMesh();
 	//! Create cylinder TriMesh with a radius and height of 1.0 and \a segments
@@ -72,8 +73,9 @@ public:
 	
 	//! Create circle VboMesh with a radius of 1.0 and \a segments
 	static ci::gl::VboMesh	createCircleVboMesh( size_t segments = 12 );
-	//! Create cone VboMesh with a radius and height of 1.0 and \a segments
-	static ci::gl::VboMesh	createConeVboMesh( size_t segments = 12 );
+	/*! Create cone VboMesh with a radius and height of 1.0 and \a segments. 
+		Face is closed when \a closeFace is set to true. */
+	static ci::gl::VboMesh	createConeVboMesh( size_t segments = 12, bool closeFace = true );
 	//! Create cube VboMesh with an edge length of 1.0
 	static ci::gl::VboMesh	createCubeVboMesh();
 	//! Create cylinder VboMesh with a radius and height of 1.0 and \a segments
