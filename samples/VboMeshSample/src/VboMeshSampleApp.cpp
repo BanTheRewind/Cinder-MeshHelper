@@ -62,6 +62,7 @@ private:
 		MESH_TYPE_CONE, 
 		MESH_TYPE_CIRCLE, 
 		MESH_TYPE_SQUARE, 
+		MESH_TYPE_RING, 
 		MESH_TYPE_CUSTOM
 	} typedef MeshType;
 
@@ -72,6 +73,7 @@ private:
 	ci::gl::VboMesh				mCube;
 	ci::gl::VboMesh				mCustom;
 	ci::gl::VboMesh				mCylinder;
+	ci::gl::VboMesh				mRing;
 	ci::gl::VboMesh				mSphere;
 	ci::gl::VboMesh				mSquare;
 	
@@ -125,6 +127,7 @@ void VboMeshSampleApp::createMeshes()
 	mCone		= MeshHelper::createConeVboMesh( mNumSegments );
 	mCube		= MeshHelper::createCubeVboMesh();
 	mCylinder	= MeshHelper::createCylinderVboMesh( mNumSegments );
+	mRing		= MeshHelper::createRingVboMesh( mNumSegments );
 	mSphere		= MeshHelper::createSphereVboMesh( mNumSegments );
 	mSquare		= MeshHelper::createSquareVboMesh();
 	
@@ -230,6 +233,9 @@ void VboMeshSampleApp::draw()
 		break;
 	case MESH_TYPE_CYLINDER:
 		gl::draw( mCylinder );
+		break;
+	case MESH_TYPE_RING:
+		gl::draw( mRing );
 		break;
 	case MESH_TYPE_SPHERE:
 		gl::draw( mSphere );
@@ -338,6 +344,7 @@ void VboMeshSampleApp::setup()
 	mMeshTitles.push_back( "Cone" );
 	mMeshTitles.push_back( "Circle" );
 	mMeshTitles.push_back( "Square" );
+	mMeshTitles.push_back( "Ring" );
 	mMeshTitles.push_back( "Custom" );
 
 	// Set up the params GUI

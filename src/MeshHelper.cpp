@@ -87,7 +87,7 @@ TriMesh MeshHelper::createCircleTriMesh( size_t segments )
 			vert2.y = math<float>::sin( theta + delta );
 		}
 		Vec2f texCoord0 = ( vert0.xy() + Vec2f::one() ) * 0.5f;
-		Vec2f texCoord2 = ( vert0.xy() + Vec2f::one() ) * 0.5f;
+		Vec2f texCoord2 = ( vert2.xy() + Vec2f::one() ) * 0.5f;
 
 		positions.push_back( vert0 );
 		positions.push_back( vert1 );
@@ -514,6 +514,67 @@ TriMesh MeshHelper::createCylinderTriMesh( size_t segments )
 	return mesh;
 }
 
+
+
+TriMesh MeshHelper::createRingTriMesh( size_t segments, float innerRadius )
+{
+	vector<size_t> indices;
+	vector<Vec3f> normals;
+	vector<Vec3f> positions;
+	vector<Vec2f> texCoords;
+
+	Vec3f norm0( 0.0f, 0.0f, 1.0f );
+
+	float delta = ( (float)M_PI * 2.0f ) / (float)segments;
+	float theta = delta;
+	for ( size_t i = 0; i < segments; ++i, theta += delta ) {
+
+		Vec3f vert0( math<float>::cos( theta ), math<float>::sin( theta ), 0.0f );
+		Vec3f vert1( math<float>::cos( theta + delta ), math<float>::sin( theta + delta ), 0.0f );
+		Vec3f vert2 = vert0 * innerRadius;
+		Vec3f vert3 = vert1 * innerRadius;
+		if ( i >= segments - 1 ) {
+			vert1.x = math<float>::cos( delta );
+			vert1.y = math<float>::sin( delta ); 
+			vert3	= vert1 * innerRadius;
+		}
+
+		Vec2f texCoord0 = ( vert0.xy() + Vec2f::one() ) * 0.5f;
+		Vec2f texCoord1 = ( vert1.xy() + Vec2f::one() ) * 0.5f;
+		Vec2f texCoord2 = ( vert2.xy() + Vec2f::one() ) * 0.5f;
+		Vec2f texCoord3 = ( vert3.xy() + Vec2f::one() ) * 0.5f;
+
+		positions.push_back( vert0 );
+		positions.push_back( vert2 );
+		positions.push_back( vert1 );
+		positions.push_back( vert1 );
+		positions.push_back( vert2 );
+		positions.push_back( vert3 );
+
+		texCoords.push_back( texCoord0 );
+		texCoords.push_back( texCoord2 );
+		texCoords.push_back( texCoord1 );
+		texCoords.push_back( texCoord1 );
+		texCoords.push_back( texCoord2 );
+		texCoords.push_back( texCoord3 );
+
+		for ( size_t j = 0; j < 6; ++j ) {
+			indices.push_back( i * 6 + j );
+			normals.push_back( norm0 );
+		}
+
+	}
+
+	TriMesh mesh = MeshHelper::createTriMesh( indices, positions, normals, texCoords );
+
+	indices.clear();
+	normals.clear();
+	positions.clear();
+	texCoords.clear();
+
+	return mesh;
+}
+
 TriMesh MeshHelper::createSphereTriMesh( size_t segments )
 {
 	vector<size_t> indices;
@@ -678,6 +739,12 @@ gl::VboMesh MeshHelper::createCubeVboMesh()
 gl::VboMesh MeshHelper::createCylinderVboMesh( size_t segments )
 {
 	TriMesh mesh = createCylinderTriMesh( segments );
+	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
+}
+
+gl::VboMesh MeshHelper::createRingVboMesh( size_t segments, float innerRadius )
+{
+	TriMesh mesh = createRingTriMesh( segments, innerRadius );
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 

@@ -62,6 +62,7 @@ private:
 		MESH_TYPE_CONE, 
 		MESH_TYPE_CIRCLE, 
 		MESH_TYPE_SQUARE, 
+		MESH_TYPE_RING, 
 		MESH_TYPE_CUSTOM
 	} typedef MeshType;
 
@@ -72,6 +73,7 @@ private:
 	ci::TriMesh					mCube;
 	ci::TriMesh					mCustom;
 	ci::TriMesh					mCylinder;
+	ci::TriMesh					mRing;
 	ci::TriMesh					mSphere;
 	ci::TriMesh					mSquare;
 	
@@ -125,6 +127,7 @@ void TriMeshSampleApp::createMeshes()
 	mCone		= MeshHelper::createConeTriMesh( mNumSegments );
 	mCube		= MeshHelper::createCubeTriMesh();
 	mCylinder	= MeshHelper::createCylinderTriMesh( mNumSegments );
+	mRing		= MeshHelper::createRingTriMesh( mNumSegments );
 	mSphere		= MeshHelper::createSphereTriMesh( mNumSegments );
 	mSquare		= MeshHelper::createSquareTriMesh();
 	
@@ -230,6 +233,9 @@ void TriMeshSampleApp::draw()
 		break;
 	case MESH_TYPE_CYLINDER:
 		gl::draw( mCylinder );
+		break;
+	case MESH_TYPE_RING:
+		gl::draw( mRing );
 		break;
 	case MESH_TYPE_SPHERE:
 		gl::draw( mSphere );
@@ -338,6 +344,7 @@ void TriMeshSampleApp::setup()
 	mMeshTitles.push_back( "Cone" );
 	mMeshTitles.push_back( "Circle" );
 	mMeshTitles.push_back( "Square" );
+	mMeshTitles.push_back( "Ring" );
 	mMeshTitles.push_back( "Custom" );
 
 	// Set up the params GUI
