@@ -396,7 +396,7 @@ TriMesh MeshHelper::createCubeTriMesh()
 	return mesh;
 }
 
-TriMesh MeshHelper::createCylinderTriMesh( size_t segments, bool closeTop, bool closeBase )
+TriMesh MeshHelper::createCylinderTriMesh( size_t segments, float topRadius, float baseRadius, bool closeTop, bool closeBase )
 {
 	vector<size_t> indices;
 	vector<Vec3f> normals;
@@ -410,12 +410,13 @@ TriMesh MeshHelper::createCylinderTriMesh( size_t segments, bool closeTop, bool 
 
 	for ( size_t p = 0; p < 2; p++ ) {
 		size_t t = 0;
+		float radius = p == 0 ? baseRadius : topRadius;
 		for ( float theta = delta; t < segments; t++, theta += delta ) {
 			float t = 2.0f * (float)M_PI * theta;
 			Vec3f position( 
-				math<float>::cos( t ), 
+				math<float>::cos( t ) * radius, 
 				(float)p - 0.5f, 
-				math<float>::sin( t ) 
+				math<float>::sin( t ) * radius
 				);
 			srcPositions.push_back( position );
 
@@ -740,9 +741,9 @@ gl::VboMesh MeshHelper::createCubeVboMesh()
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
-gl::VboMesh MeshHelper::createCylinderVboMesh( size_t segments, bool closeTop, bool closeBase )
+gl::VboMesh MeshHelper::createCylinderVboMesh( size_t segments, float topRadius, float baseRadius, bool closeTop, bool closeBase )
 {
-	TriMesh mesh = createCylinderTriMesh( segments, closeTop, closeBase );
+	TriMesh mesh = createCylinderTriMesh( segments, topRadius, baseRadius, closeTop, closeBase );
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 

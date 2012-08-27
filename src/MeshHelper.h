@@ -55,9 +55,11 @@ public:
 	static ci::TriMesh		createConeTriMesh( size_t segments = 12, bool closeBase = true );
 	//! Create cube TriMesh with an edge length of 1.0
 	static ci::TriMesh		createCubeTriMesh();
-	/*! Create cylinder TriMesh with a radius and height of 1.0 and \a segments. 
-		Top and base are closed with \a closeTop and \a closeBase flags. */
-	static ci::TriMesh		createCylinderTriMesh( size_t segments = 12, bool closeTop = true, bool closeBase = true );
+	/*! Create cylinder TriMesh with a height of 1.0, top radius of \a topRadius, base radius 
+		of \a baseRadius and \a segments. Top and base are closed with \a closeTop and 
+		\a closeBase flags. */
+	static ci::TriMesh		createCylinderTriMesh( size_t segments = 12, float topRadius = 1.0f, 
+		float baseRadius = 1.0f, bool closeTop = true, bool closeBase = true );
 	/*! Create ring TriMesh with a radius of 1.0, \a segments, and second radius 
 	 of \a v. */
 	static ci::TriMesh		createRingTriMesh( size_t segments = 12, float secondRadius = 0.5f );
@@ -79,9 +81,11 @@ public:
 	static ci::gl::VboMesh	createConeVboMesh( size_t segments = 12, bool closeBase = true );
 	//! Create cube VboMesh with an edge length of 1.0
 	static ci::gl::VboMesh	createCubeVboMesh();
-	/*! Create cylinder VboMesh with a radius and height of 1.0 and \a segments. 
-		Top and base are closed with \a closeTop and \a closeBase flags. */
-	static ci::gl::VboMesh	createCylinderVboMesh( size_t segments = 12, bool closeTop = true, bool closeBase = true );
+	/*! Create cylinder VboMesh with a height of 1.0, top radius of \a topRadius, base radius 
+		of \a baseRadius and \a segments. Top and base are closed with \a closeTop and 
+		\a closeBase flags. */
+	static ci::gl::VboMesh	createCylinderVboMesh( size_t segments = 12, float topRadius = 1.0f, 
+		float baseRadius = 1.0f, bool closeTop = true, bool closeBase = true );
 	/*! Create ring VboMesh with a radius of 1.0, \a segments, and a second radius .
 	 of \a secondRadius. */
 	static ci::gl::VboMesh	createRingVboMesh( size_t segments = 12, float secondRadius = 0.5f );
