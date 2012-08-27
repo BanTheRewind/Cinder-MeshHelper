@@ -336,7 +336,7 @@ void VboMeshSampleApp::setup()
 	mLight->setPosition( Vec3f::one() * -1.0f );
 	mLight->setSpecular( ColorAf::white() );
 	mLight->enable();
-	
+
 	// Define the mesh titles for the params GUI
 	mMeshTitles.push_back( "Cube" );
 	mMeshTitles.push_back( "Sphere" );
@@ -344,7 +344,7 @@ void VboMeshSampleApp::setup()
 	mMeshTitles.push_back( "Cone" );
 	mMeshTitles.push_back( "Circle" );
 	mMeshTitles.push_back( "Square" );
-	mMeshTitles.push_back( "Ring" );
+	mMeshTitles.push_back( "Ring	" );
 	mMeshTitles.push_back( "Custom" );
 
 	// Set up the params GUI

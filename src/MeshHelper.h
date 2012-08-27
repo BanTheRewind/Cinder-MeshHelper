@@ -56,9 +56,9 @@ public:
 	static ci::TriMesh		createCubeTriMesh();
 	//! Create cylinder TriMesh with a radius and height of 1.0 and \a segments
 	static ci::TriMesh		createCylinderTriMesh( size_t segments = 12 );
-	/*! Create ring TriMesh with a radius of 1.0, \a segments, and inner radius 
-	 of \a innerRadius. Inner radius must be less than 1.0. */
-	static ci::TriMesh		createRingTriMesh( size_t segments = 12, float innerRadius = 0.5f );
+	/*! Create ring TriMesh with a radius of 1.0, \a segments, and second radius 
+	 of \a v. */
+	static ci::TriMesh		createRingTriMesh( size_t segments = 12, float secondRadius = 0.5f );
 	//! Create sphere TriMesh with a radius of 1.0 and \a segments
 	static ci::TriMesh		createSphereTriMesh( size_t segments );
 	//! Create square TriMesh with an edge length of 1.0
@@ -78,9 +78,9 @@ public:
 	static ci::gl::VboMesh	createCubeVboMesh();
 	//! Create cylinder VboMesh with a radius and height of 1.0 and \a segments
 	static ci::gl::VboMesh	createCylinderVboMesh( size_t segments = 12 );
-	/*! Create ring VboMesh with a radius of 1.0, \a segments, and inner radius 
-	 of \a innerRadius. Inner radius must be less than 1.0. */
-	static ci::gl::VboMesh	createRingVboMesh( size_t segments = 12, float innerRadius = 0.5f );
+	/*! Create ring VboMesh with a radius of 1.0, \a segments, and a second radius 
+	 of \a secondRadius. */
+	static ci::gl::VboMesh	createRingVboMesh( size_t segments = 12, float secondRadius = 0.5f );
 	//! Create sphere VboMesh with a radius of 1.0 and \a segments
 	static ci::gl::VboMesh	createSphereVboMesh( size_t segments = 12 );
 	//! Create square VboMesh with an edge length of 1.0
