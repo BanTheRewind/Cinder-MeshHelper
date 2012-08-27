@@ -606,9 +606,15 @@ TriMesh MeshHelper::createSphereTriMesh( size_t segments )
 			indices.push_back( p * segments + n );
 			indices.push_back( ( p + 1 ) * segments + t );
 			indices.push_back( ( p + 1 ) * segments + n );
-
 		}
+	}
 
+	for ( vector<size_t>::iterator iter = indices.begin(); iter != indices.end(); ) {
+		if ( *iter < positions.size() ) {
+			++iter;
+		} else {
+			iter = indices.erase( iter );
+		}
 	}
 
 	TriMesh mesh = MeshHelper::createTriMesh( indices, positions, normals, texCoords );

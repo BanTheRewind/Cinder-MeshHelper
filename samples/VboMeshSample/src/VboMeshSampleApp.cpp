@@ -102,6 +102,7 @@ private:
 	float						mFrameRate;
 	bool						mFullScreen;
 	ci::params::InterfaceGl		mParams;
+	bool						mWireframe;
 	void						screenShot();
 };
 
@@ -197,13 +198,16 @@ void VboMeshSampleApp::draw()
 	// Use arcball to rotate model view
 	glMultMatrixf( mArcball.getQuat() );
 
-	// Enabled lighting and texture mapping
+	// Enabled lighting, texture mapping, wireframe
 	if ( mLightEnabled ) {
 		gl::enable( GL_LIGHTING );
 	}
 	if ( mTextureEnabled && mTexture ) {
 		gl::enable( GL_TEXTURE_2D );
 		mTexture.bind();
+	}
+	if ( mWireframe ) {
+		gl::enableWireframe();
 	}
 
 	// Apply scale
@@ -238,7 +242,10 @@ void VboMeshSampleApp::draw()
 	// End scale
 	gl::popMatrices();
 
-	// Disable texture mapping and lighting
+	// Disable wireframe, texture mapping, lighting
+	if ( mWireframe ) {
+		gl::disableWireframe();
+	}
 	if ( mTextureEnabled && mTexture ) {
 		mTexture.unbind();
 		gl::disable( GL_TEXTURE_2D );
@@ -305,6 +312,7 @@ void VboMeshSampleApp::setup()
 	mNumSegmentsPrev	= mNumSegments;
 	mScale				= Vec3f::one();
 	mTextureEnabled		= true;
+	mWireframe			= false;
 	
 	// Set up the arcball
 	mArcball = Arcball( getWindowSize() );
@@ -341,6 +349,7 @@ void VboMeshSampleApp::setup()
 	mParams.addParam( "Mesh type",		mMeshTitles, &mMeshIndex,						"keyDecr=m keyIncr=M"						);
 	mParams.addParam( "Scale",			&mScale																						);
 	mParams.addParam( "Segments",		&mNumSegments,									"keyDecr=s keyIncr=S min=3 max=1024 step=1"	);
+	mParams.addParam( "Wireframe",		&mWireframe,									"key=w"										);
 	mParams.addSeparator();
 	mParams.addParam( "Full screen",	&mFullScreen,									"key=f"										);
 	mParams.addButton( "Screen shot",	bind( &VboMeshSampleApp::screenShot, this ),	"key=space"									);
