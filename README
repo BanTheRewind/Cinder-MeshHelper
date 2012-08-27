@@ -5,6 +5,7 @@ meshes in Cinder.
 TODO
  - XCode projects / lib for OSX and iOS
  - Torus
+ - Specify layer count for sphere, cylinder, cone
 
 -----------------------------------------
 
