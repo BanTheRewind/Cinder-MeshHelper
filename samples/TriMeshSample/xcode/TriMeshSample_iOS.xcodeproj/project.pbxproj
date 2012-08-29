@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BFE5B5F715EE56FE00BEF083 /* TriMeshSampleApp_iOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFE5B5F615EE56FE00BEF083 /* TriMeshSampleApp_iOS.cpp */; };
 		BFF7F80D15EDA7700019E7D9 /* texture.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF7F7E615EDA4C40019E7D9 /* texture.png */; };
 		BFF7F80E15EDA7700019E7D9 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF7F7E815EDA57A0019E7D9 /* Icon-72.png */; };
 		BFF7F80F15EDA7700019E7D9 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF7F7E915EDA57A0019E7D9 /* Icon-Small-50.png */; };
 		BFF7F81015EDA7700019E7D9 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF7F7EA15EDA57A0019E7D9 /* Icon.png */; };
 		BFF7F81115EDA7700019E7D9 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF7F7EB15EDA57A0019E7D9 /* Icon@2x.png */; };
 		BFF7F81315EDA7700019E7D9 /* MeshHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFF7F7E115EDA49B0019E7D9 /* MeshHelper.cpp */; };
-		BFF7F81415EDA7700019E7D9 /* TriMeshSampleApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFF7F7E415EDA4B40019E7D9 /* TriMeshSampleApp.cpp */; };
 		BFF7F81615EDA7700019E7D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		BFF7F81715EDA7700019E7D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		BFF7F81815EDA7700019E7D9 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
@@ -34,9 +34,9 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		28FD14FF0DC6FC520079059D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		28FD15070DC6FC5B0079059D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		BFE5B5F615EE56FE00BEF083 /* TriMeshSampleApp_iOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TriMeshSampleApp_iOS.cpp; path = ../src/TriMeshSampleApp_iOS.cpp; sourceTree = "<group>"; };
 		BFF7F7E115EDA49B0019E7D9 /* MeshHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MeshHelper.cpp; path = ../../../src/MeshHelper.cpp; sourceTree = "<group>"; };
 		BFF7F7E215EDA49B0019E7D9 /* MeshHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeshHelper.h; path = ../../../src/MeshHelper.h; sourceTree = "<group>"; };
-		BFF7F7E415EDA4B40019E7D9 /* TriMeshSampleApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TriMeshSampleApp.cpp; path = ../src/TriMeshSampleApp.cpp; sourceTree = "<group>"; };
 		BFF7F7E615EDA4C40019E7D9 /* texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = texture.png; path = ../resources/texture.png; sourceTree = "<group>"; };
 		BFF7F7E815EDA57A0019E7D9 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		BFF7F7E915EDA57A0019E7D9 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
@@ -75,7 +75,7 @@
 		00CFDFA7113848F40091E310 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				BFF7F7E415EDA4B40019E7D9 /* TriMeshSampleApp.cpp */,
+				BFE5B5F615EE56FE00BEF083 /* TriMeshSampleApp_iOS.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -217,7 +217,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFF7F81315EDA7700019E7D9 /* MeshHelper.cpp in Sources */,
-				BFF7F81415EDA7700019E7D9 /* TriMeshSampleApp.cpp in Sources */,
+				BFE5B5F715EE56FE00BEF083 /* TriMeshSampleApp_iOS.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

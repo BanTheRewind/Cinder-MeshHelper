@@ -39,27 +39,19 @@
 #include "cinder/Camera.h"
 #include "cinder/gl/Light.h"
 #include "cinder/gl/Texture.h"
-#if ! defined( CINDER_COCOA_TOUCH )
-	#include "cinder/params/Params.h"
-#endif
+#include "cinder/params/Params.h"
 #include "cinder/TriMesh.h"
 
 class TriMeshSampleApp : public ci::app::AppNative 
 {
 public:
 	void						draw();
-	void						setup();
-	void						shutdown();
-	void						update();
-#if defined( CINDER_COCOA_TOUCH )
-	void						prepareSettings( ci::app::AppNative::Settings *settings );
-	void						touchesBegan( ci::app::TouchEvent event );
-	void						touchesMoved( ci::app::TouchEvent event );
-#else
 	void						mouseDown( ci::app::MouseEvent event );
 	void						mouseDrag( ci::app::MouseEvent event );
 	void						mouseWheel( ci::app::MouseEvent event );
-#endif
+	void						setup();
+	void						shutdown();
+	void						update();
 private:
 
 	// Enumerate mesh types
@@ -111,9 +103,7 @@ private:
 	// Params and utilities
 	float						mFrameRate;
 	bool						mFullScreen;
-#if ! defined( CINDER_COCOA_TOUCH )
 	ci::params::InterfaceGl		mParams;
-#endif
 	bool						mWireframe;
 	void						screenShot();
 };
@@ -219,12 +209,10 @@ void TriMeshSampleApp::draw()
 		gl::enable( GL_TEXTURE_2D );
 		mTexture.bind();
 	}
-#if ! defined( CINDER_COCOA_TOUCH )
 	if ( mWireframe ) {
 		gl::enableWireframe();
 	}
-#endif
-
+	
 	// Apply scale
 	gl::pushMatrices();
 	gl::scale( mScale );
@@ -261,11 +249,9 @@ void TriMeshSampleApp::draw()
 	gl::popMatrices();
 
 	// Disable wireframe, texture mapping, lighting
-#if ! defined( CINDER_COCOA_TOUCH )
 	if ( mWireframe ) {
 		gl::disableWireframe();
 	}
-#endif
 	if ( mTextureEnabled && mTexture ) {
 		mTexture.unbind();
 		gl::disable( GL_TEXTURE_2D );
@@ -274,30 +260,9 @@ void TriMeshSampleApp::draw()
 		gl::disable( GL_LIGHTING );
 	}
 
-#if ! defined( CINDER_COCOA_TOUCH )
 	// Draw params GUI
 	mParams.draw();
-#endif
 }
-
-#if defined( CINDER_COCOA_TOUCH )
-
-void TriMeshSampleApp::prepareSettings( Settings *settings )
-{
-	settings->enableMultiTouch();
-}
-
-void TriMeshSampleApp::touchesBegan( TouchEvent event )
-{
-	mArcball.mouseDown( event.getTouches().begin()->getPos() );
-}
-
-void TriMeshSampleApp::touchesMoved( TouchEvent event )
-{
-	mArcball.mouseDrag( event.getTouches().begin()->getPos() );
-}
-
-#else
 
 void TriMeshSampleApp::mouseDown( MouseEvent event )
 {
@@ -319,8 +284,6 @@ void TriMeshSampleApp::mouseWheel( MouseEvent event )
 	mCamera.setEyePoint( eye );
 }
 
-#endif
-
 // Saves screenshot
 void TriMeshSampleApp::screenShot()
 {
@@ -336,10 +299,8 @@ void TriMeshSampleApp::setup()
 
 	// Set up OpenGL to work with default lighting
 	glShadeModel( GL_SMOOTH );
-#if ! defined( CINDER_COCOA_TOUCH )
 	gl::enable( GL_POLYGON_SMOOTH );
 	glHint( GL_POLYGON_SMOOTH_HINT, GL_NICEST );
-#endif
 	gl::enable( GL_NORMALIZE );
 	gl::enableAlphaBlending();
 	gl::enableDepthRead();
@@ -352,7 +313,7 @@ void TriMeshSampleApp::setup()
 	mFrameRate			= 0.0f;
 	mFullScreen			= false;
 	mLightEnabled		= true;
-	mMeshIndex			= 2;
+	mMeshIndex			= 0;
 	mNumSegments		= 48;
 	mNumSegmentsPrev	= mNumSegments;
 	mScale				= Vec3f::one();
@@ -387,7 +348,6 @@ void TriMeshSampleApp::setup()
 	mMeshTitles.push_back( "Custom" );
 
 	// Set up the params GUI
-#if ! defined( CINDER_COCOA_TOUCH )
 	mParams = params::InterfaceGl( "Params", Vec2i( 200, 320 ) );
 	mParams.addParam( "Frame rate",		&mFrameRate,									"", true									);
 	mParams.addSeparator();
@@ -401,7 +361,6 @@ void TriMeshSampleApp::setup()
 	mParams.addParam( "Full screen",	&mFullScreen,									"key=f"										);
 	mParams.addButton( "Screen shot",	bind( &TriMeshSampleApp::screenShot, this ),	"key=space"									);
 	mParams.addButton( "Quit",			bind( &TriMeshSampleApp::quit, this ),			"key=q"										);
-#endif
 
 	// Generate meshes
 	createMeshes();
@@ -435,4 +394,4 @@ void TriMeshSampleApp::update()
 	mLight->update( mCamera );
 }
 
-CINDER_APP_NATIVE( TriMeshSampleApp, RendererGl )
+CINDER_APP_BASIC( TriMeshSampleApp, RendererGl )
