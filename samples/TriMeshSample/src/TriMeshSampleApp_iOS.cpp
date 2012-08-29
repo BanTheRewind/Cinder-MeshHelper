@@ -285,7 +285,7 @@ void TriMeshSampleApp::setup()
 	mFrameRate			= 0.0f;
 	mFullScreen			= false;
 	mLightEnabled		= true;
-	mMeshIndex			= 2;
+	mMeshIndex			= 1;
 	mNumSegments		= 48;
 	mNumSegmentsPrev	= mNumSegments;
 	mScale				= Vec3f::one();
