@@ -3,13 +3,13 @@ in the creation of primitive or custom TriMesh or VboMesh
 meshes in Cinder.
 
 TODO
- - XCode projects / lib for OSX and iOS
+ - XCode static lib for OSX and iOS
  - Torus
  - Specify layer count for sphere, cylinder, cone
 
 -----------------------------------------
 
-Version 0.0.4
+Version 0.0.5
 
 -----------------------------------------
 

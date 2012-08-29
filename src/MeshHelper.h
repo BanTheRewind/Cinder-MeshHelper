@@ -45,52 +45,52 @@ class MeshHelper
 {
 public:
 	//! Create TriMesh from vectors of vertex data.
-	static ci::TriMesh		createTriMesh( std::vector<size_t> &indices, const std::vector<ci::Vec3f> &positions, 
+	static ci::TriMesh		createTriMesh( std::vector<uint32_t> &indices, const std::vector<ci::Vec3f> &positions,
 								const std::vector<ci::Vec3f> &normals, const std::vector<ci::Vec2f> &texCoords );
 
 	//! Create circle TriMesh with a radius of 1.0 and \a segments.
-	static ci::TriMesh		createCircleTriMesh( size_t segments = 12 );
+	static ci::TriMesh		createCircleTriMesh( uint32_t segments = 12 );
 	/*! Create cone TriMesh with a radius and height of 1.0 and \a segments. 
 		Base is closed when \a closeBase is set to true. */
-	static ci::TriMesh		createConeTriMesh( size_t segments = 12, bool closeBase = true );
+	static ci::TriMesh		createConeTriMesh( uint32_t segments = 12, bool closeBase = true );
 	//! Create cube TriMesh with an edge length of 1.0
 	static ci::TriMesh		createCubeTriMesh();
 	/*! Create cylinder TriMesh with a height of 1.0, top radius of \a topRadius, base radius 
 		of \a baseRadius and \a segments. Top and base are closed with \a closeTop and 
 		\a closeBase flags. */
-	static ci::TriMesh		createCylinderTriMesh( size_t segments = 12, float topRadius = 1.0f, 
+	static ci::TriMesh		createCylinderTriMesh( uint32_t segments = 12, float topRadius = 1.0f, 
 		float baseRadius = 1.0f, bool closeTop = true, bool closeBase = true );
 	/*! Create ring TriMesh with a radius of 1.0, \a segments, and second radius 
 	 of \a v. */
-	static ci::TriMesh		createRingTriMesh( size_t segments = 12, float secondRadius = 0.5f );
+	static ci::TriMesh		createRingTriMesh( uint32_t segments = 12, float secondRadius = 0.5f );
 	//! Create sphere TriMesh with a radius of 1.0 and \a segments.
-	static ci::TriMesh		createSphereTriMesh( size_t segments );
+	static ci::TriMesh		createSphereTriMesh( uint32_t segments );
 	//! Create square TriMesh with an edge length of 1.0.
 	static ci::TriMesh		createSquareTriMesh();
 
 #if ! defined( CINDER_COCOA_TOUCH )
 	//! Create VboMesh from vectors of vertex data.
-	static ci::gl::VboMesh	createVboMesh( const std::vector<size_t> &indices, const std::vector<ci::Vec3f> &positions, 
+	static ci::gl::VboMesh	createVboMesh( const std::vector<uint32_t> &indices, const std::vector<ci::Vec3f> &positions, 
 								const std::vector<ci::Vec3f> &normals, const std::vector<ci::Vec2f> &texCoords, 
 								GLenum primitiveType = GL_TRIANGLES );
 	
 	//! Create circle VboMesh with a radius of 1.0 and \a segments.
-	static ci::gl::VboMesh	createCircleVboMesh( size_t segments = 12 );
+	static ci::gl::VboMesh	createCircleVboMesh( uint32_t segments = 12 );
 	/*! Create cone VboMesh with a radius and height of 1.0 and \a segments. 
 		Base is closed when \a closeBase is set to true. */
-	static ci::gl::VboMesh	createConeVboMesh( size_t segments = 12, bool closeBase = true );
+	static ci::gl::VboMesh	createConeVboMesh( uint32_t segments = 12, bool closeBase = true );
 	//! Create cube VboMesh with an edge length of 1.0
 	static ci::gl::VboMesh	createCubeVboMesh();
 	/*! Create cylinder VboMesh with a height of 1.0, top radius of \a topRadius, base radius 
 		of \a baseRadius and \a segments. Top and base are closed with \a closeTop and 
 		\a closeBase flags. */
-	static ci::gl::VboMesh	createCylinderVboMesh( size_t segments = 12, float topRadius = 1.0f, 
+	static ci::gl::VboMesh	createCylinderVboMesh( uint32_t segments = 12, float topRadius = 1.0f, 
 		float baseRadius = 1.0f, bool closeTop = true, bool closeBase = true );
 	/*! Create ring VboMesh with a radius of 1.0, \a segments, and a second radius .
 	 of \a secondRadius. */
-	static ci::gl::VboMesh	createRingVboMesh( size_t segments = 12, float secondRadius = 0.5f );
+	static ci::gl::VboMesh	createRingVboMesh( uint32_t segments = 12, float secondRadius = 0.5f );
 	//! Create sphere VboMesh with a radius of 1.0 and \a segments.
-	static ci::gl::VboMesh	createSphereVboMesh( size_t segments = 12 );
+	static ci::gl::VboMesh	createSphereVboMesh( uint32_t segments = 12 );
 	//! Create square VboMesh with an edge length of 1.0.
 	static ci::gl::VboMesh	createSquareVboMesh();
 #endif

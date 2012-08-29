@@ -135,7 +135,7 @@ void VboMeshSampleApp::createMeshes()
 	// Custom mesh
 
 	// Declare vectors
-	vector<size_t> indices;
+	vector<uint32_t> indices;
 	vector<Vec3f> normals;
 	vector<Vec3f> positions;
 	vector<Vec2f> texCoords;

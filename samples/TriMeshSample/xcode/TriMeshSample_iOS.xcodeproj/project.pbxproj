@@ -1,0 +1,345 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BFF7F80D15EDA7700019E7D9 /* texture.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF7F7E615EDA4C40019E7D9 /* texture.png */; };
+		BFF7F80E15EDA7700019E7D9 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF7F7E815EDA57A0019E7D9 /* Icon-72.png */; };
+		BFF7F80F15EDA7700019E7D9 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF7F7E915EDA57A0019E7D9 /* Icon-Small-50.png */; };
+		BFF7F81015EDA7700019E7D9 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF7F7EA15EDA57A0019E7D9 /* Icon.png */; };
+		BFF7F81115EDA7700019E7D9 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFF7F7EB15EDA57A0019E7D9 /* Icon@2x.png */; };
+		BFF7F81315EDA7700019E7D9 /* MeshHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFF7F7E115EDA49B0019E7D9 /* MeshHelper.cpp */; };
+		BFF7F81415EDA7700019E7D9 /* TriMeshSampleApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFF7F7E415EDA4B40019E7D9 /* TriMeshSampleApp.cpp */; };
+		BFF7F81615EDA7700019E7D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		BFF7F81715EDA7700019E7D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		BFF7F81815EDA7700019E7D9 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
+		BFF7F81915EDA7700019E7D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
+		BFF7F81A15EDA7700019E7D9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00CFDF6A1138442D0091E310 /* CoreGraphics.framework */; };
+		BFF7F81B15EDA7700019E7D9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B92F20121C83A500093AFE /* AVFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		BFF7F81C15EDA7700019E7D9 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B92F22121C83A500093AFE /* CoreMedia.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		BFF7F81D15EDA7700019E7D9 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B92F24121C83A500093AFE /* CoreVideo.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		BFF7F81E15EDA7700019E7D9 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7FB1C43124BE6870045AFD2 /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		BFF7F81F15EDA7700019E7D9 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0087D06C12CD7CE9002CD69F /* CoreText.framework */; };
+		BFF7F82715EDA8090019E7D9 /* iOS-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BFF7F82615EDA8090019E7D9 /* iOS-Info.plist */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0087D06C12CD7CE9002CD69F /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		00CFDF6A1138442D0091E310 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		28FD14FF0DC6FC520079059D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		28FD15070DC6FC5B0079059D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		BFF7F7E115EDA49B0019E7D9 /* MeshHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MeshHelper.cpp; path = ../../../src/MeshHelper.cpp; sourceTree = "<group>"; };
+		BFF7F7E215EDA49B0019E7D9 /* MeshHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeshHelper.h; path = ../../../src/MeshHelper.h; sourceTree = "<group>"; };
+		BFF7F7E415EDA4B40019E7D9 /* TriMeshSampleApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TriMeshSampleApp.cpp; path = ../src/TriMeshSampleApp.cpp; sourceTree = "<group>"; };
+		BFF7F7E615EDA4C40019E7D9 /* texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = texture.png; path = ../resources/texture.png; sourceTree = "<group>"; };
+		BFF7F7E815EDA57A0019E7D9 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
+		BFF7F7E915EDA57A0019E7D9 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
+		BFF7F7EA15EDA57A0019E7D9 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		BFF7F7EB15EDA57A0019E7D9 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		BFF7F82315EDA7700019E7D9 /* TriMeshSample_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TriMeshSample_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFF7F82615EDA8090019E7D9 /* iOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iOS-Info.plist"; sourceTree = "<group>"; };
+		C7B92F20121C83A500093AFE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		C7B92F22121C83A500093AFE /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		C7B92F24121C83A500093AFE /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		C7FB1C43124BE6870045AFD2 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		CE8CB45615D0FD2400ADB52C /* TriMeshSample_iOS_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriMeshSample_iOS_Prefix.pch; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BFF7F81515EDA7700019E7D9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFF7F81615EDA7700019E7D9 /* Foundation.framework in Frameworks */,
+				BFF7F81715EDA7700019E7D9 /* UIKit.framework in Frameworks */,
+				BFF7F81815EDA7700019E7D9 /* OpenGLES.framework in Frameworks */,
+				BFF7F81915EDA7700019E7D9 /* QuartzCore.framework in Frameworks */,
+				BFF7F81A15EDA7700019E7D9 /* CoreGraphics.framework in Frameworks */,
+				BFF7F81B15EDA7700019E7D9 /* AVFoundation.framework in Frameworks */,
+				BFF7F81C15EDA7700019E7D9 /* CoreMedia.framework in Frameworks */,
+				BFF7F81D15EDA7700019E7D9 /* CoreVideo.framework in Frameworks */,
+				BFF7F81E15EDA7700019E7D9 /* AudioToolbox.framework in Frameworks */,
+				BFF7F81F15EDA7700019E7D9 /* CoreText.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		00CFDFA7113848F40091E310 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				BFF7F7E415EDA4B40019E7D9 /* TriMeshSampleApp.cpp */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BFF7F82315EDA7700019E7D9 /* TriMeshSample_iOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				CE7E8CBB15D0F90A00AF5A32 /* Cinder-MeshHelper */,
+				29B97315FDCFA39411CA2CEA /* Headers */,
+				00CFDFA7113848F40091E310 /* Source */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = CustomTemplate;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				CE8CB45615D0FD2400ADB52C /* TriMeshSample_iOS_Prefix.pch */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BFF7F82615EDA8090019E7D9 /* iOS-Info.plist */,
+				BFF7F7E815EDA57A0019E7D9 /* Icon-72.png */,
+				BFF7F7E915EDA57A0019E7D9 /* Icon-Small-50.png */,
+				BFF7F7EA15EDA57A0019E7D9 /* Icon.png */,
+				BFF7F7EB15EDA57A0019E7D9 /* Icon@2x.png */,
+				BFF7F7E615EDA4C40019E7D9 /* texture.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				28FD15070DC6FC5B0079059D /* QuartzCore.framework */,
+				28FD14FF0DC6FC520079059D /* OpenGLES.framework */,
+				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
+				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				00CFDF6A1138442D0091E310 /* CoreGraphics.framework */,
+				C7B92F20121C83A500093AFE /* AVFoundation.framework */,
+				C7B92F22121C83A500093AFE /* CoreMedia.framework */,
+				C7B92F24121C83A500093AFE /* CoreVideo.framework */,
+				C7FB1C43124BE6870045AFD2 /* AudioToolbox.framework */,
+				0087D06C12CD7CE9002CD69F /* CoreText.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE7E8CBB15D0F90A00AF5A32 /* Cinder-MeshHelper */ = {
+			isa = PBXGroup;
+			children = (
+				BFF7F7E115EDA49B0019E7D9 /* MeshHelper.cpp */,
+				BFF7F7E215EDA49B0019E7D9 /* MeshHelper.h */,
+			);
+			name = "Cinder-MeshHelper";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BFF7F80B15EDA7700019E7D9 /* TriMeshSample_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BFF7F82015EDA7700019E7D9 /* Build configuration list for PBXNativeTarget "TriMeshSample_iOS" */;
+			buildPhases = (
+				BFF7F80C15EDA7700019E7D9 /* Resources */,
+				BFF7F81215EDA7700019E7D9 /* Sources */,
+				BFF7F81515EDA7700019E7D9 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TriMeshSample_iOS;
+			productName = MultiTouch;
+			productReference = BFF7F82315EDA7700019E7D9 /* TriMeshSample_iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0440;
+			};
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "TriMeshSample_iOS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BFF7F80B15EDA7700019E7D9 /* TriMeshSample_iOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BFF7F80C15EDA7700019E7D9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFF7F80D15EDA7700019E7D9 /* texture.png in Resources */,
+				BFF7F80E15EDA7700019E7D9 /* Icon-72.png in Resources */,
+				BFF7F80F15EDA7700019E7D9 /* Icon-Small-50.png in Resources */,
+				BFF7F81015EDA7700019E7D9 /* Icon.png in Resources */,
+				BFF7F81115EDA7700019E7D9 /* Icon@2x.png in Resources */,
+				BFF7F82715EDA8090019E7D9 /* iOS-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BFF7F81215EDA7700019E7D9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFF7F81315EDA7700019E7D9 /* MeshHelper.cpp in Sources */,
+				BFF7F81415EDA7700019E7D9 /* TriMeshSampleApp.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		BFF7F82115EDA7700019E7D9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CINDER_PATH = ../../../../..;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = TriMeshSample_iOS_Prefix.pch;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				INFOPLIST_FILE = "$(SRCROOT)/iOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				"OTHER_LDFLAGS[sdk=iphoneos*][arch=*]" = "\"$(CINDER_PATH)/lib/libcinder-iphone_d.a\"";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*][arch=*]" = (
+					"\"$(CINDER_PATH)/lib/libcinder-iphone-sim_d.a\"",
+					"-lz",
+				);
+				PRODUCT_NAME = TriMeshSample_iOS;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../include ../../../src";
+			};
+			name = Debug;
+		};
+		BFF7F82215EDA7700019E7D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CINDER_PATH = ../../../../..;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = TriMeshSample_iOS_Prefix.pch;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				INFOPLIST_FILE = "$(SRCROOT)/iOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				"OTHER_LDFLAGS[sdk=iphoneos*][arch=*]" = "\"$(CINDER_PATH)/lib/libcinder-iphone.a\"";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*][arch=*]" = (
+					"\"$(CINDER_PATH)/lib/libcinder-iphone-sim.a\"",
+					"-lz",
+				);
+				PRODUCT_NAME = TriMeshSample_iOS;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../include ../../../src";
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CINDER_PATH = ../../../../cinder_master;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" include";
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CINDER_PATH = ../../../../cinder_master;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" include";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BFF7F82015EDA7700019E7D9 /* Build configuration list for PBXNativeTarget "TriMeshSample_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BFF7F82115EDA7700019E7D9 /* Debug */,
+				BFF7F82215EDA7700019E7D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "TriMeshSample_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
