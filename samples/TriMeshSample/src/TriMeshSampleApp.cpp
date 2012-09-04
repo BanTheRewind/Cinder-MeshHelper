@@ -81,9 +81,9 @@ private:
 	int32_t						mMeshIndex;
 	std::vector<std::string>	mMeshTitles;
 
-	// Number of segments used in circle and custom meshes
-	int32_t						mNumSegments;
-	int32_t						mNumSegmentsPrev;
+	// Mesh resolution
+	ci::Vec2i					mResolution;
+	ci::Vec2i					mResolutionPrev;
 
 	// Mesh scale
 	ci::Vec3f					mScale;
@@ -123,13 +123,13 @@ using namespace std;
 void TriMeshSampleApp::createMeshes()
 {
 	// Use the MeshHelper to generate primitives
-	mCircle		= MeshHelper::createCircleTriMesh( mNumSegments );
-	mCone		= MeshHelper::createConeTriMesh( mNumSegments );
+	mCircle		= MeshHelper::createCircleTriMesh( mResolution.x );
+	mCone		= MeshHelper::createConeTriMesh( mResolution );
 	mCube		= MeshHelper::createCubeTriMesh();
-	mCylinder	= MeshHelper::createCylinderTriMesh( mNumSegments );
-	mRing		= MeshHelper::createRingTriMesh( mNumSegments );
-	mSphere		= MeshHelper::createSphereTriMesh( mNumSegments );
-	mSquare		= MeshHelper::createSquareTriMesh();
+	mCylinder	= MeshHelper::createCylinderTriMesh( mResolution );
+	mRing		= MeshHelper::createRingTriMesh( mResolution.x );
+	mSphere		= MeshHelper::createSphereTriMesh( mResolution );
+	mSquare		= MeshHelper::createSquareTriMesh( mResolution );
 	
 	/////////////////////////////////////////////////////////////////////////////
 	// Custom mesh
@@ -141,18 +141,18 @@ void TriMeshSampleApp::createMeshes()
 	vector<Vec2f> texCoords;
 
 	// Mesh dimensions
-	float halfHeight	= (float)mNumSegments * 0.5f;
-	float halfWidth		= (float)mNumSegments * 0.5f;
-	float unit			= 3.0f / (float)mNumSegments;
+	float halfHeight	= (float)mResolution.x * 0.5f;
+	float halfWidth		= (float)mResolution.y * 0.5f;
+	float unit			= 3.0f / (float)mResolution.x;
 	Vec3f scale( unit, 0.5f, unit );
 	Vec3f offset( -0.5f, 0.5f, 0.0f );
 
 	// Iterate through rows and columns using segment count
-	for ( int32_t y = 0; y < mNumSegments; y++ ) {
-		for ( int32_t x = 0; x < mNumSegments; x++ ) {
+	for ( int32_t y = 0; y < mResolution.y; y++ ) {
+		for ( int32_t x = 0; x < mResolution.x; x++ ) {
 
 			// Set texture coordinate in [ 0 - 1, 0 - 1 ] range
-			Vec2f texCoord( (float)x / (float)mNumSegments, (float)y / (float)mNumSegments );
+			Vec2f texCoord( (float)x / (float)mResolution.x, (float)y / (float)mResolution.y );
 			texCoords.push_back( texCoord );
 
 			// Use random value for Y position
@@ -166,24 +166,24 @@ void TriMeshSampleApp::createMeshes()
 			normals.push_back( Vec3f::zero() );
 
 			// Add indices to form quad from two triangles
-			int32_t xn = x + 1 >= mNumSegments ? 0 : 1;
-			int32_t yn = y + 1 >= mNumSegments ? 0 : 1;
-			indices.push_back( x + mNumSegments * y );
-			indices.push_back( ( x + xn ) + mNumSegments * y);
-			indices.push_back( ( x + xn ) + mNumSegments * ( y + yn ) );
-			indices.push_back( x + mNumSegments * ( y + yn ) );
-			indices.push_back( ( x + xn ) + mNumSegments * ( y + yn ) );
-			indices.push_back( x + mNumSegments * y );
+			int32_t xn = x + 1 >= mResolution.x ? 0 : 1;
+			int32_t yn = y + 1 >= mResolution.y ? 0 : 1;
+			indices.push_back( x + mResolution.x * y );
+			indices.push_back( ( x + xn ) + mResolution.x * y);
+			indices.push_back( ( x + xn ) + mResolution.x * ( y + yn ) );
+			indices.push_back( x + mResolution.x * ( y + yn ) );
+			indices.push_back( ( x + xn ) + mResolution.x * ( y + yn ) );
+			indices.push_back( x + mResolution.x * y );
 		}
 	}
 
 	// Iterate through again to set normals
-	for ( int32_t y = 0; y < mNumSegments - 1; y++ ) {
-		for ( int32_t x = 0; x < mNumSegments - 1; x++ ) {
-			Vec3f vert0 = positions[ indices[ ( x + mNumSegments * y ) * 6 ] ];
-			Vec3f vert1 = positions[ indices[ ( ( x + 1 ) + mNumSegments * y ) * 6 ] ];
-			Vec3f vert2 = positions[ indices[ ( ( x + 1 ) + mNumSegments * ( y + 1 ) ) * 6 ] ];
-			normals[ x + mNumSegments * y ] = Vec3f( ( vert1 - vert0 ).cross( vert1 - vert2 ).normalized() );
+	for ( int32_t y = 0; y < mResolution.y - 1; y++ ) {
+		for ( int32_t x = 0; x < mResolution.x - 1; x++ ) {
+			Vec3f vert0 = positions[ indices[ ( x + mResolution.x * y ) * 6 ] ];
+			Vec3f vert1 = positions[ indices[ ( ( x + 1 ) + mResolution.x * y ) * 6 ] ];
+			Vec3f vert2 = positions[ indices[ ( ( x + 1 ) + mResolution.x * ( y + 1 ) ) * 6 ] ];
+			normals[ x + mResolution.x * y ] = Vec3f( ( vert1 - vert0 ).cross( vert1 - vert2 ).normalized() );
 		}
 	}
 
@@ -314,8 +314,8 @@ void TriMeshSampleApp::setup()
 	mFullScreen			= false;
 	mLightEnabled		= true;
 	mMeshIndex			= 0;
-	mNumSegments		= 48;
-	mNumSegmentsPrev	= mNumSegments;
+	mResolution			= Vec2i( 48, 24 );
+	mResolutionPrev		= mResolution;
 	mScale				= Vec3f::one();
 	mTextureEnabled		= true;
 	mWireframe			= false;
@@ -355,7 +355,8 @@ void TriMeshSampleApp::setup()
 	mParams.addParam( "Enable texture",	&mTextureEnabled,								"key=t"										);
 	mParams.addParam( "Mesh type",		mMeshTitles, &mMeshIndex,						"keyDecr=m keyIncr=M"						);
 	mParams.addParam( "Scale",			&mScale																						);
-	mParams.addParam( "Segments",		&mNumSegments,									"keyDecr=s keyIncr=S min=3 max=1024 step=1"	);
+	mParams.addParam( "Resolution X",	&mResolution.x,									"keyDecr=x keyIncr=X min=1 max=1024 step=1"	);
+	mParams.addParam( "Resolution Y",	&mResolution.y,									"keyDecr=y keyIncr=Y min=1 max=1024 step=1"	);
 	mParams.addParam( "Wireframe",		&mWireframe,									"key=w"										);
 	mParams.addSeparator();
 	mParams.addParam( "Full screen",	&mFullScreen,									"key=f"										);
@@ -385,9 +386,9 @@ void TriMeshSampleApp::update()
 	}
 
 	// Reset the meshes if the segment count changes
-	if ( mNumSegmentsPrev != mNumSegments ) {
+	if ( mResolutionPrev != mResolution ) {
 		createMeshes();
-		mNumSegmentsPrev = mNumSegments;
+		mResolutionPrev = mResolution;
 	}
 
 	// Update light on every frame
