@@ -412,15 +412,17 @@ TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRad
 	float delta = 1.0f / (float)resolution.x;
 	float step	= 1.0f / (float)resolution.y;
 
-	for ( float p = 0.0f; p <= 1.0f; p += step ) {
+	uint32_t p = 0;
+	for ( float phi = 0.0f; p <= (uint32_t)resolution.y; ++p, phi += step ) {
 		uint32_t t = 0;
-		float radius = lerp( baseRadius, topRadius, p );
+		for ( float theta = delta; t < (uint32_t)resolution.x; ++t, theta += delta ) {
+		
+		float radius = lerp( baseRadius, topRadius, phi );
 
-		for ( float theta = delta; t < (uint32_t)resolution.x; t++, theta += delta ) {
 			float t = 2.0f * (float)M_PI * theta;
 			Vec3f position( 
 				math<float>::cos( t ) * radius, 
-				p - 0.5f, 
+				phi - 0.5f, 
 				math<float>::sin( t ) * radius
 				);
 			srcPositions.push_back( position );
@@ -443,7 +445,7 @@ TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRad
 	int32_t topCenter		= (int32_t)srcPositions.size() - 1;
 	int32_t bottomCenter	= topCenter - 1;
 
-	/*if ( closeTop ) {
+	if ( closeTop ) {
 		for ( uint32_t t = 0; t < (uint32_t)resolution.x; ++t ) {
 			uint32_t n = t + 1 >= (uint32_t)resolution.x ? 0 : t + 1;
 
@@ -452,18 +454,18 @@ TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRad
 			normals.push_back( srcNormals[ topCenter ] );
 
 			positions.push_back( srcPositions[ topCenter ] );
-			positions.push_back( srcPositions[ resolution.x + t ] );
-			positions.push_back( srcPositions[ resolution.x + n ] );
+			positions.push_back( srcPositions[ resolution.y * resolution.x + t ] );
+			positions.push_back( srcPositions[ resolution.y * resolution.x + n ] );
 
 			texCoords.push_back( srcTexCoords[ topCenter ] );
 			texCoords.push_back( srcTexCoords[ topCenter ] );
 			texCoords.push_back( srcTexCoords[ topCenter ] );
 		}
-	}*/
+	}
 
 	for ( uint32_t p = 0; p < (uint32_t)resolution.y; ++p ) {
 		for ( uint32_t t = 0; t < (uint32_t)resolution.x; ++t ) {
-			
+		
 			uint32_t n = t + 1 >= (uint32_t)resolution.x ? 0 : t + 1;
 		
 			uint32_t index0 = ( p + 0 ) * (uint32_t)resolution.x + t;
@@ -494,7 +496,7 @@ TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRad
 		}
 	}
 
-	/*if ( closeBase ) {
+	if ( closeBase ) {
 		for ( uint32_t t = 0; t < (uint32_t)resolution.x; ++t ) {
 			uint32_t n = t + 1 >= (uint32_t)resolution.x ? 0 : t + 1;
 
@@ -510,7 +512,7 @@ TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRad
 			texCoords.push_back( srcTexCoords[ bottomCenter ] );
 			texCoords.push_back( srcTexCoords[ bottomCenter ] );
 		}
-	}*/
+	}
 
 	for ( uint32_t i = 0; i < positions.size(); ++i ) {
 		indices.push_back( i );
