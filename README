@@ -3,13 +3,14 @@ in the creation of primitive or custom TriMesh or VboMesh
 meshes in Cinder.
 
 In-progress tasks in dev branch
- - Specify resolution to subdivide each shape
- - iOS TriMesh sample
  - Torus
+ - Bug?  Normals look a little strange at tip when 
+   creating cone with cylinder
+ - iOS TriMesh sample
 
 -----------------------------------------
 
-Version 0.0.6
+Version 0.0.7
 
 -----------------------------------------
 

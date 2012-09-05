@@ -34,7 +34,7 @@
 */
 
 #include "MeshHelper.h"
-	
+
 using namespace ci;
 using namespace std;
 
@@ -61,189 +61,118 @@ TriMesh MeshHelper::createTriMesh( vector<uint32_t> &indices, const vector<Vec3f
 	return mesh;
 }
 
-TriMesh MeshHelper::createCircleTriMesh( uint32_t segments )
+TriMesh MeshHelper::createCircleTriMesh( const Vec2i &resolution )
 {
-	vector<uint32_t> indices;
-	vector<Vec3f> normals;
-	vector<Vec3f> positions;
-	vector<Vec2f> texCoords;
-
-	Vec3f norm0( 0.0f, 0.0f, 1.0f );
-
-	Vec3f vert1		= Vec3f::zero();
-	Vec2f texCoord1 = Vec2f::one() * 0.5f;
-
-	float delta = ( (float)M_PI * 2.0f ) / (float)segments;
-	float theta = delta;
-	for ( uint32_t i = 0; i < segments; ++i, theta += delta ) {
-
-		Vec3f vert0( math<float>::cos( theta ), math<float>::sin( theta ), 0.0f );
-		Vec3f vert2 = Vec3f::zero();
-		if ( i >= segments - 1 ) {
-			vert2.x = math<float>::cos( delta );
-			vert2.y = math<float>::sin( delta ); 
-		} else {
-			vert2.x = math<float>::cos( theta + delta );
-			vert2.y = math<float>::sin( theta + delta );
-		}
-		Vec2f texCoord0 = ( vert0.xy() + Vec2f::one() ) * 0.5f;
-		Vec2f texCoord2 = ( vert2.xy() + Vec2f::one() ) * 0.5f;
-
-		positions.push_back( vert0 );
-		positions.push_back( vert1 );
-		positions.push_back( vert2 );
-
-		texCoords.push_back( texCoord0 );
-		texCoords.push_back( texCoord1 );
-		texCoords.push_back( texCoord2 );
-
-		for ( uint32_t j = 0; j < 3; ++j ) {
-			indices.push_back( i * 3 + j );
-			normals.push_back( norm0 );
-		}
-
-	}
-
-	TriMesh mesh = MeshHelper::createTriMesh( indices, positions, normals, texCoords );
-
-	indices.clear();
-	normals.clear();
-	positions.clear();
-	texCoords.clear();
-
-	return mesh;
+	return createRingTriMesh( resolution, 0.0f );
 }
 
-TriMesh MeshHelper::createConeTriMesh( uint32_t segments, bool closeBase )
+TriMesh MeshHelper::createCubeTriMesh( const Vec3i &resolution )
 {
 	vector<uint32_t> indices;
 	vector<Vec3f> normals;
 	vector<Vec3f> positions;
-	vector<Vec3f> srcPositions;
-	vector<Vec2f> srcTexCoords;
 	vector<Vec2f> texCoords;
 
-	float delta = 1.0f / (float)segments;
+	ci::TriMesh back	= createSquareTriMesh( Vec2i( resolution.x, resolution.y ) );
+	ci::TriMesh bottom	= createSquareTriMesh( Vec2i( resolution.x, resolution.z ) );
+	ci::TriMesh front	= createSquareTriMesh( Vec2i( resolution.x, resolution.y ) );
+	ci::TriMesh left	= createSquareTriMesh( Vec2i( resolution.z, resolution.y ) );
+	ci::TriMesh right	= createSquareTriMesh( Vec2i( resolution.z, resolution.y ) );
+	ci::TriMesh top		= createSquareTriMesh( Vec2i( resolution.x, resolution.z ) );
+	
+	Vec3f normal;
+	Vec3f offset;
+	Matrix44f transform;
 
-	for ( uint32_t p = 0; p < 2; p++ ) {
-		float radius = p == 0 ? 1.0f : 0.0f;
-
-		uint32_t i = 0;
-		for ( float theta = delta; i < segments; i++, theta += delta ) {
-
-			float t = 2.0f * (float)M_PI * theta;
-			float cosT = math<float>::cos( t );
-			float sinT = math<float>::sin( t );
-			Vec3f position( 
-				cosT * radius, 
-				(float)p, 
-				sinT * radius 
-				);
-			srcPositions.push_back( position );
-
-			Vec2f texCoord( theta, position.y );
-			srcTexCoords.push_back( texCoord );
-		}
-
+	normal = Vec3f( 0.0f, 0.0f, -1.0f );
+	offset = normal * 0.5f;
+	transform.setToIdentity();
+	transform.translate( offset );
+	for ( vector<Vec3f>::iterator iter = back.getVertices().begin(); iter != back.getVertices().end(); ++iter ) {
+		positions.push_back( transform.transformPoint( *iter ) );
+		normals.push_back( normal );
+	}
+	for ( vector<Vec2f>::iterator iter = back.getTexCoords().begin(); iter != back.getTexCoords().end(); ++iter ) {
+		texCoords.push_back( *iter );
 	}
 
-	srcPositions.push_back( Vec3f( 0.0f, 0.0f, 0.0f ) );
-	srcPositions.push_back( Vec3f( 0.0f, 1.0f, 0.0f ) );
-	srcTexCoords.push_back( Vec2f( 0.0f, 0.0f ) );
-	srcTexCoords.push_back( Vec2f( 0.0f, 1.0f ) );
-	int32_t bottomCenter = (int32_t)srcPositions.size() - 1;
-	int32_t topCenter = bottomCenter - 1;
-
-	Vec3f offset( 0.0f, -0.5f, 0.0f );
-
-	for ( uint32_t t = 0; t < segments; t++ ) {
-		uint32_t n = t + 1 >= segments ? 0 : t + 1;
-
-		uint32_t index0 = t;
-		uint32_t index1 = n;
-		uint32_t index2 = segments + t;
-		uint32_t index3 = segments + n;
-
-		Vec3f vert0 = srcPositions[ index0 ];
-		Vec3f vert1 = srcPositions[ index1 ];
-		Vec3f vert2 = srcPositions[ index2 ];
-		Vec3f vert3 = srcPositions[ index3 ];
-
-		Vec2f texCoord0 = srcTexCoords[ index0 ];
-		Vec2f texCoord1 = srcTexCoords[ index1 ];
-		Vec2f texCoord2 = srcTexCoords[ index2 ];
-		Vec2f texCoord3 = srcTexCoords[ index3 ];
-
-		Vec3f norm0 = vert0.normalized();
-		Vec3f norm1 = vert1.normalized();
-		Vec3f norm2 = norm0;
-		Vec3f norm3 = norm1;
-
-		normals.push_back( norm0 );
-		normals.push_back( norm2 );
-		normals.push_back( norm1 );
-		normals.push_back( norm1 );
-		normals.push_back( norm2 );
-		normals.push_back( norm3 );
-
-		positions.push_back( vert0 + offset );
-		positions.push_back( vert2 + offset );
-		positions.push_back( vert1 + offset );
-		positions.push_back( vert1 + offset );
-		positions.push_back( vert2 + offset );
-		positions.push_back( vert3 + offset );
-
-		texCoords.push_back( texCoord0 );
-		texCoords.push_back( texCoord2 );
-		texCoords.push_back( texCoord1 );
-		texCoords.push_back( texCoord1 );
-		texCoords.push_back( texCoord2 );
-		texCoords.push_back( texCoord3 );
+	normal = Vec3f( 0.0f, -1.0f, 0.0f );
+	offset = normal * 0.5f;
+	transform.setToIdentity();
+	transform.translate( offset );
+	transform.rotate( Vec3f( -(float)M_PI * 0.5f, 0.0f, 0.0f ) );
+	transform.translate( offset * -1.0f );
+	transform.translate( offset );
+	for ( vector<Vec3f>::iterator iter = bottom.getVertices().begin(); iter != bottom.getVertices().end(); ++iter ) {
+		positions.push_back( transform.transformPoint( *iter ) );
+		normals.push_back( normal );
+	}
+	for ( vector<Vec2f>::iterator iter = bottom.getTexCoords().begin(); iter != bottom.getTexCoords().end(); ++iter ) {
+		texCoords.push_back( *iter );
 	}
 
-	if ( closeBase ) {
-		Vec3f normal( 0.0f, -1.0f, 0.0f );
-		for ( uint32_t t = 0; t < segments; t++ ) {
-			uint32_t n = t + 1 >= segments ? 0 : t + 1;
-
-			normals.push_back( normal );
-			normals.push_back( normal );
-			normals.push_back( normal );
-
-			positions.push_back( srcPositions[ topCenter ] + offset );
-			positions.push_back( srcPositions[ t ] + offset );
-			positions.push_back( srcPositions[ n ] + offset );
-
-			texCoords.push_back( srcTexCoords[ topCenter ] );
-			texCoords.push_back( srcTexCoords[ topCenter ] );
-			texCoords.push_back( srcTexCoords[ topCenter ] );
-		}
+	normal = Vec3f( 0.0f, 0.0f, 1.0f );
+	offset = normal * 0.5f;
+	transform.setToIdentity();
+	transform.translate( offset );
+	for ( vector<Vec3f>::iterator iter = front.getVertices().begin(); iter != front.getVertices().end(); ++iter ) {
+		positions.push_back( transform.transformPoint( *iter ) );
+		normals.push_back( normal );
+	}
+	for ( vector<Vec2f>::iterator iter = front.getTexCoords().begin(); iter != front.getTexCoords().end(); ++iter ) {
+		texCoords.push_back( *iter );
 	}
 
-	for ( uint32_t i = 0; i < positions.size(); i++ ) {
+	normal = Vec3f( -1.0f, 0.0f, 0.0f );
+	offset = normal * 0.5f;
+	transform.setToIdentity();
+	transform.translate( offset );
+	transform.rotate( Vec3f( 0.0f, -(float)M_PI * 0.5f, 0.0f ) );
+	transform.translate( offset * -1.0f );
+	transform.translate( offset );
+	for ( vector<Vec3f>::iterator iter = left.getVertices().begin(); iter != left.getVertices().end(); ++iter ) {
+		positions.push_back( transform.transformPoint( *iter ) );
+		normals.push_back( normal );
+	}
+	for ( vector<Vec2f>::iterator iter = left.getTexCoords().begin(); iter != left.getTexCoords().end(); ++iter ) {
+		texCoords.push_back( *iter );
+	}
+
+	normal = Vec3f( 1.0f, 0.0f, 0.0f );
+	offset = normal * 0.5f;
+	transform.setToIdentity();
+	transform.translate( offset );
+	transform.rotate( Vec3f( 0.0f, (float)M_PI * 0.5f, 0.0f ) );
+	transform.translate( offset * -1.0f );
+	transform.translate( offset );
+	for ( vector<Vec3f>::iterator iter = right.getVertices().begin(); iter != right.getVertices().end(); ++iter ) {
+		positions.push_back( transform.transformPoint( *iter ) );
+		normals.push_back( normal );
+	}
+	for ( vector<Vec2f>::iterator iter = right.getTexCoords().begin(); iter != right.getTexCoords().end(); ++iter ) {
+		texCoords.push_back( *iter );
+	}
+
+	normal = Vec3f( 0.0f, 1.0f, 0.0f );
+	offset = normal * 0.5f;
+	transform.setToIdentity();
+	transform.translate( offset );
+	transform.rotate( Vec3f( (float)M_PI * 0.5f, 0.0f, 0.0f ) );
+	transform.translate( offset * -1.0f );
+	transform.translate( offset );
+	for ( vector<Vec3f>::iterator iter = top.getVertices().begin(); iter != top.getVertices().end(); ++iter ) {
+		positions.push_back( transform.transformPoint( *iter ) );
+		normals.push_back( normal );
+	}
+	for ( vector<Vec2f>::iterator iter = top.getTexCoords().begin(); iter != top.getTexCoords().end(); ++iter ) {
+		texCoords.push_back( *iter );
+	}
+
+	for ( size_t i = 0; i < positions.size(); ++i ) {
 		indices.push_back( i );
 	}
 
-	TriMesh mesh = MeshHelper::createTriMesh( indices, positions, normals, texCoords );
-		
-	indices.clear();
-	normals.clear();
-	positions.clear();
-	srcPositions.clear();
-	srcTexCoords.clear();
-	texCoords.clear();
-
-	return mesh;
-}
-
-TriMesh MeshHelper::createCubeTriMesh()
-{
-	vector<uint32_t> indices;
-	vector<Vec3f> normals;
-	vector<Vec3f> positions;
-	vector<Vec2f> texCoords;
-
-	Vec3f size = Vec3f::one() * 0.5f;
+	/*Vec3f size = Vec3f::one() * 0.5f;
 	Vec3f pos0 = Vec3f( 1.0f, 1.0f, 1.0f ) * size;
 	Vec3f pos1 = Vec3f( 1.0f, -1.0f, 1.0f ) * size;
 	Vec3f pos2 = Vec3f( 1.0f, -1.0f, -1.0f ) * size;
@@ -252,7 +181,7 @@ TriMesh MeshHelper::createCubeTriMesh()
 	Vec3f pos5 = Vec3f( -1.0f, 1.0f, 1.0f ) * size;
 	Vec3f pos6 = Vec3f( -1.0f, -1.0f, -1.0f ) * size;
 	Vec3f pos7 = Vec3f( -1.0f, -1.0f, 1.0f ) * size;
-
+	
 	Vec3f norm0( 1.0f, 0.0f, 0.0f );
 	Vec3f norm1( 0.0f, 1.0f, 0.0f );
 	Vec3f norm2( 0.0f, 0.0f, 1.0f );
@@ -384,7 +313,7 @@ TriMesh MeshHelper::createCubeTriMesh()
 	indices.push_back( 22 );
 	indices.push_back( 20 );
 	indices.push_back( 22 );
-	indices.push_back( 23 );
+	indices.push_back( 23 );*/
 
 	TriMesh mesh = MeshHelper::createTriMesh( indices, positions, normals, texCoords );
 
@@ -396,7 +325,7 @@ TriMesh MeshHelper::createCubeTriMesh()
 	return mesh;
 }
 
-TriMesh MeshHelper::createCylinderTriMesh( uint32_t segments, float topRadius, float baseRadius, bool closeTop, bool closeBase )
+TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRadius, float baseRadius, bool closeTop, bool closeBase )
 {
 	vector<uint32_t> indices;
 	vector<Vec3f> normals;
@@ -406,49 +335,54 @@ TriMesh MeshHelper::createCylinderTriMesh( uint32_t segments, float topRadius, f
 	vector<Vec2f> srcTexCoords;
 	vector<Vec2f> texCoords;
 
-	float delta = 1.0f / (float)segments;
+	float delta = ( 2.0f * (float)M_PI ) / (float)resolution.x;
+	float step	= 1.0f / (float)resolution.y;
+	float ut	= 1.0f / (float)resolution.x;
 
-	for ( uint32_t p = 0; p < 2; p++ ) {
-		uint32_t t = 0;
-		float radius = p == 0 ? baseRadius : topRadius;
-		for ( float theta = delta; t < segments; t++, theta += delta ) {
-			float t = 2.0f * (float)M_PI * theta;
+	uint32_t p = 0;
+	for ( float phi = 0.0f; p <= (uint32_t)resolution.y; ++p, phi += step ) {
+		uint32_t t	= 0;
+		float u		= 0.0f;
+		for ( float theta = 0.0f; t < (uint32_t)resolution.x; ++t, u += ut, theta += delta ) {
+
+			float radius = lerp( baseRadius, topRadius, phi );
+
 			Vec3f position( 
-				math<float>::cos( t ) * radius, 
-				(float)p - 0.5f, 
-				math<float>::sin( t ) * radius
+				math<float>::cos( theta ) * radius, 
+				phi - 0.5f, 
+				math<float>::sin( theta ) * radius
 				);
 			srcPositions.push_back( position );
 
-			Vec3f normal = position.normalized();
+			Vec3f normal = Vec3f( position.x, 0.0f, position.z ).normalized();
 			normal.y = 0.0f;
 			srcNormals.push_back( normal );
 
-			Vec2f texCoord( theta, position.y + 0.5f );
+			Vec2f texCoord( u, phi );
 			srcTexCoords.push_back( texCoord );
 		}
 	}
 
-	srcNormals.push_back( Vec3f( 0.0f, -1.0f, 0.0f ) );
 	srcNormals.push_back( Vec3f( 0.0f, 1.0f, 0.0f ) );
+	srcNormals.push_back( Vec3f( 0.0f, -1.0f, 0.0f ) );
 	srcPositions.push_back( Vec3f( 0.0f, -0.5f, 0.0f ) );
 	srcPositions.push_back( Vec3f( 0.0f, 0.5f, 0.0f ) );
 	srcTexCoords.push_back( Vec2f( 0.0f, 0.0f ) );
 	srcTexCoords.push_back( Vec2f( 0.0f, 1.0f ) );
-	int32_t topCenter = (int32_t)srcPositions.size() - 1;
-	int32_t bottomCenter = topCenter - 1;
+	int32_t topCenter		= (int32_t)srcPositions.size() - 1;
+	int32_t bottomCenter	= topCenter - 1;
 
 	if ( closeTop ) {
-		for ( uint32_t t = 0; t < segments; t++ ) {
-			uint32_t n = t + 1 >= segments ? 0 : t + 1;
+		for ( uint32_t t = 0; t < (uint32_t)resolution.x; ++t ) {
+			uint32_t n = t + 1 >= (uint32_t)resolution.x ? 0 : t + 1;
 
 			normals.push_back( srcNormals[ topCenter ] );
 			normals.push_back( srcNormals[ topCenter ] );
 			normals.push_back( srcNormals[ topCenter ] );
 
 			positions.push_back( srcPositions[ topCenter ] );
-			positions.push_back( srcPositions[ segments + t ] );
-			positions.push_back( srcPositions[ segments + n ] );
+			positions.push_back( srcPositions[ (uint32_t)( resolution.x * resolution.y ) + n ] );
+			positions.push_back( srcPositions[ (uint32_t)( resolution.x * resolution.y ) + t ] );
 
 			texCoords.push_back( srcTexCoords[ topCenter ] );
 			texCoords.push_back( srcTexCoords[ topCenter ] );
@@ -456,47 +390,49 @@ TriMesh MeshHelper::createCylinderTriMesh( uint32_t segments, float topRadius, f
 		}
 	}
 
-	for ( uint32_t t = 0; t < segments; t++ ) {
-		uint32_t n = t + 1 >= segments ? 0 : t + 1;
+	for ( uint32_t p = 0; p < (uint32_t)resolution.y; ++p ) {
+		for ( uint32_t t = 0; t < (uint32_t)resolution.x; ++t ) {
+			uint32_t n = t + 1 >= (uint32_t)resolution.x ? 0 : t + 1;
 		
-		uint32_t index0 = t;
-		uint32_t index1 = n;
-		uint32_t index2 = segments + t;
-		uint32_t index3 = segments + n;
+			uint32_t index0 = ( p + 0 ) * (uint32_t)resolution.x + t;
+			uint32_t index1 = ( p + 0 ) * (uint32_t)resolution.x + n;
+			uint32_t index2 = ( p + 1 ) * (uint32_t)resolution.x + t;
+			uint32_t index3 = ( p + 1 ) * (uint32_t)resolution.x + n;
 
-		normals.push_back( srcNormals[ index0 ] );
-		normals.push_back( srcNormals[ index2 ] );
-		normals.push_back( srcNormals[ index1 ] );
-		normals.push_back( srcNormals[ index1 ] );
-		normals.push_back( srcNormals[ index2 ] );
-		normals.push_back( srcNormals[ index3 ] );
+			normals.push_back( srcNormals[ index0 ] );
+			normals.push_back( srcNormals[ index2 ] );
+			normals.push_back( srcNormals[ index1 ] );
+			normals.push_back( srcNormals[ index1 ] );
+			normals.push_back( srcNormals[ index2 ] );
+			normals.push_back( srcNormals[ index3 ] );
 
-		positions.push_back( srcPositions[ index0 ] );
-		positions.push_back( srcPositions[ index2 ] );
-		positions.push_back( srcPositions[ index1 ] );
-		positions.push_back( srcPositions[ index1 ] );
-		positions.push_back( srcPositions[ index2 ] );
-		positions.push_back( srcPositions[ index3 ] );
+			positions.push_back( srcPositions[ index0 ] );
+			positions.push_back( srcPositions[ index2 ] );
+			positions.push_back( srcPositions[ index1 ] );
+			positions.push_back( srcPositions[ index1 ] );
+			positions.push_back( srcPositions[ index2 ] );
+			positions.push_back( srcPositions[ index3 ] );
 
-		texCoords.push_back( srcTexCoords[ index0 ] );
-		texCoords.push_back( srcTexCoords[ index2 ] );
-		texCoords.push_back( srcTexCoords[ index1 ] );
-		texCoords.push_back( srcTexCoords[ index1 ] );
-		texCoords.push_back( srcTexCoords[ index2 ] );
-		texCoords.push_back( srcTexCoords[ index3 ] );
+			texCoords.push_back( srcTexCoords[ index0 ] );
+			texCoords.push_back( srcTexCoords[ index2 ] );
+			texCoords.push_back( srcTexCoords[ index1 ] );
+			texCoords.push_back( srcTexCoords[ index1 ] );
+			texCoords.push_back( srcTexCoords[ index2 ] );
+			texCoords.push_back( srcTexCoords[ index3 ] );
+		}
 	}
 
 	if ( closeBase ) {
-		for ( uint32_t t = 0; t < segments; t++ ) {
-			uint32_t n = t + 1 >= segments ? 0 : t + 1;
+		for ( uint32_t t = 0; t < (uint32_t)resolution.x; ++t ) {
+			uint32_t n = t + 1 >= (uint32_t)resolution.x ? 0 : t + 1;
 
 			normals.push_back( srcNormals[ bottomCenter ] );
 			normals.push_back( srcNormals[ bottomCenter ] );
 			normals.push_back( srcNormals[ bottomCenter ] );
 
 			positions.push_back( srcPositions[ bottomCenter ] );
-			positions.push_back( srcPositions[ t ] );
 			positions.push_back( srcPositions[ n ] );
+			positions.push_back( srcPositions[ t ] );
 
 			texCoords.push_back( srcTexCoords[ bottomCenter ] );
 			texCoords.push_back( srcTexCoords[ bottomCenter ] );
@@ -504,7 +440,7 @@ TriMesh MeshHelper::createCylinderTriMesh( uint32_t segments, float topRadius, f
 		}
 	}
 
-	for ( uint32_t i = 0; i < positions.size(); i++ ) {
+	for ( uint32_t i = 0; i < positions.size(); ++i ) {
 		indices.push_back( i );
 	}
 			
@@ -521,7 +457,7 @@ TriMesh MeshHelper::createCylinderTriMesh( uint32_t segments, float topRadius, f
 	return mesh;
 }
 
-TriMesh MeshHelper::createRingTriMesh( uint32_t segments, float secondRadius )
+TriMesh MeshHelper::createRingTriMesh( const Vec2i &resolution, float secondRadius )
 {
 	vector<uint32_t> indices;
 	vector<Vec3f> normals;
@@ -530,44 +466,59 @@ TriMesh MeshHelper::createRingTriMesh( uint32_t segments, float secondRadius )
 
 	Vec3f norm0( 0.0f, 0.0f, 1.0f );
 
-	float delta = ( (float)M_PI * 2.0f ) / (float)segments;
-	float theta = delta;
-	for ( uint32_t i = 0; i < segments; ++i, theta += delta ) {
+	float delta = ( (float)M_PI * 2.0f ) / (float)resolution.x;
+	float width	= 1.0f - secondRadius;
+	float step	= width / (float)resolution.y;
 
-		Vec3f vert0( math<float>::cos( theta ), math<float>::sin( theta ), 0.0f );
-		Vec3f vert1( math<float>::cos( theta + delta ), math<float>::sin( theta + delta ), 0.0f );
-		Vec3f vert2 = vert0 * secondRadius;
-		Vec3f vert3 = vert1 * secondRadius;
-		if ( i >= segments - 1 ) {
-			vert1.x = math<float>::cos( delta );
-			vert1.y = math<float>::sin( delta ); 
-			vert3	= vert1 * secondRadius;
+	uint32_t p = 0;
+	for ( float phi = 0.0f; p < (uint32_t)resolution.y; ++p, phi += step ) {
+
+		float innerRadius = phi + 0.0f + secondRadius;
+		float outerRadius = phi + step + secondRadius;
+
+		uint32_t t = 0;
+		for ( float theta = 0.0f; t < (uint32_t)resolution.x; ++t, theta += delta ) {
+
+			float ct	= math<float>::cos( theta );
+			float st	= math<float>::sin( theta );
+			float ctn	= math<float>::cos( theta + delta );
+			float stn	= math<float>::sin( theta + delta );
+
+			Vec3f vert0 = Vec3f( ct, st, 0.0f ) * innerRadius;
+			Vec3f vert1 = Vec3f( ctn, stn, 0.0f ) * innerRadius;
+			Vec3f vert2 = Vec3f( ct, st, 0.0f ) * outerRadius;
+			Vec3f vert3 = Vec3f( ctn, stn, 0.0f ) * outerRadius;
+			if ( t >= (uint32_t)resolution.x - 1 ) {
+				ctn		= math<float>::cos( 0.0f );
+				stn		= math<float>::sin( 0.0f );
+				vert1	= Vec3f( ctn, stn, 0.0f ) * innerRadius;
+				vert3	= Vec3f( ctn, stn, 0.0f ) * outerRadius;
+			}
+
+			Vec2f texCoord0 = ( vert0.xy() + Vec2f::one() ) * 0.5f;
+			Vec2f texCoord1 = ( vert1.xy() + Vec2f::one() ) * 0.5f;
+			Vec2f texCoord2 = ( vert2.xy() + Vec2f::one() ) * 0.5f;
+			Vec2f texCoord3 = ( vert3.xy() + Vec2f::one() ) * 0.5f;
+
+			positions.push_back( vert0 );
+			positions.push_back( vert2 );
+			positions.push_back( vert1 );
+			positions.push_back( vert1 );
+			positions.push_back( vert2 );
+			positions.push_back( vert3 );
+
+			texCoords.push_back( texCoord0 );
+			texCoords.push_back( texCoord2 );
+			texCoords.push_back( texCoord1 );
+			texCoords.push_back( texCoord1 );
+			texCoords.push_back( texCoord2 );
+			texCoords.push_back( texCoord3 );
 		}
+	}
 
-		Vec2f texCoord0 = ( vert0.xy() + Vec2f::one() ) * 0.5f;
-		Vec2f texCoord1 = ( vert1.xy() + Vec2f::one() ) * 0.5f;
-		Vec2f texCoord2 = ( vert2.xy() + Vec2f::one() ) * 0.5f;
-		Vec2f texCoord3 = ( vert3.xy() + Vec2f::one() ) * 0.5f;
-
-		positions.push_back( vert0 );
-		positions.push_back( vert2 );
-		positions.push_back( vert1 );
-		positions.push_back( vert1 );
-		positions.push_back( vert2 );
-		positions.push_back( vert3 );
-
-		texCoords.push_back( texCoord0 );
-		texCoords.push_back( texCoord2 );
-		texCoords.push_back( texCoord1 );
-		texCoords.push_back( texCoord1 );
-		texCoords.push_back( texCoord2 );
-		texCoords.push_back( texCoord3 );
-
-		for ( uint32_t j = 0; j < 6; ++j ) {
-			indices.push_back( i * 6 + j );
-			normals.push_back( norm0 );
-		}
-
+	for ( uint32_t i = 0; i < positions.size(); ++i ) {
+		indices.push_back( i );
+		normals.push_back( norm0 );
 	}
 
 	TriMesh mesh = MeshHelper::createTriMesh( indices, positions, normals, texCoords );
@@ -580,40 +531,39 @@ TriMesh MeshHelper::createRingTriMesh( uint32_t segments, float secondRadius )
 	return mesh;
 }
 
-TriMesh MeshHelper::createSphereTriMesh( uint32_t segments )
+TriMesh MeshHelper::createSphereTriMesh( const Vec2i &resolution )
 {
 	vector<uint32_t> indices;
 	vector<Vec3f> normals;
 	vector<Vec3f> positions;
 	vector<Vec2f> texCoords;
 
-	uint32_t layers = segments / 2;
-	float step = (float)M_PI / (float)layers;
-	float delta = ((float)M_PI * 2.0f) / (float)segments;
+	float step = (float)M_PI / (float)resolution.y;
+	float delta = ((float)M_PI * 2.0f) / (float)resolution.x;
 
 	uint32_t p = 0;
-	for ( float phi = 0.0f; p <= layers; p++, phi += step ) {
+	for ( float phi = 0.0f; p <= (uint32_t)resolution.y; p++, phi += step ) {
 		uint32_t t = 0;
-		for ( float theta = delta; t < segments; t++, theta += delta ) {
+		for ( float theta = delta; t < (uint32_t)resolution.x; t++, theta += delta ) {
 			float sinP = math<float>::sin( phi );
 			Vec3f position(
 				sinP * math<float>::cos( theta ),
 				sinP * math<float>::sin( theta ),
 				-math<float>::cos( phi ) );
-			positions.push_back(position);
+			positions.push_back( position );
 
 			Vec3f normal = position.normalized();
 			normals.push_back( normal );
 
 			texCoords.push_back( ( normal.xy() + Vec2f::one() ) * 0.5f ); 
 
-			uint32_t n = t + 1 >= segments ? 0 : t + 1;
-			indices.push_back( p * segments + t );
-			indices.push_back( ( p + 1 ) * segments + t );
-			indices.push_back( p * segments + n );
-			indices.push_back( p * segments + n );
-			indices.push_back( ( p + 1 ) * segments + t );
-			indices.push_back( ( p + 1 ) * segments + n );
+			uint32_t n = t + 1 >= (uint32_t)resolution.x ? 0 : t + 1;
+			indices.push_back( p * resolution.x + t );
+			indices.push_back( ( p + 1 ) * resolution.x + t );
+			indices.push_back( p * resolution.x + n );
+			indices.push_back( p * resolution.x + n );
+			indices.push_back( ( p + 1 ) * resolution.x + t );
+			indices.push_back( ( p + 1 ) * resolution.x + n );
 		}
 	}
 
@@ -635,46 +585,55 @@ TriMesh MeshHelper::createSphereTriMesh( uint32_t segments )
 	return mesh;
 }
 
-TriMesh MeshHelper::createSquareTriMesh()
+TriMesh MeshHelper::createSquareTriMesh( const Vec2i &resolution )
 {
 	vector<uint32_t> indices;
 	vector<Vec3f> normals;
 	vector<Vec3f> positions;
 	vector<Vec2f> texCoords;
 
-	Vec3f size = Vec3f::one() * 0.5f;
-	Vec3f pos0 = Vec3f( -1.0f, -1.0f, 0.0f ) * size;
-	Vec3f pos1 = Vec3f( 1.0f, -1.0f, 0.0f ) * size;
-	Vec3f pos2 = Vec3f( -1.0f, 1.0f, 0.0f ) * size;
-	Vec3f pos3 = Vec3f( 1.0f, 1.0f, 0.0f ) * size;
-
 	Vec3f norm0( 0.0f, 0.0f, 1.0f ); 
 
-	Vec2f texCoord0( 0.0f, 0.0f );
-	Vec2f texCoord1( 1.0f, 0.0f );
-	Vec2f texCoord2( 0.0f, 1.0f );
-	Vec2f texCoord3( 1.0f, 1.0f );
+	Vec2f scale( 1.0f / math<float>::max( (float)resolution.x, 1.0f ), 1.0f / math<float>::max( (float)resolution.y, 1.0f ) );
+	size_t index = 0;
+	for ( int32_t y = 0; y < resolution.y; ++y ) {
+		for ( int32_t x = 0; x < resolution.x; ++x, ++index ) {
 
-	positions.push_back( pos0 );
-	positions.push_back( pos1 );
-	positions.push_back( pos2 ); 	
-	positions.push_back( pos3 );
+			float x1 = (float)x * scale.x;
+			float y1 = (float)y * scale.y;
+			float x2 = (float)( x + 1 ) * scale.x;
+			float y2 = (float)( y + 1 ) * scale.y;
 
-	for ( uint8_t i = 0; i < 4; i++ ) {
-		normals.push_back( norm0 );
+			Vec3f vert0( x1 - 0.5f, y1 - 0.5f, 0.0f );
+			Vec3f vert1( x2 - 0.5f, y1 - 0.5f, 0.0f );
+			Vec3f vert2( x1 - 0.5f, y2 - 0.5f, 0.0f );
+			Vec3f vert3( x2 - 0.5f, y2 - 0.5f, 0.0f );
+				
+			Vec2f texCoord0( x1, y1 );
+			Vec2f texCoord1( x2, y1 );
+			Vec2f texCoord2( x1, y2 );
+			Vec2f texCoord3( x2, y2 );
+
+			positions.push_back( vert2 );
+			positions.push_back( vert1 );
+			positions.push_back( vert0 );
+			positions.push_back( vert1 );
+			positions.push_back( vert2 );
+			positions.push_back( vert3 );
+
+			texCoords.push_back( texCoord2 );
+			texCoords.push_back( texCoord1 );
+			texCoords.push_back( texCoord0 );
+			texCoords.push_back( texCoord1 );
+			texCoords.push_back( texCoord2 );
+			texCoords.push_back( texCoord3 );
+
+			for ( size_t i = 0; i < 6; ++i ) {
+				indices.push_back( index * 6 + i );
+				normals.push_back( norm0 );
+			}
+		}
 	}
-
-	texCoords.push_back( texCoord0 );
-	texCoords.push_back( texCoord1 );
-	texCoords.push_back( texCoord2 );
-	texCoords.push_back( texCoord3 );
-
-	indices.push_back( 0 );
-	indices.push_back( 1 );
-	indices.push_back( 2 );
-	indices.push_back( 2 );
-	indices.push_back( 1 );
-	indices.push_back( 3 );
 
 	TriMesh mesh = MeshHelper::createTriMesh( indices, positions, normals, texCoords );
 
@@ -692,7 +651,7 @@ TriMesh MeshHelper::createSquareTriMesh()
 gl::VboMesh MeshHelper::createVboMesh( const vector<uint32_t> &indices, const vector<Vec3f> &positions, 
 	const vector<Vec3f> &normals, const vector<Vec2f> &texCoords, GLenum primitiveType )
 {
-	ci::gl::VboMesh::Layout layout;
+	gl::VboMesh::Layout layout;
 	if ( indices.size() > 0 ) {
 		layout.setStaticIndices();
 	}
@@ -723,45 +682,39 @@ gl::VboMesh MeshHelper::createVboMesh( const vector<uint32_t> &indices, const ve
 	return mesh;
 }
 
-gl::VboMesh MeshHelper::createCircleVboMesh( uint32_t segments )
+gl::VboMesh MeshHelper::createCircleVboMesh( const Vec2i &resolution )
 {
-	TriMesh mesh = createCircleTriMesh( segments );
+	TriMesh mesh = createCircleTriMesh( resolution );
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
-gl::VboMesh MeshHelper::createConeVboMesh( uint32_t segments, bool closeBase )
+gl::VboMesh MeshHelper::createCubeVboMesh( const Vec3i &resolution )
 {
-	TriMesh mesh = createConeTriMesh( segments, closeBase );
+	TriMesh mesh = createCubeTriMesh( resolution );
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
-gl::VboMesh MeshHelper::createCubeVboMesh()
+gl::VboMesh MeshHelper::createCylinderVboMesh( const Vec2i &resolution, float topRadius, float baseRadius, bool closeTop, bool closeBase )
 {
-	TriMesh mesh = createCubeTriMesh();
+	TriMesh mesh = createCylinderTriMesh( resolution, topRadius, baseRadius, closeTop, closeBase );
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
-gl::VboMesh MeshHelper::createCylinderVboMesh( uint32_t segments, float topRadius, float baseRadius, bool closeTop, bool closeBase )
+gl::VboMesh MeshHelper::createRingVboMesh( const Vec2i &resolution, float secondRadius )
 {
-	TriMesh mesh = createCylinderTriMesh( segments, topRadius, baseRadius, closeTop, closeBase );
+	TriMesh mesh = createRingTriMesh( resolution, secondRadius );
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
-gl::VboMesh MeshHelper::createRingVboMesh( uint32_t segments, float secondRadius )
+gl::VboMesh MeshHelper::createSphereVboMesh( const Vec2i &resolution)
 {
-	TriMesh mesh = createRingTriMesh( segments, secondRadius );
+	TriMesh mesh = createSphereTriMesh( resolution );
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
-gl::VboMesh MeshHelper::createSphereVboMesh( uint32_t segments )
+gl::VboMesh MeshHelper::createSquareVboMesh( const Vec2i &resolution )
 {
-	TriMesh mesh = createSphereTriMesh( segments );
-	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
-}
-
-gl::VboMesh MeshHelper::createSquareVboMesh()
-{
-	TriMesh mesh = createSquareTriMesh();
+	TriMesh mesh = createSquareTriMesh( resolution );
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
