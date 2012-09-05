@@ -48,8 +48,8 @@ public:
 	static ci::TriMesh		createTriMesh( std::vector<uint32_t> &indices, const std::vector<ci::Vec3f> &positions,
 								const std::vector<ci::Vec3f> &normals, const std::vector<ci::Vec2f> &texCoords );
 
-	//! Create circle TriMesh with a radius of 1.0 and \a segments.
-	static ci::TriMesh		createCircleTriMesh( uint32_t segments = 12 );
+	//! Create circle TriMesh with a radius of 1.0 and \a resolution segments.
+	static ci::TriMesh		createCircleTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ) );
 	/*! Create cone TriMesh with a radius and height of 1.0 and \a resolution segments. 
 		Base is closed when \a closeBase is set to true. */
 	static ci::TriMesh		createConeTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
@@ -79,8 +79,8 @@ public:
 								const std::vector<ci::Vec3f> &normals, const std::vector<ci::Vec2f> &texCoords, 
 								GLenum primitiveType = GL_TRIANGLES );
 	
-	//! Create circle VboMesh with a radius of 1.0 and \a segments.
-	static ci::gl::VboMesh	createCircleVboMesh( uint32_t segments = 12 );
+	//! Create circle VboMesh with a radius of 1.0 and \a resolution segments.
+	static ci::gl::VboMesh	createCircleVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ) );
 	/*! Create cone VboMesh with a radius and height of 1.0 and \a resolution segments. 
 		Base is closed when \a closeBase is set to true. */
 	static ci::gl::VboMesh	createConeVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 

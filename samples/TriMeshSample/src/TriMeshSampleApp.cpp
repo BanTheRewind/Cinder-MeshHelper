@@ -123,7 +123,7 @@ using namespace std;
 void TriMeshSampleApp::createMeshes()
 {
 	// Use the MeshHelper to generate primitives
-	mCircle		= MeshHelper::createCircleTriMesh( mResolution.x );
+	mCircle		= MeshHelper::createCircleTriMesh( mResolution );
 	mCone		= MeshHelper::createConeTriMesh( mResolution );
 	mCube		= MeshHelper::createCubeTriMesh();
 	mCylinder	= MeshHelper::createCylinderTriMesh( mResolution );

@@ -61,57 +61,9 @@ TriMesh MeshHelper::createTriMesh( vector<uint32_t> &indices, const vector<Vec3f
 	return mesh;
 }
 
-TriMesh MeshHelper::createCircleTriMesh( uint32_t segments )
+TriMesh MeshHelper::createCircleTriMesh( const Vec2i &resolution )
 {
-	vector<uint32_t> indices;
-	vector<Vec3f> normals;
-	vector<Vec3f> positions;
-	vector<Vec2f> texCoords;
-
-	Vec3f norm0( 0.0f, 0.0f, 1.0f );
-
-	Vec3f vert1		= Vec3f::zero();
-	Vec2f texCoord1 = Vec2f::one() * 0.5f;
-
-	float delta = ( (float)M_PI * 2.0f ) / (float)segments;
-	float theta = delta;
-	for ( uint32_t i = 0; i < segments; ++i, theta += delta ) {
-
-		Vec3f vert0( math<float>::cos( theta ), math<float>::sin( theta ), 0.0f );
-		Vec3f vert2 = Vec3f::zero();
-		if ( i >= segments - 1 ) {
-			vert2.x = math<float>::cos( delta );
-			vert2.y = math<float>::sin( delta ); 
-		} else {
-			vert2.x = math<float>::cos( theta + delta );
-			vert2.y = math<float>::sin( theta + delta );
-		}
-		Vec2f texCoord0 = ( vert0.xy() + Vec2f::one() ) * 0.5f;
-		Vec2f texCoord2 = ( vert2.xy() + Vec2f::one() ) * 0.5f;
-
-		positions.push_back( vert0 );
-		positions.push_back( vert1 );
-		positions.push_back( vert2 );
-
-		texCoords.push_back( texCoord0 );
-		texCoords.push_back( texCoord1 );
-		texCoords.push_back( texCoord2 );
-
-		for ( uint32_t j = 0; j < 3; ++j ) {
-			indices.push_back( i * 3 + j );
-			normals.push_back( norm0 );
-		}
-
-	}
-
-	TriMesh mesh = MeshHelper::createTriMesh( indices, positions, normals, texCoords );
-
-	indices.clear();
-	normals.clear();
-	positions.clear();
-	texCoords.clear();
-
-	return mesh;
+	return createRingTriMesh( resolution, 0.0f );
 }
 
 TriMesh MeshHelper::createConeTriMesh( const Vec2i &resolution, bool closeBase )
@@ -779,9 +731,9 @@ gl::VboMesh MeshHelper::createVboMesh( const vector<uint32_t> &indices, const ve
 	return mesh;
 }
 
-gl::VboMesh MeshHelper::createCircleVboMesh( uint32_t segments )
+gl::VboMesh MeshHelper::createCircleVboMesh( const Vec2i &resolution )
 {
-	TriMesh mesh = createCircleTriMesh( segments );
+	TriMesh mesh = createCircleTriMesh( resolution );
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
