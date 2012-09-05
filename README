@@ -3,14 +3,12 @@ in the creation of primitive or custom TriMesh or VboMesh
 meshes in Cinder.
 
 In-progress tasks in dev branch
- - Torus
- - Bug?  Normals look a little strange at tip when 
-   creating cone with cylinder
+ - Polyhedron
  - iOS TriMesh sample
 
 -----------------------------------------
 
-Version 0.0.7
+Version 0.0.8
 
 -----------------------------------------
 

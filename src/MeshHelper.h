@@ -58,13 +58,17 @@ public:
 	static ci::TriMesh		createCylinderTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
 		float topRadius = 1.0f, float baseRadius = 1.0f, bool closeTop = true, bool closeBase = true );
 	/*! Create ring TriMesh with a radius of 1.0, \a resolution segments, and second radius 
-		of \a secondRadius. */
+		of \a ratio. */
 	static ci::TriMesh		createRingTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ), 
-		float secondRadius = 0.5f );
+		float ratio = 0.5f );
 	//! Create sphere TriMesh with a radius of 1.0 and \a resolution segments.
 	static ci::TriMesh		createSphereTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ) );
 	//! Create square TriMesh with an edge length of 1.0 divided into \a resolution segments.
 	static ci::TriMesh		createSquareTriMesh( const ci::Vec2i &resolution = ci::Vec2i::one() );
+	/*! Create torus TriMesh with a radius of 1.0, \a resolution segments, and second radius 
+		of \a ratio. */
+	static ci::TriMesh		createTorusTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
+		float ratio = 0.5f );
 
 #if ! defined( CINDER_COCOA_TOUCH )
 	//! Create VboMesh from vectors of vertex data.
@@ -82,12 +86,16 @@ public:
 	static ci::gl::VboMesh	createCylinderVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
 		float topRadius = 1.0f, float baseRadius = 1.0f, bool closeTop = true, bool closeBase = true );
 	/*! Create ring VboMesh with a radius of 1.0, \a resolution segments, and a second radius 
-		of \a secondRadius. */
+		of \a ratio. */
 	static ci::gl::VboMesh	createRingVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ), 
-		float secondRadius = 0.5f );
+		float ratio = 0.5f );
 	//! Create sphere VboMesh with a radius of 1.0 and \a resolution segments.
 	static ci::gl::VboMesh	createSphereVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ) );
 	//! Create square VboMesh with an edge length of 1.0 divided into \a resolution segments.
 	static ci::gl::VboMesh	createSquareVboMesh( const ci::Vec2i &resolution = ci::Vec2i::one() );
+	/*! Create torus VboMesh with a radius of 1.0, \a resolution segments, and second radius 
+		of \a ratio. */
+	static ci::gl::VboMesh	createTorusVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
+		float ratio = 0.5f );
 #endif
 };

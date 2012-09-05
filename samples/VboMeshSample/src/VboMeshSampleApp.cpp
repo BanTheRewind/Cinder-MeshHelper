@@ -60,6 +60,7 @@ private:
 		MESH_TYPE_SPHERE, 
 		MESH_TYPE_CYLINDER, 
 		MESH_TYPE_CONE, 
+		MESH_TYPE_TORUS, 
 		MESH_TYPE_CIRCLE, 
 		MESH_TYPE_SQUARE, 
 		MESH_TYPE_RING, 
@@ -68,14 +69,15 @@ private:
 
 	// The VboMeshes
 	void						createMeshes();
-	ci::gl::VboMesh				mCircle;
-	ci::gl::VboMesh				mCone;
-	ci::gl::VboMesh				mCube;
-	ci::gl::VboMesh				mCustom;
-	ci::gl::VboMesh				mCylinder;
-	ci::gl::VboMesh				mRing;
-	ci::gl::VboMesh				mSphere;
-	ci::gl::VboMesh				mSquare;
+	ci::gl::VboMesh					mCircle;
+	ci::gl::VboMesh					mCone;
+	ci::gl::VboMesh					mCube;
+	ci::gl::VboMesh					mCustom;
+	ci::gl::VboMesh					mCylinder;
+	ci::gl::VboMesh					mRing;
+	ci::gl::VboMesh					mSphere;
+	ci::gl::VboMesh					mSquare;
+	ci::gl::VboMesh					mTorus;
 	
 	// For selecting mesh type from params
 	int32_t						mMeshIndex;
@@ -130,6 +132,7 @@ void VboMeshSampleApp::createMeshes()
 	mRing		= MeshHelper::createRingVboMesh( mResolution.xy() );
 	mSphere		= MeshHelper::createSphereVboMesh( mResolution.xy() );
 	mSquare		= MeshHelper::createSquareVboMesh( mResolution.xy() );
+	mTorus		= MeshHelper::createTorusVboMesh( mResolution.xy() );
 	
 	/////////////////////////////////////////////////////////////////////////////
 	// Custom mesh
@@ -243,6 +246,9 @@ void VboMeshSampleApp::draw()
 	case MESH_TYPE_SQUARE:
 		gl::draw( mSquare );
 		break;
+	case MESH_TYPE_TORUS:
+		gl::draw( mTorus );
+		break;
 	}
 	
 	// End scale
@@ -342,6 +348,7 @@ void VboMeshSampleApp::setup()
 	mMeshTitles.push_back( "Sphere" );
 	mMeshTitles.push_back( "Cylinder" );
 	mMeshTitles.push_back( "Cone" );
+	mMeshTitles.push_back( "Torus" );
 	mMeshTitles.push_back( "Circle" );
 	mMeshTitles.push_back( "Square" );
 	mMeshTitles.push_back( "Ring" );

@@ -60,6 +60,7 @@ private:
 		MESH_TYPE_SPHERE, 
 		MESH_TYPE_CYLINDER, 
 		MESH_TYPE_CONE, 
+		MESH_TYPE_TORUS, 
 		MESH_TYPE_CIRCLE, 
 		MESH_TYPE_SQUARE, 
 		MESH_TYPE_RING, 
@@ -76,6 +77,7 @@ private:
 	ci::TriMesh					mRing;
 	ci::TriMesh					mSphere;
 	ci::TriMesh					mSquare;
+	ci::TriMesh					mTorus;
 	
 	// For selecting mesh type from params
 	int32_t						mMeshIndex;
@@ -130,6 +132,7 @@ void TriMeshSampleApp::createMeshes()
 	mRing		= MeshHelper::createRingTriMesh( mResolution.xy() );
 	mSphere		= MeshHelper::createSphereTriMesh( mResolution.xy() );
 	mSquare		= MeshHelper::createSquareTriMesh( mResolution.xy() );
+	mTorus		= MeshHelper::createTorusTriMesh( mResolution.xy() );
 	
 	/////////////////////////////////////////////////////////////////////////////
 	// Custom mesh
@@ -243,6 +246,9 @@ void TriMeshSampleApp::draw()
 	case MESH_TYPE_SQUARE:
 		gl::draw( mSquare );
 		break;
+	case MESH_TYPE_TORUS:
+		gl::draw( mTorus );
+		break;
 	}
 	
 	// End scale
@@ -342,6 +348,7 @@ void TriMeshSampleApp::setup()
 	mMeshTitles.push_back( "Sphere" );
 	mMeshTitles.push_back( "Cylinder" );
 	mMeshTitles.push_back( "Cone" );
+	mMeshTitles.push_back( "Torus" );
 	mMeshTitles.push_back( "Circle" );
 	mMeshTitles.push_back( "Square" );
 	mMeshTitles.push_back( "Ring" );
