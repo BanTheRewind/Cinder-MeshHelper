@@ -82,8 +82,8 @@ private:
 	std::vector<std::string>	mMeshTitles;
 
 	// Mesh resolution
-	ci::Vec2i					mResolution;
-	ci::Vec2i					mResolutionPrev;
+	ci::Vec3i					mResolution;
+	ci::Vec3i					mResolutionPrev;
 
 	// Mesh scale
 	ci::Vec3f					mScale;
@@ -123,13 +123,13 @@ using namespace std;
 void VboMeshSampleApp::createMeshes()
 {
 	// Use the MeshHelper to generate primitives
-	mCircle		= MeshHelper::createCircleVboMesh( mResolution.x );
-	mCone		= MeshHelper::createConeVboMesh( mResolution );
-	mCube		= MeshHelper::createCubeVboMesh();
-	mCylinder	= MeshHelper::createCylinderVboMesh( mResolution );
-	mRing		= MeshHelper::createRingVboMesh( mResolution.x );
-	mSphere		= MeshHelper::createSphereVboMesh( mResolution );
-	mSquare		= MeshHelper::createSquareVboMesh( mResolution );
+	mCircle		= MeshHelper::createCircleVboMesh( mResolution.xy() );
+	mCone		= MeshHelper::createCylinderVboMesh( mResolution.xy(), 0.0f, 1.0f, false, true );
+	mCube		= MeshHelper::createCubeVboMesh( mResolution );
+	mCylinder	= MeshHelper::createCylinderVboMesh( mResolution.xy() );
+	mRing		= MeshHelper::createRingVboMesh( mResolution.xy() );
+	mSphere		= MeshHelper::createSphereVboMesh( mResolution.xy() );
+	mSquare		= MeshHelper::createSquareVboMesh( mResolution.xy() );
 	
 	/////////////////////////////////////////////////////////////////////////////
 	// Custom mesh
@@ -314,7 +314,7 @@ void VboMeshSampleApp::setup()
 	mFullScreen			= false;
 	mLightEnabled		= true;
 	mMeshIndex			= 0;
-	mResolution			= Vec2i( 48, 24 );
+	mResolution			= Vec3i( 12, 12, 12 );
 	mResolutionPrev		= mResolution;
 	mScale				= Vec3f::one();
 	mTextureEnabled		= true;
@@ -357,6 +357,7 @@ void VboMeshSampleApp::setup()
 	mParams.addParam( "Scale",			&mScale																						);
 	mParams.addParam( "Resolution X",	&mResolution.x,									"keyDecr=x keyIncr=X min=1 max=1024 step=1"	);
 	mParams.addParam( "Resolution Y",	&mResolution.y,									"keyDecr=y keyIncr=Y min=1 max=1024 step=1"	);
+	mParams.addParam( "Resolution Z",	&mResolution.z,									"keyDecr=z keyIncr=Z min=1 max=1024 step=1"	);
 	mParams.addParam( "Wireframe",		&mWireframe,									"key=w"										);
 	mParams.addSeparator();
 	mParams.addParam( "Full screen",	&mFullScreen,									"key=f"										);

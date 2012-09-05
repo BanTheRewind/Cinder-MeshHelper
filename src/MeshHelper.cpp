@@ -73,9 +73,106 @@ TriMesh MeshHelper::createCubeTriMesh( const Vec3i &resolution )
 	vector<Vec3f> positions;
 	vector<Vec2f> texCoords;
 
-	// TODO subdivide using resolution argument
+	ci::TriMesh back	= createSquareTriMesh( Vec2i( resolution.x, resolution.y ) );
+	ci::TriMesh bottom	= createSquareTriMesh( Vec2i( resolution.x, resolution.z ) );
+	ci::TriMesh front	= createSquareTriMesh( Vec2i( resolution.x, resolution.y ) );
+	ci::TriMesh left	= createSquareTriMesh( Vec2i( resolution.z, resolution.y ) );
+	ci::TriMesh right	= createSquareTriMesh( Vec2i( resolution.z, resolution.y ) );
+	ci::TriMesh top		= createSquareTriMesh( Vec2i( resolution.x, resolution.z ) );
+	
+	Vec3f normal;
+	Vec3f offset;
+	Matrix44f transform;
 
-	Vec3f size = Vec3f::one() * 0.5f;
+	normal = Vec3f( 0.0f, 0.0f, -1.0f );
+	offset = normal * 0.5f;
+	transform.setToIdentity();
+	transform.translate( offset );
+	for ( vector<Vec3f>::iterator iter = back.getVertices().begin(); iter != back.getVertices().end(); ++iter ) {
+		positions.push_back( transform.transformPoint( *iter ) );
+		normals.push_back( normal );
+	}
+	for ( vector<Vec2f>::iterator iter = back.getTexCoords().begin(); iter != back.getTexCoords().end(); ++iter ) {
+		texCoords.push_back( *iter );
+	}
+
+	normal = Vec3f( 0.0f, -1.0f, 0.0f );
+	offset = normal * 0.5f;
+	transform.setToIdentity();
+	transform.translate( offset );
+	transform.rotate( Vec3f( -(float)M_PI * 0.5f, 0.0f, 0.0f ) );
+	transform.translate( offset * -1.0f );
+	transform.translate( offset );
+	for ( vector<Vec3f>::iterator iter = bottom.getVertices().begin(); iter != bottom.getVertices().end(); ++iter ) {
+		positions.push_back( transform.transformPoint( *iter ) );
+		normals.push_back( normal );
+	}
+	for ( vector<Vec2f>::iterator iter = bottom.getTexCoords().begin(); iter != bottom.getTexCoords().end(); ++iter ) {
+		texCoords.push_back( *iter );
+	}
+
+	normal = Vec3f( 0.0f, 0.0f, 1.0f );
+	offset = normal * 0.5f;
+	transform.setToIdentity();
+	transform.translate( offset );
+	for ( vector<Vec3f>::iterator iter = front.getVertices().begin(); iter != front.getVertices().end(); ++iter ) {
+		positions.push_back( transform.transformPoint( *iter ) );
+		normals.push_back( normal );
+	}
+	for ( vector<Vec2f>::iterator iter = front.getTexCoords().begin(); iter != front.getTexCoords().end(); ++iter ) {
+		texCoords.push_back( *iter );
+	}
+
+	normal = Vec3f( -1.0f, 0.0f, 0.0f );
+	offset = normal * 0.5f;
+	transform.setToIdentity();
+	transform.translate( offset );
+	transform.rotate( Vec3f( 0.0f, -(float)M_PI * 0.5f, 0.0f ) );
+	transform.translate( offset * -1.0f );
+	transform.translate( offset );
+	for ( vector<Vec3f>::iterator iter = left.getVertices().begin(); iter != left.getVertices().end(); ++iter ) {
+		positions.push_back( transform.transformPoint( *iter ) );
+		normals.push_back( normal );
+	}
+	for ( vector<Vec2f>::iterator iter = left.getTexCoords().begin(); iter != left.getTexCoords().end(); ++iter ) {
+		texCoords.push_back( *iter );
+	}
+
+	normal = Vec3f( 1.0f, 0.0f, 0.0f );
+	offset = normal * 0.5f;
+	transform.setToIdentity();
+	transform.translate( offset );
+	transform.rotate( Vec3f( 0.0f, (float)M_PI * 0.5f, 0.0f ) );
+	transform.translate( offset * -1.0f );
+	transform.translate( offset );
+	for ( vector<Vec3f>::iterator iter = right.getVertices().begin(); iter != right.getVertices().end(); ++iter ) {
+		positions.push_back( transform.transformPoint( *iter ) );
+		normals.push_back( normal );
+	}
+	for ( vector<Vec2f>::iterator iter = right.getTexCoords().begin(); iter != right.getTexCoords().end(); ++iter ) {
+		texCoords.push_back( *iter );
+	}
+
+	normal = Vec3f( 0.0f, 1.0f, 0.0f );
+	offset = normal * 0.5f;
+	transform.setToIdentity();
+	transform.translate( offset );
+	transform.rotate( Vec3f( (float)M_PI * 0.5f, 0.0f, 0.0f ) );
+	transform.translate( offset * -1.0f );
+	transform.translate( offset );
+	for ( vector<Vec3f>::iterator iter = top.getVertices().begin(); iter != top.getVertices().end(); ++iter ) {
+		positions.push_back( transform.transformPoint( *iter ) );
+		normals.push_back( normal );
+	}
+	for ( vector<Vec2f>::iterator iter = top.getTexCoords().begin(); iter != top.getTexCoords().end(); ++iter ) {
+		texCoords.push_back( *iter );
+	}
+
+	for ( size_t i = 0; i < positions.size(); ++i ) {
+		indices.push_back( i );
+	}
+
+	/*Vec3f size = Vec3f::one() * 0.5f;
 	Vec3f pos0 = Vec3f( 1.0f, 1.0f, 1.0f ) * size;
 	Vec3f pos1 = Vec3f( 1.0f, -1.0f, 1.0f ) * size;
 	Vec3f pos2 = Vec3f( 1.0f, -1.0f, -1.0f ) * size;
@@ -84,7 +181,7 @@ TriMesh MeshHelper::createCubeTriMesh( const Vec3i &resolution )
 	Vec3f pos5 = Vec3f( -1.0f, 1.0f, 1.0f ) * size;
 	Vec3f pos6 = Vec3f( -1.0f, -1.0f, -1.0f ) * size;
 	Vec3f pos7 = Vec3f( -1.0f, -1.0f, 1.0f ) * size;
-
+	
 	Vec3f norm0( 1.0f, 0.0f, 0.0f );
 	Vec3f norm1( 0.0f, 1.0f, 0.0f );
 	Vec3f norm2( 0.0f, 0.0f, 1.0f );
@@ -216,7 +313,7 @@ TriMesh MeshHelper::createCubeTriMesh( const Vec3i &resolution )
 	indices.push_back( 22 );
 	indices.push_back( 20 );
 	indices.push_back( 22 );
-	indices.push_back( 23 );
+	indices.push_back( 23 );*/
 
 	TriMesh mesh = MeshHelper::createTriMesh( indices, positions, normals, texCoords );
 
