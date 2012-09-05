@@ -34,7 +34,7 @@
 */
 
 #include "MeshHelper.h"
-	
+
 using namespace ci;
 using namespace std;
 
@@ -123,26 +123,28 @@ TriMesh MeshHelper::createConeTriMesh( const Vec2i &resolution, bool closeBase )
 	vector<Vec2f> srcTexCoords;
 	vector<Vec2f> texCoords;
 
-	float delta = 1.0f / (float)resolution.x;
+	float delta = ( 2.0f * (float)M_PI ) / (float)resolution.x;
 	float step	= 1.0f / (float)resolution.y;
+	float ut	= 1.0f / (float)resolution.x;
 
-	for ( float p = 0.0f; p <= 1.0f; p += step ) {
-		float radius = 1.0f - p;
+	uint32_t p = 0;
+	for ( float phi = 0.0f; p < (uint32_t)resolution.y + 1; ++p, phi += step ) {
+		float radius = 1.0f - phi;
 
-		uint32_t i = 0;
-		for ( float theta = delta; i < (uint32_t)resolution.x; i++, theta += delta ) {
+		uint32_t t	= 0;
+		float u		= 0.0f;
+		for ( float theta = 0.0f; t < (uint32_t)resolution.x; ++t, u += ut, theta += delta ) {
 
-			float t = 2.0f * (float)M_PI * theta;
-			float cosT = math<float>::cos( t );
-			float sinT = math<float>::sin( t );
+			float cosT = math<float>::cos( theta );
+			float sinT = math<float>::sin( theta );
 			Vec3f position( 
 				cosT * radius, 
-				p, 
+				phi, 
 				sinT * radius 
 				);
 			srcPositions.push_back( position );
 
-			Vec2f texCoord( theta, position.y );
+			Vec2f texCoord( u, position.y );
 			srcTexCoords.push_back( texCoord );
 		}
 
@@ -152,54 +154,56 @@ TriMesh MeshHelper::createConeTriMesh( const Vec2i &resolution, bool closeBase )
 	srcPositions.push_back( Vec3f( 0.0f, 1.0f, 0.0f ) );
 	srcTexCoords.push_back( Vec2f( 0.0f, 0.0f ) );
 	srcTexCoords.push_back( Vec2f( 0.0f, 1.0f ) );
-	int32_t bottomCenter = (int32_t)srcPositions.size() - 1;
-	int32_t topCenter = bottomCenter - 1;
+	int32_t bottomCenter	= (int32_t)srcPositions.size() - 1;
+	int32_t topCenter		= bottomCenter - 1;
 
 	Vec3f offset( 0.0f, -0.5f, 0.0f );
 
-	for ( uint32_t t = 0; t < (uint32_t)resolution.x; t++ ) {
-		uint32_t n = t + 1 >= (uint32_t)resolution.x ? 0 : t + 1;
+	for ( uint32_t p = 0; p < (uint32_t)resolution.y; ++p ) {
+		for ( uint32_t t = 0; t < (uint32_t)resolution.x; ++t ) {
+			uint32_t n = t + 1 >= (uint32_t)resolution.x ? 0 : t + 1;
+		
+			uint32_t index0 = ( p + 0 ) * (uint32_t)resolution.x + t;
+			uint32_t index1 = ( p + 0 ) * (uint32_t)resolution.x + n;
+			uint32_t index2 = ( p + 1 ) * (uint32_t)resolution.x + t;
+			uint32_t index3 = ( p + 1 ) * (uint32_t)resolution.x + n;
 
-		uint32_t index0 = t;
-		uint32_t index1 = n;
-		uint32_t index2 = (uint32_t)resolution.x + t;
-		uint32_t index3 = (uint32_t)resolution.x + n;
+			Vec3f vert0 = srcPositions[ index0 ];
+			Vec3f vert1 = srcPositions[ index1 ];
+			Vec3f vert2 = srcPositions[ index2 ];
+			Vec3f vert3 = srcPositions[ index3 ];
 
-		Vec3f vert0 = srcPositions[ index0 ];
-		Vec3f vert1 = srcPositions[ index1 ];
-		Vec3f vert2 = srcPositions[ index2 ];
-		Vec3f vert3 = srcPositions[ index3 ];
+			Vec2f texCoord0 = srcTexCoords[ index0 ];
+			Vec2f texCoord1 = srcTexCoords[ index1 ];
+			Vec2f texCoord2 = srcTexCoords[ index2 ];
+			Vec2f texCoord3 = srcTexCoords[ index3 ];
 
-		Vec2f texCoord0 = srcTexCoords[ index0 ];
-		Vec2f texCoord1 = srcTexCoords[ index1 ];
-		Vec2f texCoord2 = srcTexCoords[ index2 ];
-		Vec2f texCoord3 = srcTexCoords[ index3 ];
+			Vec3f norm0 = vert0.normalized();
+			Vec3f norm1 = vert1.normalized();
+			Vec3f norm2 = vert2.normalized();
+			Vec3f norm3 = vert3.normalized();
 
-		Vec3f norm0 = vert0.normalized();
-		Vec3f norm1 = vert1.normalized();
-		Vec3f norm2 = norm0;
-		Vec3f norm3 = norm1;
+			normals.push_back( norm0 );
+			normals.push_back( norm2 );
+			normals.push_back( norm1 );
+			normals.push_back( norm1 );
+			normals.push_back( norm2 );
+			normals.push_back( norm3 );
 
-		normals.push_back( norm0 );
-		normals.push_back( norm2 );
-		normals.push_back( norm1 );
-		normals.push_back( norm1 );
-		normals.push_back( norm2 );
-		normals.push_back( norm3 );
+			positions.push_back( vert0 + offset );
+			positions.push_back( vert2 + offset );
+			positions.push_back( vert1 + offset );
+			positions.push_back( vert1 + offset );
+			positions.push_back( vert2 + offset );
+			positions.push_back( vert3 + offset );
 
-		positions.push_back( vert0 + offset );
-		positions.push_back( vert2 + offset );
-		positions.push_back( vert1 + offset );
-		positions.push_back( vert1 + offset );
-		positions.push_back( vert2 + offset );
-		positions.push_back( vert3 + offset );
-
-		texCoords.push_back( texCoord0 );
-		texCoords.push_back( texCoord2 );
-		texCoords.push_back( texCoord1 );
-		texCoords.push_back( texCoord1 );
-		texCoords.push_back( texCoord2 );
-		texCoords.push_back( texCoord3 );
+			texCoords.push_back( texCoord0 );
+			texCoords.push_back( texCoord2 );
+			texCoords.push_back( texCoord1 );
+			texCoords.push_back( texCoord1 );
+			texCoords.push_back( texCoord2 );
+			texCoords.push_back( texCoord3 );
+		}
 	}
 
 	if ( closeBase ) {
@@ -409,21 +413,22 @@ TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRad
 	vector<Vec2f> srcTexCoords;
 	vector<Vec2f> texCoords;
 
-	float delta = 1.0f / (float)resolution.x;
+	float delta = ( 2.0f * (float)M_PI ) / (float)resolution.x;
 	float step	= 1.0f / (float)resolution.y;
+	float ut	= 1.0f / (float)resolution.x;
 
 	uint32_t p = 0;
 	for ( float phi = 0.0f; p <= (uint32_t)resolution.y; ++p, phi += step ) {
-		uint32_t t = 0;
-		for ( float theta = delta; t < (uint32_t)resolution.x; ++t, theta += delta ) {
-		
-		float radius = lerp( baseRadius, topRadius, phi );
+		uint32_t t	= 0;
+		float u		= 0.0f;
+		for ( float theta = 0.0f; t < (uint32_t)resolution.x; ++t, u += ut, theta += delta ) {
 
-			float t = 2.0f * (float)M_PI * theta;
+			float radius = lerp( baseRadius, topRadius, phi );
+
 			Vec3f position( 
-				math<float>::cos( t ) * radius, 
+				math<float>::cos( theta ) * radius, 
 				phi - 0.5f, 
-				math<float>::sin( t ) * radius
+				math<float>::sin( theta ) * radius
 				);
 			srcPositions.push_back( position );
 
@@ -431,7 +436,7 @@ TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRad
 			normal.y = 0.0f;
 			srcNormals.push_back( normal );
 
-			Vec2f texCoord( theta, position.y + 0.5f );
+			Vec2f texCoord( u, position.y + 0.5f );
 			srcTexCoords.push_back( texCoord );
 		}
 	}
@@ -465,7 +470,6 @@ TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRad
 
 	for ( uint32_t p = 0; p < (uint32_t)resolution.y; ++p ) {
 		for ( uint32_t t = 0; t < (uint32_t)resolution.x; ++t ) {
-		
 			uint32_t n = t + 1 >= (uint32_t)resolution.x ? 0 : t + 1;
 		
 			uint32_t index0 = ( p + 0 ) * (uint32_t)resolution.x + t;
