@@ -50,10 +50,6 @@ public:
 
 	//! Create circle TriMesh with a radius of 1.0 and \a resolution segments.
 	static ci::TriMesh		createCircleTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ) );
-	/*! Create cone TriMesh with a radius and height of 1.0 and \a resolution segments. 
-		Base is closed when \a closeBase is set to true. */
-	static ci::TriMesh		createConeTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
-		bool closeBase = true );
 	//! Create cube TriMesh with an edge length of 1.0 divided into \a resolution segments.
 	static ci::TriMesh		createCubeTriMesh( const ci::Vec3i &resolution = ci::Vec3i::one() );
 	/*! Create cylinder TriMesh with a height of 1.0, top radius of \a topRadius, base radius 
@@ -81,10 +77,6 @@ public:
 	
 	//! Create circle VboMesh with a radius of 1.0 and \a resolution segments.
 	static ci::gl::VboMesh	createCircleVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ) );
-	/*! Create cone VboMesh with a radius and height of 1.0 and \a resolution segments. 
-		Base is closed when \a closeBase is set to true. */
-	static ci::gl::VboMesh	createConeVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
-		bool closeBase = true );
 	//! Create cube VboMesh with an edge length of 1.0 divided into \a resolution segments.
 	static ci::gl::VboMesh	createCubeVboMesh( const ci::Vec3i &resolution = ci::Vec3i::one() );
 	/*! Create cylinder VboMesh with a height of 1.0, top radius of \a topRadius, base radius 

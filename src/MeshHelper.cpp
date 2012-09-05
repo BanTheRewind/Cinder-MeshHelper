@@ -66,133 +66,6 @@ TriMesh MeshHelper::createCircleTriMesh( const Vec2i &resolution )
 	return createRingTriMesh( resolution, 0.0f );
 }
 
-TriMesh MeshHelper::createConeTriMesh( const Vec2i &resolution, bool closeBase )
-{
-	vector<uint32_t> indices;
-	vector<Vec3f> normals;
-	vector<Vec3f> positions;
-	vector<Vec3f> srcPositions;
-	vector<Vec2f> srcTexCoords;
-	vector<Vec2f> texCoords;
-
-	float delta = ( 2.0f * (float)M_PI ) / (float)resolution.x;
-	float step	= 1.0f / (float)resolution.y;
-	float ut	= 1.0f / (float)resolution.x;
-
-	uint32_t p = 0;
-	for ( float phi = 0.0f; p < (uint32_t)resolution.y + 1; ++p, phi += step ) {
-		float radius = 1.0f - phi;
-
-		uint32_t t	= 0;
-		float u		= 0.0f;
-		for ( float theta = 0.0f; t < (uint32_t)resolution.x; ++t, u += ut, theta += delta ) {
-
-			float cosT = math<float>::cos( theta );
-			float sinT = math<float>::sin( theta );
-			Vec3f position( 
-				cosT * radius, 
-				phi, 
-				sinT * radius 
-				);
-			srcPositions.push_back( position );
-
-			Vec2f texCoord( u, position.y );
-			srcTexCoords.push_back( texCoord );
-		}
-
-	}
-
-	srcPositions.push_back( Vec3f( 0.0f, 0.0f, 0.0f ) );
-	srcPositions.push_back( Vec3f( 0.0f, 1.0f, 0.0f ) );
-	srcTexCoords.push_back( Vec2f( 0.0f, 0.0f ) );
-	srcTexCoords.push_back( Vec2f( 0.0f, 1.0f ) );
-	int32_t bottomCenter	= (int32_t)srcPositions.size() - 1;
-	int32_t topCenter		= bottomCenter - 1;
-
-	Vec3f offset( 0.0f, -0.5f, 0.0f );
-
-	for ( uint32_t p = 0; p < (uint32_t)resolution.y; ++p ) {
-		for ( uint32_t t = 0; t < (uint32_t)resolution.x; ++t ) {
-			uint32_t n = t + 1 >= (uint32_t)resolution.x ? 0 : t + 1;
-		
-			uint32_t index0 = ( p + 0 ) * (uint32_t)resolution.x + t;
-			uint32_t index1 = ( p + 0 ) * (uint32_t)resolution.x + n;
-			uint32_t index2 = ( p + 1 ) * (uint32_t)resolution.x + t;
-			uint32_t index3 = ( p + 1 ) * (uint32_t)resolution.x + n;
-
-			Vec3f vert0 = srcPositions[ index0 ];
-			Vec3f vert1 = srcPositions[ index1 ];
-			Vec3f vert2 = srcPositions[ index2 ];
-			Vec3f vert3 = srcPositions[ index3 ];
-
-			Vec2f texCoord0 = srcTexCoords[ index0 ];
-			Vec2f texCoord1 = srcTexCoords[ index1 ];
-			Vec2f texCoord2 = srcTexCoords[ index2 ];
-			Vec2f texCoord3 = srcTexCoords[ index3 ];
-
-			Vec3f norm0 = vert0.normalized();
-			Vec3f norm1 = vert1.normalized();
-			Vec3f norm2 = vert2.normalized();
-			Vec3f norm3 = vert3.normalized();
-
-			normals.push_back( norm0 );
-			normals.push_back( norm2 );
-			normals.push_back( norm1 );
-			normals.push_back( norm1 );
-			normals.push_back( norm2 );
-			normals.push_back( norm3 );
-
-			positions.push_back( vert0 + offset );
-			positions.push_back( vert2 + offset );
-			positions.push_back( vert1 + offset );
-			positions.push_back( vert1 + offset );
-			positions.push_back( vert2 + offset );
-			positions.push_back( vert3 + offset );
-
-			texCoords.push_back( texCoord0 );
-			texCoords.push_back( texCoord2 );
-			texCoords.push_back( texCoord1 );
-			texCoords.push_back( texCoord1 );
-			texCoords.push_back( texCoord2 );
-			texCoords.push_back( texCoord3 );
-		}
-	}
-
-	if ( closeBase ) {
-		Vec3f normal( 0.0f, -1.0f, 0.0f );
-		for ( uint32_t t = 0; t < (uint32_t)resolution.x; t++ ) {
-			uint32_t n = t + 1 >= (uint32_t)resolution.x ? 0 : t + 1;
-
-			normals.push_back( normal );
-			normals.push_back( normal );
-			normals.push_back( normal );
-
-			positions.push_back( srcPositions[ topCenter ] + offset );
-			positions.push_back( srcPositions[ t ] + offset );
-			positions.push_back( srcPositions[ n ] + offset );
-
-			texCoords.push_back( srcTexCoords[ topCenter ] );
-			texCoords.push_back( srcTexCoords[ topCenter ] );
-			texCoords.push_back( srcTexCoords[ topCenter ] );
-		}
-	}
-
-	for ( uint32_t i = 0; i < positions.size(); i++ ) {
-		indices.push_back( i );
-	}
-
-	TriMesh mesh = MeshHelper::createTriMesh( indices, positions, normals, texCoords );
-		
-	indices.clear();
-	normals.clear();
-	positions.clear();
-	srcPositions.clear();
-	srcTexCoords.clear();
-	texCoords.clear();
-
-	return mesh;
-}
-
 TriMesh MeshHelper::createCubeTriMesh( const Vec3i &resolution )
 {
 	vector<uint32_t> indices;
@@ -393,8 +266,8 @@ TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRad
 		}
 	}
 
-	srcNormals.push_back( Vec3f( 0.0f, -1.0f, 0.0f ) );
 	srcNormals.push_back( Vec3f( 0.0f, 1.0f, 0.0f ) );
+	srcNormals.push_back( Vec3f( 0.0f, -1.0f, 0.0f ) );
 	srcPositions.push_back( Vec3f( 0.0f, -0.5f, 0.0f ) );
 	srcPositions.push_back( Vec3f( 0.0f, 0.5f, 0.0f ) );
 	srcTexCoords.push_back( Vec2f( 0.0f, 0.0f ) );
@@ -407,16 +280,16 @@ TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRad
 			uint32_t n = t + 1 >= (uint32_t)resolution.x ? 0 : t + 1;
 
 			normals.push_back( srcNormals[ topCenter ] );
-			normals.push_back( srcNormals[ topCenter ] );
-			normals.push_back( srcNormals[ topCenter ] );
+			normals.push_back( srcNormals[ resolution.y * resolution.x + n ] );
+			normals.push_back( srcNormals[ resolution.y * resolution.x + t ] );
 
 			positions.push_back( srcPositions[ topCenter ] );
-			positions.push_back( srcPositions[ resolution.y * resolution.x + t ] );
 			positions.push_back( srcPositions[ resolution.y * resolution.x + n ] );
+			positions.push_back( srcPositions[ resolution.y * resolution.x + t ] );
 
 			texCoords.push_back( srcTexCoords[ topCenter ] );
-			texCoords.push_back( srcTexCoords[ topCenter ] );
-			texCoords.push_back( srcTexCoords[ topCenter ] );
+			texCoords.push_back( srcTexCoords[ resolution.y * resolution.x + n ] );
+			texCoords.push_back( srcTexCoords[ resolution.y * resolution.x + t ] );
 		}
 	}
 
@@ -457,16 +330,16 @@ TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRad
 			uint32_t n = t + 1 >= (uint32_t)resolution.x ? 0 : t + 1;
 
 			normals.push_back( srcNormals[ bottomCenter ] );
-			normals.push_back( srcNormals[ bottomCenter ] );
-			normals.push_back( srcNormals[ bottomCenter ] );
+			normals.push_back( srcNormals[ n ] );
+			normals.push_back( srcNormals[ t ] );
 
 			positions.push_back( srcPositions[ bottomCenter ] );
-			positions.push_back( srcPositions[ t ] );
 			positions.push_back( srcPositions[ n ] );
+			positions.push_back( srcPositions[ t ] );
 
 			texCoords.push_back( srcTexCoords[ bottomCenter ] );
-			texCoords.push_back( srcTexCoords[ bottomCenter ] );
-			texCoords.push_back( srcTexCoords[ bottomCenter ] );
+			texCoords.push_back( srcTexCoords[ n ] );
+			texCoords.push_back( srcTexCoords[ t ] );
 		}
 	}
 
@@ -734,12 +607,6 @@ gl::VboMesh MeshHelper::createVboMesh( const vector<uint32_t> &indices, const ve
 gl::VboMesh MeshHelper::createCircleVboMesh( const Vec2i &resolution )
 {
 	TriMesh mesh = createCircleTriMesh( resolution );
-	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
-}
-
-gl::VboMesh MeshHelper::createConeVboMesh( const Vec2i &resolution, bool closeBase )
-{
-	TriMesh mesh = createConeTriMesh( resolution, closeBase );
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 

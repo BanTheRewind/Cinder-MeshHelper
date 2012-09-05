@@ -124,7 +124,7 @@ void TriMeshSampleApp::createMeshes()
 {
 	// Use the MeshHelper to generate primitives
 	mCircle		= MeshHelper::createCircleTriMesh( mResolution );
-	mCone		= MeshHelper::createConeTriMesh( mResolution );
+	mCone		= MeshHelper::createCylinderTriMesh( mResolution, 0.0f, 1.0f, false, true );
 	mCube		= MeshHelper::createCubeTriMesh();
 	mCylinder	= MeshHelper::createCylinderTriMesh( mResolution );
 	mRing		= MeshHelper::createRingTriMesh( mResolution );
