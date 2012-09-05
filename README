@@ -3,13 +3,12 @@ in the creation of primitive or custom TriMesh or VboMesh
 meshes in Cinder.
 
 In-progress tasks in dev branch
- - Specify resolution to subdivide each shape
+ - Polyhedron
  - iOS TriMesh sample
- - Torus
 
 -----------------------------------------
 
-Version 0.0.6
+Version 0.0.8
 
 -----------------------------------------
 
