@@ -127,7 +127,7 @@ void TriMeshSampleApp::createMeshes()
 	mCone		= MeshHelper::createConeTriMesh( mResolution );
 	mCube		= MeshHelper::createCubeTriMesh();
 	mCylinder	= MeshHelper::createCylinderTriMesh( mResolution );
-	mRing		= MeshHelper::createRingTriMesh( mResolution.x );
+	mRing		= MeshHelper::createRingTriMesh( mResolution );
 	mSphere		= MeshHelper::createSphereTriMesh( mResolution );
 	mSquare		= MeshHelper::createSquareTriMesh( mResolution );
 	

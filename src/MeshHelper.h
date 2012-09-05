@@ -61,9 +61,10 @@ public:
 		\a closeBase flags. */
 	static ci::TriMesh		createCylinderTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
 		float topRadius = 1.0f, float baseRadius = 1.0f, bool closeTop = true, bool closeBase = true );
-	/*! Create ring TriMesh with a radius of 1.0, \a segments, and second radius 
+	/*! Create ring TriMesh with a radius of 1.0, \a resolution segments, and second radius 
 		of \a secondRadius. */
-	static ci::TriMesh		createRingTriMesh( uint32_t segments = 12, float secondRadius = 0.5f );
+	static ci::TriMesh		createRingTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ), 
+		float secondRadius = 0.5f );
 	//! Create sphere TriMesh with a radius of 1.0 and \a resolution segments.
 	static ci::TriMesh		createSphereTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ) );
 	//! Create square TriMesh with an edge length of 1.0 divided into \a resolution segments.
@@ -91,9 +92,10 @@ public:
 		\a closeBase flags. */
 	static ci::gl::VboMesh	createCylinderVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
 		float topRadius = 1.0f, float baseRadius = 1.0f, bool closeTop = true, bool closeBase = true );
-	/*! Create ring VboMesh with a radius of 1.0, \a segments, and a second radius 
+	/*! Create ring VboMesh with a radius of 1.0, \a resolution segments, and a second radius 
 		of \a secondRadius. */
-	static ci::gl::VboMesh	createRingVboMesh( uint32_t segments = 12, float secondRadius = 0.5f );
+	static ci::gl::VboMesh	createRingVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ), 
+		float secondRadius = 0.5f );
 	//! Create sphere VboMesh with a radius of 1.0 and \a resolution segments.
 	static ci::gl::VboMesh	createSphereVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ) );
 	//! Create square VboMesh with an edge length of 1.0 divided into \a resolution segments.

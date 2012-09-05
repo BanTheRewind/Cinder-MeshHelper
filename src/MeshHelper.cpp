@@ -535,7 +535,7 @@ TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRad
 	return mesh;
 }
 
-TriMesh MeshHelper::createRingTriMesh( uint32_t segments, float secondRadius )
+TriMesh MeshHelper::createRingTriMesh( const Vec2i &resolution, float secondRadius )
 {
 	vector<uint32_t> indices;
 	vector<Vec3f> normals;
@@ -544,44 +544,59 @@ TriMesh MeshHelper::createRingTriMesh( uint32_t segments, float secondRadius )
 
 	Vec3f norm0( 0.0f, 0.0f, 1.0f );
 
-	float delta = ( (float)M_PI * 2.0f ) / (float)segments;
-	float theta = delta;
-	for ( uint32_t i = 0; i < segments; ++i, theta += delta ) {
+	float delta = ( (float)M_PI * 2.0f ) / (float)resolution.x;
+	float width	= 1.0f - secondRadius;
+	float step	= width / (float)resolution.y;
 
-		Vec3f vert0( math<float>::cos( theta ), math<float>::sin( theta ), 0.0f );
-		Vec3f vert1( math<float>::cos( theta + delta ), math<float>::sin( theta + delta ), 0.0f );
-		Vec3f vert2 = vert0 * secondRadius;
-		Vec3f vert3 = vert1 * secondRadius;
-		if ( i >= segments - 1 ) {
-			vert1.x = math<float>::cos( delta );
-			vert1.y = math<float>::sin( delta ); 
-			vert3	= vert1 * secondRadius;
+	uint32_t p = 0;
+	for ( float phi = 0.0f; p < (uint32_t)resolution.y; ++p, phi += step ) {
+
+		float innerRadius = phi + 0.0f + secondRadius;
+		float outerRadius = phi + step + secondRadius;
+
+		uint32_t t = 0;
+		for ( float theta = 0.0f; t < (uint32_t)resolution.x; ++t, theta += delta ) {
+
+			float ct	= math<float>::cos( theta );
+			float st	= math<float>::sin( theta );
+			float ctn	= math<float>::cos( theta + delta );
+			float stn	= math<float>::sin( theta + delta );
+
+			Vec3f vert0 = Vec3f( ct, st, 0.0f ) * innerRadius;
+			Vec3f vert1 = Vec3f( ctn, stn, 0.0f ) * innerRadius;
+			Vec3f vert2 = Vec3f( ct, st, 0.0f ) * outerRadius;
+			Vec3f vert3 = Vec3f( ctn, stn, 0.0f ) * outerRadius;
+			if ( t >= (uint32_t)resolution.x - 1 ) {
+				ctn		= math<float>::cos( 0.0f );
+				stn		= math<float>::sin( 0.0f );
+				vert1	= Vec3f( ctn, stn, 0.0f ) * innerRadius;
+				vert3	= Vec3f( ctn, stn, 0.0f ) * outerRadius;
+			}
+
+			Vec2f texCoord0 = ( vert0.xy() + Vec2f::one() ) * 0.5f;
+			Vec2f texCoord1 = ( vert1.xy() + Vec2f::one() ) * 0.5f;
+			Vec2f texCoord2 = ( vert2.xy() + Vec2f::one() ) * 0.5f;
+			Vec2f texCoord3 = ( vert3.xy() + Vec2f::one() ) * 0.5f;
+
+			positions.push_back( vert0 );
+			positions.push_back( vert2 );
+			positions.push_back( vert1 );
+			positions.push_back( vert1 );
+			positions.push_back( vert2 );
+			positions.push_back( vert3 );
+
+			texCoords.push_back( texCoord0 );
+			texCoords.push_back( texCoord2 );
+			texCoords.push_back( texCoord1 );
+			texCoords.push_back( texCoord1 );
+			texCoords.push_back( texCoord2 );
+			texCoords.push_back( texCoord3 );
 		}
+	}
 
-		Vec2f texCoord0 = ( vert0.xy() + Vec2f::one() ) * 0.5f;
-		Vec2f texCoord1 = ( vert1.xy() + Vec2f::one() ) * 0.5f;
-		Vec2f texCoord2 = ( vert2.xy() + Vec2f::one() ) * 0.5f;
-		Vec2f texCoord3 = ( vert3.xy() + Vec2f::one() ) * 0.5f;
-
-		positions.push_back( vert0 );
-		positions.push_back( vert2 );
-		positions.push_back( vert1 );
-		positions.push_back( vert1 );
-		positions.push_back( vert2 );
-		positions.push_back( vert3 );
-
-		texCoords.push_back( texCoord0 );
-		texCoords.push_back( texCoord2 );
-		texCoords.push_back( texCoord1 );
-		texCoords.push_back( texCoord1 );
-		texCoords.push_back( texCoord2 );
-		texCoords.push_back( texCoord3 );
-
-		for ( uint32_t j = 0; j < 6; ++j ) {
-			indices.push_back( i * 6 + j );
-			normals.push_back( norm0 );
-		}
-
+	for ( uint32_t i = 0; i < positions.size(); ++i ) {
+		indices.push_back( i );
+		normals.push_back( norm0 );
 	}
 
 	TriMesh mesh = MeshHelper::createTriMesh( indices, positions, normals, texCoords );
@@ -788,9 +803,9 @@ gl::VboMesh MeshHelper::createCylinderVboMesh( const Vec2i &resolution, float to
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
-gl::VboMesh MeshHelper::createRingVboMesh( uint32_t segments, float secondRadius )
+gl::VboMesh MeshHelper::createRingVboMesh( const Vec2i &resolution, float secondRadius )
 {
-	TriMesh mesh = createRingTriMesh( segments, secondRadius );
+	TriMesh mesh = createRingTriMesh( resolution, secondRadius );
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
