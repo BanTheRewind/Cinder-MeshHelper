@@ -257,11 +257,11 @@ TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRad
 				);
 			srcPositions.push_back( position );
 
-			Vec3f normal = position.normalized();
+			Vec3f normal = Vec3f( position.x, 0.0f, position.z ).normalized();
 			normal.y = 0.0f;
 			srcNormals.push_back( normal );
 
-			Vec2f texCoord( u, position.y + 0.5f );
+			Vec2f texCoord( u, phi );
 			srcTexCoords.push_back( texCoord );
 		}
 	}
@@ -280,16 +280,16 @@ TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRad
 			uint32_t n = t + 1 >= (uint32_t)resolution.x ? 0 : t + 1;
 
 			normals.push_back( srcNormals[ topCenter ] );
-			normals.push_back( srcNormals[ resolution.y * resolution.x + n ] );
-			normals.push_back( srcNormals[ resolution.y * resolution.x + t ] );
+			normals.push_back( srcNormals[ topCenter ] );
+			normals.push_back( srcNormals[ topCenter ] );
 
 			positions.push_back( srcPositions[ topCenter ] );
-			positions.push_back( srcPositions[ resolution.y * resolution.x + n ] );
-			positions.push_back( srcPositions[ resolution.y * resolution.x + t ] );
+			positions.push_back( srcPositions[ (uint32_t)( resolution.x * resolution.y ) + n ] );
+			positions.push_back( srcPositions[ (uint32_t)( resolution.x * resolution.y ) + t ] );
 
 			texCoords.push_back( srcTexCoords[ topCenter ] );
-			texCoords.push_back( srcTexCoords[ resolution.y * resolution.x + n ] );
-			texCoords.push_back( srcTexCoords[ resolution.y * resolution.x + t ] );
+			texCoords.push_back( srcTexCoords[ topCenter ] );
+			texCoords.push_back( srcTexCoords[ topCenter ] );
 		}
 	}
 
@@ -330,16 +330,16 @@ TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRad
 			uint32_t n = t + 1 >= (uint32_t)resolution.x ? 0 : t + 1;
 
 			normals.push_back( srcNormals[ bottomCenter ] );
-			normals.push_back( srcNormals[ n ] );
-			normals.push_back( srcNormals[ t ] );
+			normals.push_back( srcNormals[ bottomCenter ] );
+			normals.push_back( srcNormals[ bottomCenter ] );
 
 			positions.push_back( srcPositions[ bottomCenter ] );
 			positions.push_back( srcPositions[ n ] );
 			positions.push_back( srcPositions[ t ] );
 
 			texCoords.push_back( srcTexCoords[ bottomCenter ] );
-			texCoords.push_back( srcTexCoords[ n ] );
-			texCoords.push_back( srcTexCoords[ t ] );
+			texCoords.push_back( srcTexCoords[ bottomCenter ] );
+			texCoords.push_back( srcTexCoords[ bottomCenter ] );
 		}
 	}
 
