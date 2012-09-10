@@ -45,5 +45,8 @@
     <None Include="..\resources\vert.glsl">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\resources\frag.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

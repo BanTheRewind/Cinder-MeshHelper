@@ -69,15 +69,15 @@ private:
 
 	// The VboMeshes
 	void						createMeshes();
-	ci::gl::VboMesh					mCircle;
-	ci::gl::VboMesh					mCone;
-	ci::gl::VboMesh					mCube;
-	ci::gl::VboMesh					mCustom;
-	ci::gl::VboMesh					mCylinder;
-	ci::gl::VboMesh					mRing;
-	ci::gl::VboMesh					mSphere;
-	ci::gl::VboMesh					mSquare;
-	ci::gl::VboMesh					mTorus;
+	ci::gl::VboMesh				mCircle;
+	ci::gl::VboMesh				mCone;
+	ci::gl::VboMesh				mCube;
+	ci::gl::VboMesh				mCustom;
+	ci::gl::VboMesh				mCylinder;
+	ci::gl::VboMesh				mRing;
+	ci::gl::VboMesh				mSphere;
+	ci::gl::VboMesh				mSquare;
+	ci::gl::VboMesh				mTorus;
 	
 	// For selecting mesh type from params
 	int32_t						mMeshIndex;

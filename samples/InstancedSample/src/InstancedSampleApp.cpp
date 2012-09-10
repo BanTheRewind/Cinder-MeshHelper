@@ -70,15 +70,15 @@ private:
 
 	// The VboMeshes
 	void						createMeshes();
-	ci::gl::VboMesh					mCircle;
-	ci::gl::VboMesh					mCone;
-	ci::gl::VboMesh					mCube;
-	ci::gl::VboMesh					mCustom;
-	ci::gl::VboMesh					mCylinder;
-	ci::gl::VboMesh					mRing;
-	ci::gl::VboMesh					mSphere;
-	ci::gl::VboMesh					mSquare;
-	ci::gl::VboMesh					mTorus;
+	ci::gl::VboMesh				mCircle;
+	ci::gl::VboMesh				mCone;
+	ci::gl::VboMesh				mCube;
+	ci::gl::VboMesh				mCustom;
+	ci::gl::VboMesh				mCylinder;
+	ci::gl::VboMesh				mRing;
+	ci::gl::VboMesh				mSphere;
+	ci::gl::VboMesh				mSquare;
+	ci::gl::VboMesh				mTorus;
 	
 	// For selecting mesh type from params
 	int32_t						mMeshIndex;
@@ -213,23 +213,25 @@ void InstancedSampleApp::draw()
 	// Use arcball to rotate model view
 	glMultMatrixf( mArcball.getQuat() );
 
-	// Bind and configure shader
-	if ( mShader ) {
-		mShader.bind();
-		mShader.uniform( "size", mGridSize );
-		mShader.uniform( "spacing", mGridSpacing );
-	}
-
 	// Enabled lighting, texture mapping, wireframe
 	if ( mLightEnabled ) {
 		gl::enable( GL_LIGHTING );
 	}
 	if ( mTextureEnabled && mTexture ) {
 		gl::enable( GL_TEXTURE_2D );
-		mTexture.bind();
+		mTexture.bind( 0 );
 	}
 	if ( mWireframe ) {
 		gl::enableWireframe();
+	}
+
+	// Bind and configure shader
+	if ( mShader ) {
+		mShader.bind();
+		mShader.uniform( "eyePoint",	mCamera.getEyePoint() );
+		mShader.uniform( "size",		Vec2f( mGridSize ) );
+		mShader.uniform( "spacing",		mGridSpacing );
+		mShader.uniform( "tex",			0 );
 	}
 	
 	// Apply scale
@@ -299,8 +301,8 @@ void InstancedSampleApp::drawInstanced( const gl::VboMesh &vbo, size_t count )
 {
 	vbo.enableClientStates();
 	vbo.bindAllData();
-	//glDrawElementsInstancedARB( vbo.getPrimitiveType(), vbo.getNumIndices(), GL_UNSIGNED_INT, (GLvoid*)( sizeof(uint32_t) * 0 ), count );
-	glDrawElementsInstancedEXT( vbo.getPrimitiveType(), vbo.getNumIndices(), GL_UNSIGNED_INT, (GLvoid*)( sizeof(uint32_t) * 0 ), count );
+	glDrawElementsInstancedARB( vbo.getPrimitiveType(), vbo.getNumIndices(), GL_UNSIGNED_INT, (GLvoid*)( sizeof(uint32_t) * 0 ), count );
+	//glDrawElementsInstancedEXT( vbo.getPrimitiveType(), vbo.getNumIndices(), GL_UNSIGNED_INT, (GLvoid*)( sizeof(uint32_t) * 0 ), count ); // Try this if ARB doesn't work
 	gl::VboMesh::unbindBuffers();
 	vbo.disableClientStates();
 }
@@ -349,7 +351,7 @@ void InstancedSampleApp::setup()
 
 	// Load shader
 	try {
-		mShader = gl::GlslProg( loadResource( RES_SHADER_VERT ) );
+		mShader = gl::GlslProg( loadResource( RES_SHADER_VERT ), loadResource( RES_SHADER_FRAG ) );
 	} catch ( gl::GlslProgCompileExc ex ) {
 		console() << ex.what() << endl;
 		OutputDebugStringA( ex.what() );
@@ -364,9 +366,9 @@ void InstancedSampleApp::setup()
 	mFullScreen			= false;
 	mLightEnabled		= true;
 	mMeshIndex			= 0;
-	mResolution			= Vec3i( 12, 12, 12 );
+	mResolution			= Vec3i::one() * 12;
 	mResolutionPrev		= mResolution;
-	mScale				= Vec3f::one();
+	mScale				= Vec3f::one() * 0.25f;
 	mTextureEnabled		= true;
 	mWireframe			= false;
 	
@@ -375,17 +377,17 @@ void InstancedSampleApp::setup()
 	mArcball.setRadius( (float)getWindowHeight() * 0.5f );
 	
 	// Set up the camera
-	mCamera = CameraPersp( getWindowWidth(), getWindowHeight(), 60.0f, 0.0001f, 10.0f );
+	mCamera = CameraPersp( getWindowWidth(), getWindowHeight(), 60.0f, 0.0001f, 1000.0f );
 	mCamera.lookAt( Vec3f( 0.0f, 0.0f, -5.0f ), Vec3f::zero() );
 
 	// Set up the instancing grid
-	mGridSize		= Vec2i( 8, 8 );
-	mGridSpacing	= Vec2f( 1.5f, 1.5f );
+	mGridSize		= Vec2i( 16, 16 );
+	mGridSpacing	= Vec2f( 2.5f, 2.5f );
 
 	// Set up the light
 	mLight = new gl::Light( gl::Light::DIRECTIONAL, 0 );
-	mLight->setAmbient( ColorAf::white() );
-	mLight->setDiffuse( ColorAf::white() );
+	mLight->setAmbient( ColorAf::black() );
+	mLight->setDiffuse( ColorAf::gray( 0.6f ) );
 	mLight->setDirection( Vec3f::one() );
 	mLight->setPosition( Vec3f::one() * -1.0f );
 	mLight->setSpecular( ColorAf::white() );

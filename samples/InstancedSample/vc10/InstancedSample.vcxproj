@@ -21,6 +21,7 @@
     <ClInclude Include="..\include\Resources.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\resources\frag.glsl" />
     <None Include="..\resources\texture.png" />
     <None Include="..\resources\vert.glsl" />
   </ItemGroup>

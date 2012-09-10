@@ -4,12 +4,12 @@ meshes in Cinder.
 
 In-progress tasks in dev branch
  - Polyhedron
- - VBO instancing sample
+ - VBO instancing sample for XCode
  - iOS TriMesh sample
 
 -----------------------------------------
 
-Version 0.0.8
+Version 0.0.9
 
 -----------------------------------------
 
