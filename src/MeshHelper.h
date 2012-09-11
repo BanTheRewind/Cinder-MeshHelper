@@ -47,6 +47,13 @@ public:
 	//! Create TriMesh from vectors of vertex data.
 	static ci::TriMesh		createTriMesh( std::vector<uint32_t> &indices, const std::vector<ci::Vec3f> &positions,
 								const std::vector<ci::Vec3f> &normals, const std::vector<ci::Vec2f> &texCoords );
+	/*! Subdivide vectors of vertex data into a TriMesh \a division times. Division less 
+		than 2 returns the original mesh. */
+	static ci::TriMesh		subdivide( std::vector<uint32_t> &indices, const std::vector<ci::Vec3f> &positions,
+								const std::vector<ci::Vec3f> &normals, const std::vector<ci::Vec2f> &texCoords, 
+								uint32_t division = 2, bool normalize = false );
+	//! Subdivide a TriMesh \a division times. Division less than 2 returns the original mesh. 
+	static ci::TriMesh		subdivide( const ci::TriMesh &triMesh, uint32_t division = 2, bool normalize = false );
 
 	//! Create circle TriMesh with a radius of 1.0 and \a resolution segments.
 	static ci::TriMesh		createCircleTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ) );
@@ -57,6 +64,8 @@ public:
 		\a closeBase flags. */
 	static ci::TriMesh		createCylinderTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
 		float topRadius = 1.0f, float baseRadius = 1.0f, bool closeTop = true, bool closeBase = true );
+	//! Creates icosahedron where each face is subdivided \b division times.
+	static ci::TriMesh		createIcosahedronTriMesh( uint32_t division = 1 );
 	/*! Create ring TriMesh with a radius of 1.0, \a resolution segments, and second radius 
 		of \a ratio. */
 	static ci::TriMesh		createRingTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ), 
@@ -85,6 +94,8 @@ public:
 		\a closeBase flags. */
 	static ci::gl::VboMesh	createCylinderVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
 		float topRadius = 1.0f, float baseRadius = 1.0f, bool closeTop = true, bool closeBase = true );
+	//! Creates icosahedron where each face is subdivided \b division times.
+	static ci::gl::VboMesh	createIcosahedronVboMesh( uint32_t division = 1 );
 	/*! Create ring VboMesh with a radius of 1.0, \a resolution segments, and a second radius 
 		of \a ratio. */
 	static ci::gl::VboMesh	createRingVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ), 
@@ -98,4 +109,18 @@ public:
 	static ci::gl::VboMesh	createTorusVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
 		float ratio = 0.5f );
 #endif
+
+private:
+	struct VertexDistance
+	{
+		float		mDistance;
+		uint32_t	mIndex;
+
+		bool		operator==( const VertexDistance &rhs ) { return mDistance == rhs.mDistance; }
+		bool		operator!=( const VertexDistance &rhs ) { return mDistance != rhs.mDistance; }
+		bool		operator<( const VertexDistance &rhs ) { return mDistance < rhs.mDistance; }
+		bool		operator<=( const VertexDistance &rhs ) { return mDistance <= rhs.mDistance; }
+		bool		operator>( const VertexDistance &rhs ) { return mDistance > rhs.mDistance; }
+		bool		operator>=( const VertexDistance &rhs ) { return mDistance >= rhs.mDistance; }
+	};
 };
