@@ -4,7 +4,6 @@ meshes in Cinder.
 
 In-progress tasks in dev branch
  - Icosahedron star
- - VBO instancing sample for XCode
  - iOS TriMesh sample
 
 -----------------------------------------
