@@ -314,6 +314,74 @@ TriMesh MeshHelper::createCylinderTriMesh( const Vec2i &resolution, float topRad
 	return mesh;
 }
 
+TriMesh MeshHelper::createIcosahedronTriMesh( uint32_t division )
+{
+	vector<Vec3f> positions;
+	vector<Vec3f> normals;
+	vector<Vec2f> texCoords;
+	vector<uint32_t> indices;
+
+	const float t	= 0.5f + 0.5f * math<float>::sqrt( 5.0f );
+	const float one	= 1.0f / math<float>::sqrt( 1.0f + t * t );
+	const float tau	= t * one;
+	const float pi	= (float)M_PI;
+
+	normals.push_back( Vec3f(  one, 0.0f,  tau) );	
+	normals.push_back( Vec3f(  one, 0.0f, -tau) );	
+	normals.push_back( Vec3f( -one, 0.0f, -tau) );		
+	normals.push_back( Vec3f( -one, 0.0f,  tau) );		
+
+	normals.push_back( Vec3f(  tau,  one, 0.0f ) );
+	normals.push_back( Vec3f( -tau,  one, 0.0f ) );	
+	normals.push_back( Vec3f( -tau, -one, 0.0f ) );
+	normals.push_back( Vec3f(  tau, -one, 0.0f ) );
+
+	normals.push_back( Vec3f( 0.0f,  tau,  one) );
+	normals.push_back( Vec3f( 0.0f, -tau,  one) );	
+	normals.push_back( Vec3f( 0.0f, -tau, -one) );		
+	normals.push_back( Vec3f( 0.0f,  tau, -one) );		
+
+	for ( size_t i = 0; i < 12; ++i ) { 
+		positions.push_back( normals[ i ] * 0.5f );
+	}
+
+	uint32_t indexArray[ 60 ] = { 
+		0, 8, 3,	0, 3, 9, 
+		1, 2, 11,	1, 10, 2, 
+		4, 0, 7,	4, 7, 1, 
+		6, 3, 5,	6, 5, 2, 
+		8, 4, 11,	8, 11, 5, 
+		9, 10, 7,	9, 6, 10, 
+		8, 0, 4,	11, 4, 1, 
+		0, 9, 7,	1, 7, 10, 
+		3, 8, 5,	2, 5, 11, 
+		3, 6, 9,	2, 10, 6 
+	};
+	for ( size_t i = 0; i < 60; ++i ) {
+		indices.push_back( indexArray[ i ] );
+	}
+
+	for ( vector<Vec3f>::const_iterator iter = normals.begin(); iter != normals.end(); ++iter ) {
+		float u = 0.5f + 0.5f * math<float>::atan2( iter->x, iter->z ) / pi;
+		float v = 0.5f - math<float>::asin( iter->y ) / pi;
+		Vec2f texCoord( u, v );
+		texCoords.push_back( texCoord );
+	}
+
+	TriMesh mesh = MeshHelper::createTriMesh( indices, positions, normals, texCoords );
+
+	if ( division > 1 ) {
+		mesh = subdivide( mesh, division, true );
+	} 
+
+	indices.clear();
+	normals.clear();
+	positions.clear();
+	texCoords.clear();
+
+	return mesh;
+}
+
 TriMesh MeshHelper::createRingTriMesh( const Vec2i &resolution, float ratio )
 {
 	vector<uint32_t> indices;
@@ -335,7 +403,6 @@ TriMesh MeshHelper::createRingTriMesh( const Vec2i &resolution, float ratio )
 
 		int32_t t = 0;
 		for ( float theta = 0.0f; t < resolution.x; ++t, theta += delta ) {
-
 			float ct	= math<float>::cos( theta );
 			float st	= math<float>::sin( theta );
 			float ctn	= math<float>::cos( theta + delta );
@@ -641,6 +708,12 @@ gl::VboMesh MeshHelper::createCylinderVboMesh( const Vec2i &resolution, float to
 	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
 }
 
+gl::VboMesh MeshHelper::createIcosahedronVboMesh( uint32_t division )
+{
+	TriMesh mesh = createIcosahedronTriMesh( division );
+	return createVboMesh( mesh.getIndices(), mesh.getVertices(), mesh.getNormals(), mesh.getTexCoords() );
+}
+
 gl::VboMesh MeshHelper::createRingVboMesh( const Vec2i &resolution, float ratio )
 {
 	TriMesh mesh = createRingTriMesh( resolution, ratio );
@@ -666,3 +739,94 @@ gl::VboMesh MeshHelper::createTorusVboMesh( const Vec2i &resolution, float ratio
 }
 
 #endif
+
+TriMesh MeshHelper::subdivide( vector<uint32_t> &indices, const vector<Vec3f> &positions, 
+	const vector<Vec3f> &normals, const vector<Vec2f> &texCoords, uint32_t division, bool normalize )
+{
+	TriMesh mesh = createTriMesh( indices, positions, normals, texCoords );
+	return subdivide( mesh, division, normalize );
+}
+
+TriMesh MeshHelper::subdivide( const ci::TriMesh &triMesh, uint32_t division, bool normalize )
+{
+	if ( division <= 1 || triMesh.getNumIndices() == 0 || triMesh.getNumVertices() == 0 ) {
+		return triMesh;
+	}
+
+	vector<uint32_t> indices	= triMesh.getIndices();
+	vector<Vec3f> normals		= triMesh.getNormals();
+	vector<Vec3f> positions		= triMesh.getVertices();
+	vector<Vec2f> texCoords		= triMesh.getTexCoords();
+
+	vector<uint32_t> indicesBuffer( indices );
+	indices.clear();
+	indices.reserve( indicesBuffer.size() * 4 );
+ 
+	uint32_t index0;
+	uint32_t index1;
+	uint32_t index2;
+	uint32_t index3;
+	uint32_t index4;
+	uint32_t index5;
+	for ( vector<uint32_t>::const_iterator iter = indicesBuffer.begin(); iter != indicesBuffer.end(); ) {
+		index0 = *iter;
+		++iter;
+		index1 = *iter;
+		++iter;
+		index2 = *iter;
+		++iter;
+
+		if ( normalize ) {
+			index3 = positions.size();
+			positions.push_back( positions.at( index0 ).lerp( 0.5f, positions.at( index1 ) ).normalized() * 0.5f );
+			index4 = positions.size();
+			positions.push_back( positions.at( index1 ).lerp( 0.5f, positions.at( index2 ) ).normalized() * 0.5f );
+			index5 = positions.size();
+			positions.push_back( positions.at( index2 ).lerp( 0.5f, positions.at( index0 ) ).normalized() * 0.5f );
+		} else {
+			index3 = positions.size(); 
+			positions.push_back( positions.at( index0 ).lerp( 0.5f, positions.at( index1 ) ) );
+			index4 = positions.size();
+			positions.push_back( positions.at( index1 ).lerp( 0.5f, positions.at( index2 ) ) );
+			index5 = positions.size();
+			positions.push_back( positions.at( index2 ).lerp( 0.5f, positions.at( index0 ) ) );
+		}
+	
+		if ( !normals.empty() ) {
+			normals.push_back( normals.at( index0 ).lerp( 0.5f, normals.at( index1 ) ) );
+			normals.push_back( normals.at( index1 ).lerp( 0.5f, normals.at( index2 ) ) );
+			normals.push_back( normals.at( index2 ).lerp( 0.5f, normals.at( index0 ) ) );
+		}
+
+		if ( !texCoords.empty() ) {
+			texCoords.push_back( texCoords.at( index0 ).lerp( 0.5f, texCoords.at( index1 ) ) );
+			texCoords.push_back( texCoords.at( index1 ).lerp( 0.5f, texCoords.at( index2 ) ) );
+			texCoords.push_back( texCoords.at( index2 ).lerp( 0.5f, texCoords.at( index0 ) ) );
+		}
+
+		indices.push_back( index0 ); 
+		indices.push_back( index3 ); 
+		indices.push_back( index5 );
+		
+		indices.push_back( index3 ); 
+		indices.push_back( index1 );
+		indices.push_back( index4 );
+		
+		indices.push_back( index5 ); 
+		indices.push_back( index4 ); 
+		indices.push_back( index2 );
+		
+		indices.push_back( index3 ); 
+		indices.push_back( index4 ); 
+		indices.push_back( index5 );
+	}
+
+	ci::TriMesh mesh = createTriMesh( indices, positions, normals, texCoords );
+	
+	indices.clear();
+	normals.clear();
+	positions.clear();
+	texCoords.clear();
+
+	return subdivide( mesh, division - 1, normalize );
+}

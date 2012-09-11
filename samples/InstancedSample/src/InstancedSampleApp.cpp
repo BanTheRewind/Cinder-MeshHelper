@@ -62,6 +62,7 @@ private:
 		MESH_TYPE_CYLINDER, 
 		MESH_TYPE_CONE, 
 		MESH_TYPE_TORUS, 
+		MESH_TYPE_ICOSAHEDRON,
 		MESH_TYPE_CIRCLE, 
 		MESH_TYPE_SQUARE, 
 		MESH_TYPE_RING, 
@@ -75,6 +76,7 @@ private:
 	ci::gl::VboMesh				mCube;
 	ci::gl::VboMesh				mCustom;
 	ci::gl::VboMesh				mCylinder;
+	ci::gl::VboMesh				mIcosahedron;
 	ci::gl::VboMesh				mRing;
 	ci::gl::VboMesh				mSphere;
 	ci::gl::VboMesh				mSquare;
@@ -85,6 +87,8 @@ private:
 	std::vector<std::string>	mMeshTitles;
 
 	// Mesh resolution
+	int32_t						mDivision;
+	int32_t						mDivisionPrev;
 	ci::Vec3i					mResolution;
 	ci::Vec3i					mResolutionPrev;
 
@@ -134,14 +138,15 @@ using namespace std;
 void InstancedSampleApp::createMeshes()
 {
 	// Use the MeshHelper to generate primitives
-	mCircle		= MeshHelper::createCircleVboMesh( mResolution.xy() );
-	mCone		= MeshHelper::createCylinderVboMesh( mResolution.xy(), 0.0f, 1.0f, false, true );
-	mCube		= MeshHelper::createCubeVboMesh( mResolution );
-	mCylinder	= MeshHelper::createCylinderVboMesh( mResolution.xy() );
-	mRing		= MeshHelper::createRingVboMesh( mResolution.xy() );
-	mSphere		= MeshHelper::createSphereVboMesh( mResolution.xy() );
-	mSquare		= MeshHelper::createSquareVboMesh( mResolution.xy() );
-	mTorus		= MeshHelper::createTorusVboMesh( mResolution.xy() );
+	mCircle			= MeshHelper::createCircleVboMesh( mResolution.xy() );
+	mCone			= MeshHelper::createCylinderVboMesh( mResolution.xy(), 0.0f, 1.0f, false, true );
+	mCube			= MeshHelper::createCubeVboMesh( mResolution );
+	mCylinder		= MeshHelper::createCylinderVboMesh( mResolution.xy() );
+	mIcosahedron	= MeshHelper::createIcosahedronVboMesh( mDivision );
+	mRing			= MeshHelper::createRingVboMesh( mResolution.xy() );
+	mSphere			= MeshHelper::createSphereVboMesh( mResolution.xy() );
+	mSquare			= MeshHelper::createSquareVboMesh( mResolution.xy() );
+	mTorus			= MeshHelper::createTorusVboMesh( mResolution.xy() );
 	
 	/////////////////////////////////////////////////////////////////////////////
 	// Custom mesh
@@ -228,10 +233,12 @@ void InstancedSampleApp::draw()
 	// Bind and configure shader
 	if ( mShader ) {
 		mShader.bind();
-		mShader.uniform( "eyePoint",	mCamera.getEyePoint() );
-		mShader.uniform( "size",		Vec2f( mGridSize ) );
-		mShader.uniform( "spacing",		mGridSpacing );
-		mShader.uniform( "tex",			0 );
+		mShader.uniform( "eyePoint",		mCamera.getEyePoint() );
+		mShader.uniform( "lightingEnabled",	mLightEnabled ); 
+		mShader.uniform( "size",			Vec2f( mGridSize ) );
+		mShader.uniform( "spacing",			mGridSpacing );
+		mShader.uniform( "tex",				0 );
+		mShader.uniform( "textureEnabled",	mTextureEnabled ); 
 	}
 	
 	// Apply scale
@@ -257,6 +264,9 @@ void InstancedSampleApp::draw()
 		break;
 	case MESH_TYPE_CYLINDER:
 		drawInstanced( mCylinder, instanceCount );
+		break;
+	case MESH_TYPE_ICOSAHEDRON:
+		drawInstanced( mIcosahedron, instanceCount );
 		break;
 	case MESH_TYPE_RING:
 		drawInstanced( mRing, instanceCount );
@@ -344,7 +354,6 @@ void InstancedSampleApp::setup()
 	glShadeModel( GL_SMOOTH );
 	gl::enable( GL_POLYGON_SMOOTH );
 	glHint( GL_POLYGON_SMOOTH_HINT, GL_NICEST );
-	gl::enable( GL_NORMALIZE );
 	gl::enableAlphaBlending();
 	gl::enableDepthRead();
 	gl::enableDepthWrite();
@@ -362,6 +371,8 @@ void InstancedSampleApp::setup()
 	mTexture = gl::Texture( loadImage( loadResource( RES_TEXTURE ) ) );
 
 	// Define properties
+	mDivision			= 1;
+	mDivisionPrev		= mDivision;
 	mFrameRate			= 0.0f;
 	mFullScreen			= false;
 	mLightEnabled		= true;
@@ -398,6 +409,7 @@ void InstancedSampleApp::setup()
 	mMeshTitles.push_back( "Sphere" );
 	mMeshTitles.push_back( "Cylinder" );
 	mMeshTitles.push_back( "Cone" );
+	mMeshTitles.push_back( "Icosahedron" );
 	mMeshTitles.push_back( "Torus" );
 	mMeshTitles.push_back( "Circle" );
 	mMeshTitles.push_back( "Square" );
@@ -405,7 +417,7 @@ void InstancedSampleApp::setup()
 	mMeshTitles.push_back( "Custom" );
 
 	// Set up the params GUI
-	mParams = params::InterfaceGl( "Params", Vec2i( 200, 400 ) );
+	mParams = params::InterfaceGl( "Params", Vec2i( 200, 500 ) );
 	mParams.addParam( "Frame rate",		&mFrameRate,									"", true									);
 	mParams.addSeparator();
 	mParams.addParam( "Grid count X",	&mGridSize.x,									"keyDecr=g keyIncr=G min=1 max=1024 step=1"	);
@@ -415,6 +427,7 @@ void InstancedSampleApp::setup()
 	mParams.addSeparator();
 	mParams.addParam( "Enable light",	&mLightEnabled,									"key=l"										);
 	mParams.addParam( "Enable texture",	&mTextureEnabled,								"key=t"										);
+	mParams.addParam( "Ico division",	&mDivision,										"keyDecr=d keyIncr=D min=1 max=10 step=1"	);
 	mParams.addParam( "Mesh type",		mMeshTitles, &mMeshIndex,						"keyDecr=m keyIncr=M"						);
 	mParams.addParam( "Scale",			&mScale																						);
 	mParams.addParam( "Resolution X",	&mResolution.x,									"keyDecr=x keyIncr=X min=1 max=1024 step=1"	);
@@ -449,8 +462,10 @@ void InstancedSampleApp::update()
 	}
 
 	// Reset the meshes if the segment count changes
-	if ( mResolutionPrev != mResolution ) {
+	if ( mDivisionPrev	!= mDivision || 
+		mResolutionPrev != mResolution ) {
 		createMeshes();
+		mDivisionPrev	= mDivision;
 		mResolutionPrev = mResolution;
 	}
 

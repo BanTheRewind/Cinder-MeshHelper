@@ -61,6 +61,7 @@ private:
 		MESH_TYPE_CYLINDER, 
 		MESH_TYPE_CONE, 
 		MESH_TYPE_TORUS, 
+		MESH_TYPE_ICOSAHEDRON, 
 		MESH_TYPE_CIRCLE, 
 		MESH_TYPE_SQUARE, 
 		MESH_TYPE_RING, 
@@ -74,6 +75,7 @@ private:
 	ci::TriMesh					mCube;
 	ci::TriMesh					mCustom;
 	ci::TriMesh					mCylinder;
+	ci::TriMesh					mIcosahedron;
 	ci::TriMesh					mRing;
 	ci::TriMesh					mSphere;
 	ci::TriMesh					mSquare;
@@ -84,6 +86,8 @@ private:
 	std::vector<std::string>	mMeshTitles;
 
 	// Mesh resolution
+	int32_t						mDivision;
+	int32_t						mDivisionPrev;
 	ci::Vec3i					mResolution;
 	ci::Vec3i					mResolutionPrev;
 
@@ -125,14 +129,15 @@ using namespace std;
 void TriMeshSampleApp::createMeshes()
 {
 	// Use the MeshHelper to generate primitives
-	mCircle		= MeshHelper::createCircleTriMesh( mResolution.xy() );
-	mCone		= MeshHelper::createCylinderTriMesh( mResolution.xy(), 0.0f, 1.0f, false, true );
-	mCube		= MeshHelper::createCubeTriMesh( mResolution );
-	mCylinder	= MeshHelper::createCylinderTriMesh( mResolution.xy() );
-	mRing		= MeshHelper::createRingTriMesh( mResolution.xy() );
-	mSphere		= MeshHelper::createSphereTriMesh( mResolution.xy() );
-	mSquare		= MeshHelper::createSquareTriMesh( mResolution.xy() );
-	mTorus		= MeshHelper::createTorusTriMesh( mResolution.xy() );
+	mCircle			= MeshHelper::createCircleTriMesh( mResolution.xy() );
+	mCone			= MeshHelper::createCylinderTriMesh( mResolution.xy(), 0.0f, 1.0f, false, true );
+	mCube			= MeshHelper::createCubeTriMesh( mResolution );
+	mCylinder		= MeshHelper::createCylinderTriMesh( mResolution.xy() );
+	mIcosahedron	= MeshHelper::createIcosahedronTriMesh( mDivision );
+	mRing			= MeshHelper::createRingTriMesh( mResolution.xy() );
+	mSphere			= MeshHelper::createSphereTriMesh( mResolution.xy() );
+	mSquare			= MeshHelper::createSquareTriMesh( mResolution.xy() );
+	mTorus			= MeshHelper::createTorusTriMesh( mResolution.xy() );
 	
 	/////////////////////////////////////////////////////////////////////////////
 	// Custom mesh
@@ -237,6 +242,9 @@ void TriMeshSampleApp::draw()
 	case MESH_TYPE_CYLINDER:
 		gl::draw( mCylinder );
 		break;
+	case MESH_TYPE_ICOSAHEDRON:
+		gl::draw( mIcosahedron );
+		break;
 	case MESH_TYPE_RING:
 		gl::draw( mRing );
 		break;
@@ -316,6 +324,8 @@ void TriMeshSampleApp::setup()
 	mTexture = gl::Texture( loadImage( loadResource( RES_TEXTURE ) ) );
 
 	// Define properties
+	mDivision			= 1;
+	mDivisionPrev		= mDivision;
 	mFrameRate			= 0.0f;
 	mFullScreen			= false;
 	mLightEnabled		= true;
@@ -349,6 +359,7 @@ void TriMeshSampleApp::setup()
 	mMeshTitles.push_back( "Cylinder" );
 	mMeshTitles.push_back( "Cone" );
 	mMeshTitles.push_back( "Torus" );
+	mMeshTitles.push_back( "Icosahedron" );
 	mMeshTitles.push_back( "Circle" );
 	mMeshTitles.push_back( "Square" );
 	mMeshTitles.push_back( "Ring" );
@@ -360,6 +371,7 @@ void TriMeshSampleApp::setup()
 	mParams.addSeparator();
 	mParams.addParam( "Enable light",	&mLightEnabled,									"key=l"										);
 	mParams.addParam( "Enable texture",	&mTextureEnabled,								"key=t"										);
+	mParams.addParam( "Ico division",	&mDivision,										"keyDecr=d keyIncr=D min=1 max=8 step=1"	);
 	mParams.addParam( "Mesh type",		mMeshTitles, &mMeshIndex,						"keyDecr=m keyIncr=M"						);
 	mParams.addParam( "Scale",			&mScale																						);
 	mParams.addParam( "Resolution X",	&mResolution.x,									"keyDecr=x keyIncr=X min=1 max=1024 step=1"	);
@@ -394,8 +406,10 @@ void TriMeshSampleApp::update()
 	}
 
 	// Reset the meshes if the segment count changes
-	if ( mResolutionPrev != mResolution ) {
+	if ( mDivisionPrev	!= mDivision || 
+		mResolutionPrev != mResolution ) {
 		createMeshes();
+		mDivisionPrev	= mDivision;
 		mResolutionPrev = mResolution;
 	}
 
