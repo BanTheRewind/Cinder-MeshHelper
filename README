@@ -3,7 +3,7 @@ in the creation of primitive or custom TriMesh or VboMesh
 meshes in Cinder.
 
 In-progress tasks in dev branch
- - Polyhedron
+ - Icosahedron star
  - VBO instancing sample for XCode
  - iOS TriMesh sample
 
