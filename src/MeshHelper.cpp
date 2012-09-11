@@ -372,7 +372,7 @@ TriMesh MeshHelper::createIcosahedronTriMesh( uint32_t division )
 
 	if ( division > 1 ) {
 		mesh = subdivide( mesh, division, true );
-	} 
+	}
 
 	indices.clear();
 	normals.clear();

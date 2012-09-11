@@ -109,4 +109,18 @@ public:
 	static ci::gl::VboMesh	createTorusVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
 		float ratio = 0.5f );
 #endif
+
+private:
+	struct VertexDistance
+	{
+		float		mDistance;
+		uint32_t	mIndex;
+
+		bool		operator==( const VertexDistance &rhs ) { return mDistance == rhs.mDistance; }
+		bool		operator!=( const VertexDistance &rhs ) { return mDistance != rhs.mDistance; }
+		bool		operator<( const VertexDistance &rhs ) { return mDistance < rhs.mDistance; }
+		bool		operator<=( const VertexDistance &rhs ) { return mDistance <= rhs.mDistance; }
+		bool		operator>( const VertexDistance &rhs ) { return mDistance > rhs.mDistance; }
+		bool		operator>=( const VertexDistance &rhs ) { return mDistance >= rhs.mDistance; }
+	};
 };
