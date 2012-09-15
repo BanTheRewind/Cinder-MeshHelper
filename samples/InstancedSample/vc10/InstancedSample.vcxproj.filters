@@ -24,6 +24,9 @@
     <ClCompile Include="..\src\InstancedSampleApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\MeshHelper.cpp">
+      <Filter>blocks\Cinder-MeshHelper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">

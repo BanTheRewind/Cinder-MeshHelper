@@ -35,18 +35,14 @@
 
 #pragma once
 
-#if ! defined( CINDER_COCOA_TOUCH )
-	#include "cinder/gl/Vbo.h"
-#endif
 #include "cinder/TriMesh.h"
-#include <map>
 
 class MeshHelper 
 {
 public:
 	//! Create TriMesh from vectors of vertex data.
-	static ci::TriMesh		createTriMesh( std::vector<uint32_t> &indices, const std::vector<ci::Vec3f> &positions,
-								const std::vector<ci::Vec3f> &normals, const std::vector<ci::Vec2f> &texCoords );
+	static ci::TriMesh		create( std::vector<uint32_t> &indices, const std::vector<ci::Vec3f> &positions,
+									const std::vector<ci::Vec3f> &normals, const std::vector<ci::Vec2f> &texCoords );
 	/*! Subdivide vectors of vertex data into a TriMesh \a division times. Division less 
 		than 2 returns the original mesh. */
 	static ci::TriMesh		subdivide( std::vector<uint32_t> &indices, const std::vector<ci::Vec3f> &positions,
@@ -56,61 +52,32 @@ public:
 	static ci::TriMesh		subdivide( const ci::TriMesh &triMesh, uint32_t division = 2, bool normalize = false );
 
 	//! Create circle TriMesh with a radius of 1.0 and \a resolution segments.
-	static ci::TriMesh		createCircleTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ) );
+	static ci::TriMesh		createCircle( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ) );
 	//! Create cube TriMesh with an edge length of 1.0 divided into \a resolution segments.
-	static ci::TriMesh		createCubeTriMesh( const ci::Vec3i &resolution = ci::Vec3i::one() );
+	static ci::TriMesh		createCube( const ci::Vec3i &resolution = ci::Vec3i::one() );
 	/*! Create cylinder TriMesh with a height of 1.0, top radius of \a topRadius, base radius 
 		of \a baseRadius and \a resolution segments. Top and base are closed with \a closeTop and 
 		\a closeBase flags. */
-	static ci::TriMesh		createCylinderTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
+	static ci::TriMesh		createCylinder( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
 		float topRadius = 1.0f, float baseRadius = 1.0f, bool closeTop = true, bool closeBase = true );
 	//! Creates icosahedron where each face is subdivided \b division times.
-	static ci::TriMesh		createIcosahedronTriMesh( uint32_t division = 1 );
+	static ci::TriMesh		createIcosahedron( uint32_t division = 1 );
 	/*! Create ring TriMesh with a radius of 1.0, \a resolution segments, and second radius 
 		of \a ratio. */
-	static ci::TriMesh		createRingTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ), 
+	static ci::TriMesh		createRing( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ), 
 		float ratio = 0.5f );
 	//! Create sphere TriMesh with a radius of 1.0 and \a resolution segments.
-	static ci::TriMesh		createSphereTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ) );
+	static ci::TriMesh		createSphere( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ) );
 	//! Create square TriMesh with an edge length of 1.0 divided into \a resolution segments.
-	static ci::TriMesh		createSquareTriMesh( const ci::Vec2i &resolution = ci::Vec2i::one() );
+	static ci::TriMesh		createSquare( const ci::Vec2i &resolution = ci::Vec2i::one() );
 	/*! Create torus TriMesh with a radius of 1.0, \a resolution segments, and second radius 
 		of \a ratio. */
-	static ci::TriMesh		createTorusTriMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
+	static ci::TriMesh		createTorus( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
 		float ratio = 0.5f );
 
-#if ! defined( CINDER_COCOA_TOUCH )
-	//! Create VboMesh from vectors of vertex data.
-	static ci::gl::VboMesh	createVboMesh( const std::vector<uint32_t> &indices, const std::vector<ci::Vec3f> &positions, 
-								const std::vector<ci::Vec3f> &normals, const std::vector<ci::Vec2f> &texCoords, 
-								GLenum primitiveType = GL_TRIANGLES );
-	
-	//! Create circle VboMesh with a radius of 1.0 and \a resolution segments.
-	static ci::gl::VboMesh	createCircleVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ) );
-	//! Create cube VboMesh with an edge length of 1.0 divided into \a resolution segments.
-	static ci::gl::VboMesh	createCubeVboMesh( const ci::Vec3i &resolution = ci::Vec3i::one() );
-	/*! Create cylinder VboMesh with a height of 1.0, top radius of \a topRadius, base radius 
-		of \a baseRadius and \a resolution segments. Top and base are closed with \a closeTop and 
-		\a closeBase flags. */
-	static ci::gl::VboMesh	createCylinderVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
-		float topRadius = 1.0f, float baseRadius = 1.0f, bool closeTop = true, bool closeBase = true );
-	//! Creates icosahedron where each face is subdivided \b division times.
-	static ci::gl::VboMesh	createIcosahedronVboMesh( uint32_t division = 1 );
-	/*! Create ring VboMesh with a radius of 1.0, \a resolution segments, and a second radius 
-		of \a ratio. */
-	static ci::gl::VboMesh	createRingVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ), 
-		float ratio = 0.5f );
-	//! Create sphere VboMesh with a radius of 1.0 and \a resolution segments.
-	static ci::gl::VboMesh	createSphereVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ) );
-	//! Create square VboMesh with an edge length of 1.0 divided into \a resolution segments.
-	static ci::gl::VboMesh	createSquareVboMesh( const ci::Vec2i &resolution = ci::Vec2i::one() );
-	/*! Create torus VboMesh with a radius of 1.0, \a resolution segments, and second radius 
-		of \a ratio. */
-	static ci::gl::VboMesh	createTorusVboMesh( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
-		float ratio = 0.5f );
-#endif
+/*private:
 
-private:
+	// TODO use to generate icosahedron star
 	struct VertexDistance
 	{
 		float		mDistance;
@@ -122,5 +89,5 @@ private:
 		bool		operator<=( const VertexDistance &rhs ) { return mDistance <= rhs.mDistance; }
 		bool		operator>( const VertexDistance &rhs ) { return mDistance > rhs.mDistance; }
 		bool		operator>=( const VertexDistance &rhs ) { return mDistance >= rhs.mDistance; }
-	};
+	};*/
 };

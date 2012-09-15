@@ -129,15 +129,15 @@ using namespace std;
 void TriMeshSampleApp::createMeshes()
 {
 	// Use the MeshHelper to generate primitives
-	mCircle			= MeshHelper::createCircleTriMesh( mResolution.xy() );
-	mCone			= MeshHelper::createCylinderTriMesh( mResolution.xy(), 0.0f, 1.0f, false, true );
-	mCube			= MeshHelper::createCubeTriMesh( mResolution );
-	mCylinder		= MeshHelper::createCylinderTriMesh( mResolution.xy() );
-	mIcosahedron	= MeshHelper::createIcosahedronTriMesh( mDivision );
-	mRing			= MeshHelper::createRingTriMesh( mResolution.xy() );
-	mSphere			= MeshHelper::createSphereTriMesh( mResolution.xy() );
-	mSquare			= MeshHelper::createSquareTriMesh( mResolution.xy() );
-	mTorus			= MeshHelper::createTorusTriMesh( mResolution.xy() );
+	mCircle			= MeshHelper::createCircle( mResolution.xy() );
+	mCone			= MeshHelper::createCylinder( mResolution.xy(), 0.0f, 1.0f, false, true );
+	mCube			= MeshHelper::createCube( mResolution );
+	mCylinder		= MeshHelper::createCylinder( mResolution.xy() );
+	mIcosahedron	= MeshHelper::createIcosahedron( mDivision );
+	mRing			= MeshHelper::createRing( mResolution.xy() );
+	mSphere			= MeshHelper::createSphere( mResolution.xy() );
+	mSquare			= MeshHelper::createSquare( mResolution.xy() );
+	mTorus			= MeshHelper::createTorus( mResolution.xy() );
 	
 	/////////////////////////////////////////////////////////////////////////////
 	// Custom mesh
@@ -196,7 +196,7 @@ void TriMeshSampleApp::createMeshes()
 	}
 
 	// Use the MeshHelper to create a TriMesh from our vectors
-	mCustom = MeshHelper::createTriMesh( indices, positions, normals, texCoords );
+	mCustom = MeshHelper::create( indices, positions, normals, texCoords );
 }
 
 void TriMeshSampleApp::draw()
