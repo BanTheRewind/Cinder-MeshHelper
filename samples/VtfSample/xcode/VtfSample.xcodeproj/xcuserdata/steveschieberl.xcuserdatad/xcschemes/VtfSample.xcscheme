@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8D1107260486CEB800E47090"
-               BuildableName = "VboMeshSample.app"
-               BlueprintName = "VboMeshSample"
-               ReferencedContainer = "container:VboMeshSample.xcodeproj">
+               BuildableName = "VtfSample.app"
+               BlueprintName = "VtfSample"
+               ReferencedContainer = "container:VtfSample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8D1107260486CEB800E47090"
-            BuildableName = "VboMeshSample.app"
-            BlueprintName = "VboMeshSample"
-            ReferencedContainer = "container:VboMeshSample.xcodeproj">
+            BuildableName = "VtfSample.app"
+            BlueprintName = "VtfSample"
+            ReferencedContainer = "container:VtfSample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -52,9 +52,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8D1107260486CEB800E47090"
-            BuildableName = "VboMeshSample.app"
-            BlueprintName = "VboMeshSample"
-            ReferencedContainer = "container:VboMeshSample.xcodeproj">
+            BuildableName = "VtfSample.app"
+            BlueprintName = "VtfSample"
+            ReferencedContainer = "container:VtfSample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -70,9 +70,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8D1107260486CEB800E47090"
-            BuildableName = "VboMeshSample.app"
-            BlueprintName = "VboMeshSample"
-            ReferencedContainer = "container:VboMeshSample.xcodeproj">
+            BuildableName = "VtfSample.app"
+            BlueprintName = "VtfSample"
+            ReferencedContainer = "container:VtfSample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
