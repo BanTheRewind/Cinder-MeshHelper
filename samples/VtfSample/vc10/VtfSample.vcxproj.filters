@@ -21,7 +21,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\InstancedSampleApp.cpp">
+    <ClCompile Include="..\src\VtfSampleApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\MeshHelper.cpp">
@@ -45,10 +45,16 @@
     <None Include="..\resources\texture.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\resources\vert.glsl">
+    <None Include="..\resources\vtf_frag.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\resources\frag.glsl">
+    <None Include="..\resources\vtf_vert.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resources\tex_frag.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resources\tex_vert.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

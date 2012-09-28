@@ -138,15 +138,15 @@ using namespace std;
 void InstancedSampleApp::createMeshes()
 {
 	// Use the MeshHelper to generate primitives
-	mCircle			= MeshHelper::createCircleVboMesh( mResolution.xy() );
-	mCone			= MeshHelper::createCylinderVboMesh( mResolution.xy(), 0.0f, 1.0f, false, true );
-	mCube			= MeshHelper::createCubeVboMesh( mResolution );
-	mCylinder		= MeshHelper::createCylinderVboMesh( mResolution.xy() );
-	mIcosahedron	= MeshHelper::createIcosahedronVboMesh( mDivision );
-	mRing			= MeshHelper::createRingVboMesh( mResolution.xy() );
-	mSphere			= MeshHelper::createSphereVboMesh( mResolution.xy() );
-	mSquare			= MeshHelper::createSquareVboMesh( mResolution.xy() );
-	mTorus			= MeshHelper::createTorusVboMesh( mResolution.xy() );
+	mCircle			= gl::VboMesh( MeshHelper::createCircle( mResolution.xy() ) );
+	mCone			= gl::VboMesh( MeshHelper::createCylinder( mResolution.xy(), 0.0f, 1.0f, false, true ) );
+	mCube			= gl::VboMesh( MeshHelper::createCube( mResolution ) );
+	mCylinder		= gl::VboMesh( MeshHelper::createCylinder( mResolution.xy() ) );
+	mIcosahedron	= gl::VboMesh( MeshHelper::createIcosahedron( mDivision ) );
+	mRing			= gl::VboMesh( MeshHelper::createRing( mResolution.xy() ) );
+	mSphere			= gl::VboMesh( MeshHelper::createSphere( mResolution.xy() ) );
+	mSquare			= gl::VboMesh( MeshHelper::createSquare( mResolution.xy() ) );
+	mTorus			= gl::VboMesh( MeshHelper::createTorus( mResolution.xy() ) );
 	
 	/////////////////////////////////////////////////////////////////////////////
 	// Custom mesh
@@ -205,7 +205,7 @@ void InstancedSampleApp::createMeshes()
 	}
 
 	// Use the MeshHelper to create a VboMesh from our vectors
-	mCustom = MeshHelper::createVboMesh( indices, positions, normals, texCoords );
+	mCustom = gl::VboMesh( MeshHelper::create( indices, positions, normals, texCoords ) );
 }
 
 void InstancedSampleApp::draw()
@@ -429,10 +429,10 @@ void InstancedSampleApp::setup()
 	mParams.addParam( "Enable texture",	&mTextureEnabled,								"key=t"										);
 	mParams.addParam( "Ico division",	&mDivision,										"keyDecr=d keyIncr=D min=1 max=10 step=1"	);
 	mParams.addParam( "Mesh type",		mMeshTitles, &mMeshIndex,						"keyDecr=m keyIncr=M"						);
-	mParams.addParam( "Scale",			&mScale																						);
 	mParams.addParam( "Resolution X",	&mResolution.x,									"keyDecr=x keyIncr=X min=1 max=1024 step=1"	);
 	mParams.addParam( "Resolution Y",	&mResolution.y,									"keyDecr=y keyIncr=Y min=1 max=1024 step=1"	);
 	mParams.addParam( "Resolution Z",	&mResolution.z,									"keyDecr=z keyIncr=Z min=1 max=1024 step=1"	);
+	mParams.addParam( "Scale",			&mScale																						);
 	mParams.addParam( "Wireframe",		&mWireframe,									"key=w"										);
 	mParams.addSeparator();
 	mParams.addParam( "Full screen",	&mFullScreen,									"key=f"										);

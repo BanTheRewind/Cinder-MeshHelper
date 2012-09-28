@@ -20,7 +20,11 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		BF10F06315ED9F0C0011DA77 /* MeshHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF10F06115ED9F0C0011DA77 /* MeshHelper.cpp */; };
 		BF10F06815ED9FC90011DA77 /* texture.png in Resources */ = {isa = PBXBuildFile; fileRef = BF10F06715ED9FC90011DA77 /* texture.png */; };
-		BFA3CCC115EDACE8006B1568 /* VboMeshSampleApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFA3CCC015EDACE8006B1568 /* VboMeshSampleApp.cpp */; };
+		BF309CC416161FCF0089EEB1 /* VtfSampleApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF309CC316161FCF0089EEB1 /* VtfSampleApp.cpp */; };
+		BF309CC916161FDD0089EEB1 /* tex_frag.glsl in Resources */ = {isa = PBXBuildFile; fileRef = BF309CC516161FDD0089EEB1 /* tex_frag.glsl */; };
+		BF309CCA16161FDD0089EEB1 /* tex_vert.glsl in Resources */ = {isa = PBXBuildFile; fileRef = BF309CC616161FDD0089EEB1 /* tex_vert.glsl */; };
+		BF309CCB16161FDD0089EEB1 /* vtf_frag.glsl in Resources */ = {isa = PBXBuildFile; fileRef = BF309CC716161FDD0089EEB1 /* vtf_frag.glsl */; };
+		BF309CCC16161FDD0089EEB1 /* vtf_vert.glsl in Resources */ = {isa = PBXBuildFile; fileRef = BF309CC816161FDD0089EEB1 /* vtf_vert.glsl */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,17 +39,21 @@
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		32CA4F630368D1EE00C91783 /* VboMeshSample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VboMeshSample_Prefix.pch; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* VtfSample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VtfSample_Prefix.pch; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		5323E6B50EAFCA7E003A9687 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		53E3CDFB0E86099300238D2B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8D1107320486CEB800E47090 /* TriMeshSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = TriMeshSample.app; path = VboMeshSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D1107320486CEB800E47090 /* TriMeshSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = TriMeshSample.app; path = VtfSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF10F06115ED9F0C0011DA77 /* MeshHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MeshHelper.cpp; path = ../../../src/MeshHelper.cpp; sourceTree = "<group>"; };
 		BF10F06215ED9F0C0011DA77 /* MeshHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeshHelper.h; path = ../../../src/MeshHelper.h; sourceTree = "<group>"; };
 		BF10F06615ED9FC00011DA77 /* Resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		BF10F06715ED9FC90011DA77 /* texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = texture.png; path = ../resources/texture.png; sourceTree = "<group>"; };
-		BFA3CCC015EDACE8006B1568 /* VboMeshSampleApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VboMeshSampleApp.cpp; path = ../src/VboMeshSampleApp.cpp; sourceTree = "<group>"; };
+		BF309CC316161FCF0089EEB1 /* VtfSampleApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VtfSampleApp.cpp; path = ../src/VtfSampleApp.cpp; sourceTree = "<group>"; };
+		BF309CC516161FDD0089EEB1 /* tex_frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tex_frag.glsl; path = ../resources/tex_frag.glsl; sourceTree = "<group>"; };
+		BF309CC616161FDD0089EEB1 /* tex_vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tex_vert.glsl; path = ../resources/tex_vert.glsl; sourceTree = "<group>"; };
+		BF309CC716161FDD0089EEB1 /* vtf_frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vtf_frag.glsl; path = ../resources/vtf_frag.glsl; sourceTree = "<group>"; };
+		BF309CC816161FDD0089EEB1 /* vtf_vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vtf_vert.glsl; path = ../resources/vtf_vert.glsl; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +80,7 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				BFA3CCC015EDACE8006B1568 /* VboMeshSampleApp.cpp */,
+				BF309CC316161FCF0089EEB1 /* VtfSampleApp.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -128,7 +136,7 @@
 		29B97315FDCFA39411CA2CEA /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				32CA4F630368D1EE00C91783 /* VboMeshSample_Prefix.pch */,
+				32CA4F630368D1EE00C91783 /* VtfSample_Prefix.pch */,
 				BF10F06615ED9FC00011DA77 /* Resources.h */,
 			);
 			name = Headers;
@@ -137,6 +145,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BF309CC516161FDD0089EEB1 /* tex_frag.glsl */,
+				BF309CC616161FDD0089EEB1 /* tex_vert.glsl */,
+				BF309CC716161FDD0089EEB1 /* vtf_frag.glsl */,
+				BF309CC816161FDD0089EEB1 /* vtf_vert.glsl */,
 				BF10F06715ED9FC90011DA77 /* texture.png */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				00CCAF14116A9FEE008396D5 /* CinderApp.icns */,
@@ -165,9 +177,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8D1107260486CEB800E47090 /* VboMeshSample */ = {
+		8D1107260486CEB800E47090 /* VtfSample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "VboMeshSample" */;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "VtfSample" */;
 			buildPhases = (
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
@@ -177,7 +189,7 @@
 			);
 			dependencies = (
 			);
-			name = VboMeshSample;
+			name = VtfSample;
 			productInstallPath = "$(HOME)/Applications";
 			productName = BasicTrackballDemo;
 			productReference = 8D1107320486CEB800E47090 /* TriMeshSample.app */;
@@ -191,7 +203,7 @@
 			attributes = {
 				LastUpgradeCheck = 0440;
 			};
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "VboMeshSample" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "VtfSample" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -202,7 +214,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8D1107260486CEB800E47090 /* VboMeshSample */,
+				8D1107260486CEB800E47090 /* VtfSample */,
 			);
 		};
 /* End PBXProject section */
@@ -214,6 +226,10 @@
 			files = (
 				00CCAF15116A9FEE008396D5 /* CinderApp.icns in Resources */,
 				BF10F06815ED9FC90011DA77 /* texture.png in Resources */,
+				BF309CC916161FDD0089EEB1 /* tex_frag.glsl in Resources */,
+				BF309CCA16161FDD0089EEB1 /* tex_vert.glsl in Resources */,
+				BF309CCB16161FDD0089EEB1 /* vtf_frag.glsl in Resources */,
+				BF309CCC16161FDD0089EEB1 /* vtf_vert.glsl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,7 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF10F06315ED9F0C0011DA77 /* MeshHelper.cpp in Sources */,
-				BFA3CCC115EDACE8006B1568 /* VboMeshSampleApp.cpp in Sources */,
+				BF309CC416161FCF0089EEB1 /* VtfSampleApp.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,12 +260,12 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = VboMeshSample_Prefix.pch;
+				GCC_PREFIX_HEADER = VtfSample_Prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder_d.a\"";
-				PRODUCT_NAME = VboMeshSample;
+				PRODUCT_NAME = VtfSample;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../include ../../../src";
 				WRAPPER_EXTENSION = app;
 			};
@@ -269,12 +285,12 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = VboMeshSample_Prefix.pch;
+				GCC_PREFIX_HEADER = VtfSample_Prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder.a\"";
-				PRODUCT_NAME = VboMeshSample;
+				PRODUCT_NAME = VtfSample;
 				STRIP_INSTALLED_PRODUCT = YES;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../include ../../../src";
 				WRAPPER_EXTENSION = app;
@@ -291,7 +307,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include";
 			};
 			name = Debug;
@@ -306,7 +322,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include";
 			};
 			name = Release;
@@ -314,7 +330,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "VboMeshSample" */ = {
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "VtfSample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4B08A954540054247B /* Debug */,
@@ -323,7 +339,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "VboMeshSample" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "VtfSample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
