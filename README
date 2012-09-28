@@ -1,14 +1,12 @@
 Cinder-MeshHelper is a library of static functions to aide
-in the creation of primitive or custom TriMesh or VboMesh 
-meshes in Cinder.
+in the creation of primitive or custom meshes in Cinder.
 
 In-progress tasks in dev branch
- - Icosahedron star
  - iOS TriMesh sample
 
 -----------------------------------------
 
-Version 0.1.0
+Version 0.1.1
 
 -----------------------------------------
 
