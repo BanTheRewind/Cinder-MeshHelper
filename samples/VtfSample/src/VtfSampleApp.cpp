@@ -115,7 +115,7 @@ void VtfSampleApp::createMesh()
 { 
 	// Initialize FBO
 	gl::Fbo::Format format;
-	format.setColorInternalFormat( GL_RGBA32F );
+	format.setColorInternalFormat( GL_RGB32F_ARB );
 	mFbo = gl::Fbo( mResolution.x, mResolution.y, format );
 
 	// Initialize FBO texture
