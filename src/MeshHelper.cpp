@@ -613,7 +613,7 @@ TriMesh MeshHelper::createTorus( const Vec2i &resolution, float ratio )
 			float y		= sinPhi * rct;
 			float z		= sinTheta * innerRadius;
 			
-			Vec3f normal( cosTheta * cosTheta, sinPhi * cosTheta, sinTheta );
+			Vec3f normal( -cosTheta * cosTheta, sinPhi * cosTheta, sinTheta );
 			Vec3f position( x, y, z );
 			Vec2f texCoord( u, v );
 
