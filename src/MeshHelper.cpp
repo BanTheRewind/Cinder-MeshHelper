@@ -47,7 +47,8 @@ TriMesh MeshHelper::create( vector<uint32_t> &indices, const vector<Vec3f> &posi
 	}
 	if ( normals.size() > 0 ) {
 		for ( vector<Vec3f>::const_iterator iter = normals.begin(); iter != normals.end(); ++iter ) {
-			mesh.appendNormal( *iter );
+			Vec3f normal( -iter->x, iter->y, -iter->z );
+			mesh.appendNormal( normal );
 		}
 	}
 	if ( positions.size() > 0 ) {
@@ -613,7 +614,7 @@ TriMesh MeshHelper::createTorus( const Vec2i &resolution, float ratio )
 			float y		= sinPhi * rct;
 			float z		= sinTheta * innerRadius;
 			
-			Vec3f normal( -cosTheta * cosTheta, sinPhi * cosTheta, sinTheta );
+			Vec3f normal( -cosTheta * cosTheta, -sinPhi * cosTheta, -sinTheta );
 			Vec3f position( x, y, z );
 			Vec2f texCoord( u, v );
 
