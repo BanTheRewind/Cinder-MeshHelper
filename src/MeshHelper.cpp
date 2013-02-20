@@ -45,7 +45,7 @@ TriMesh MeshHelper::create( vector<uint32_t>& indices, const vector<Vec3f>& posi
 {
 	TriMesh mesh;
 	if ( indices.size() > 0 ) {
-		mesh.appendIndices(& indices[ 0 ], indices.size() );
+		mesh.appendIndices( & indices[ 0 ], indices.size() );
 	}
 	if ( normals.size() > 0 ) {
 		for ( vector<Vec3f>::const_iterator iter = normals.begin(); iter != normals.end(); ++iter ) {
@@ -53,7 +53,7 @@ TriMesh MeshHelper::create( vector<uint32_t>& indices, const vector<Vec3f>& posi
 		}
 	}
 	if ( positions.size() > 0 ) {
-		mesh.appendVertices(& positions[ 0 ], positions.size() );
+		mesh.appendVertices( & positions[ 0 ], positions.size() );
 	}
 	if ( texCoords.size() > 0 ) {
 		for ( vector<Vec2f>::const_iterator iter = texCoords.begin(); iter != texCoords.end(); ++iter ) {
