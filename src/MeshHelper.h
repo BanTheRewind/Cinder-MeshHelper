@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2012, Ban the Rewind
+* Copyright (c) 2013, Ban the Rewind
 * All rights reserved.
 * 
 * Redistribution and use in source and binary forms, with or 
@@ -41,38 +41,38 @@ class MeshHelper
 {
 public:
 	//! Create TriMesh from vectors of vertex data.
-	static ci::TriMesh		create( std::vector<uint32_t> &indices, const std::vector<ci::Vec3f> &positions,
-									const std::vector<ci::Vec3f> &normals, const std::vector<ci::Vec2f> &texCoords );
+	static ci::TriMesh		create( std::vector<uint32_t>& indices, const std::vector<ci::Vec3f>& positions,
+									const std::vector<ci::Vec3f>& normals, const std::vector<ci::Vec2f>& texCoords );
 	/*! Subdivide vectors of vertex data into a TriMesh \a division times. Division less 
 		than 2 returns the original mesh. */
-	static ci::TriMesh		subdivide( std::vector<uint32_t> &indices, const std::vector<ci::Vec3f> &positions,
-								const std::vector<ci::Vec3f> &normals, const std::vector<ci::Vec2f> &texCoords, 
+	static ci::TriMesh		subdivide( std::vector<uint32_t>& indices, const std::vector<ci::Vec3f>& positions,
+								const std::vector<ci::Vec3f>& normals, const std::vector<ci::Vec2f>& texCoords, 
 								uint32_t division = 2, bool normalize = false );
 	//! Subdivide a TriMesh \a division times. Division less than 2 returns the original mesh. 
-	static ci::TriMesh		subdivide( const ci::TriMesh &triMesh, uint32_t division = 2, bool normalize = false );
+	static ci::TriMesh		subdivide( const ci::TriMesh& triMesh, uint32_t division = 2, bool normalize = false );
 
 	//! Create circle TriMesh with a radius of 1.0 and \a resolution segments.
-	static ci::TriMesh		createCircle( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ) );
+	static ci::TriMesh		createCircle( const ci::Vec2i& resolution = ci::Vec2i( 12, 1 ) );
 	//! Create cube TriMesh with an edge length of 1.0 divided into \a resolution segments.
-	static ci::TriMesh		createCube( const ci::Vec3i &resolution = ci::Vec3i::one() );
+	static ci::TriMesh		createCube( const ci::Vec3i& resolution = ci::Vec3i::one() );
 	/*! Create cylinder TriMesh with a height of 1.0, top radius of \a topRadius, base radius 
 		of \a baseRadius and \a resolution segments. Top and base are closed with \a closeTop and 
 		\a closeBase flags. */
-	static ci::TriMesh		createCylinder( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
+	static ci::TriMesh		createCylinder( const ci::Vec2i& resolution = ci::Vec2i( 12, 6 ), 
 		float topRadius = 1.0f, float baseRadius = 1.0f, bool closeTop = true, bool closeBase = true );
 	//! Creates icosahedron where each face is subdivided \b division times.
 	static ci::TriMesh		createIcosahedron( uint32_t division = 1 );
 	/*! Create ring TriMesh with a radius of 1.0, \a resolution segments, and second radius 
 		of \a ratio. */
-	static ci::TriMesh		createRing( const ci::Vec2i &resolution = ci::Vec2i( 12, 1 ), 
+	static ci::TriMesh		createRing( const ci::Vec2i& resolution = ci::Vec2i( 12, 1 ), 
 		float ratio = 0.5f );
 	//! Create sphere TriMesh with a radius of 1.0 and \a resolution segments.
-	static ci::TriMesh		createSphere( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ) );
+	static ci::TriMesh		createSphere( const ci::Vec2i& resolution = ci::Vec2i( 12, 6 ) );
 	//! Create square TriMesh with an edge length of 1.0 divided into \a resolution segments.
-	static ci::TriMesh		createSquare( const ci::Vec2i &resolution = ci::Vec2i::one() );
+	static ci::TriMesh		createSquare( const ci::Vec2i& resolution = ci::Vec2i::one() );
 	/*! Create torus TriMesh with a radius of 1.0, \a resolution segments, and second radius 
 		of \a ratio. */
-	static ci::TriMesh		createTorus( const ci::Vec2i &resolution = ci::Vec2i( 12, 6 ), 
+	static ci::TriMesh		createTorus( const ci::Vec2i& resolution = ci::Vec2i( 12, 6 ), 
 		float ratio = 0.5f );
 
 /*private:
@@ -83,11 +83,11 @@ public:
 		float		mDistance;
 		uint32_t	mIndex;
 
-		bool		operator==( const VertexDistance &rhs ) { return mDistance == rhs.mDistance; }
-		bool		operator!=( const VertexDistance &rhs ) { return mDistance != rhs.mDistance; }
-		bool		operator<( const VertexDistance &rhs ) { return mDistance < rhs.mDistance; }
-		bool		operator<=( const VertexDistance &rhs ) { return mDistance <= rhs.mDistance; }
-		bool		operator>( const VertexDistance &rhs ) { return mDistance > rhs.mDistance; }
-		bool		operator>=( const VertexDistance &rhs ) { return mDistance >= rhs.mDistance; }
+		bool		operator==( const VertexDistance& rhs ) { return mDistance == rhs.mDistance; }
+		bool		operator!=( const VertexDistance& rhs ) { return mDistance != rhs.mDistance; }
+		bool		operator<( const VertexDistance& rhs ) { return mDistance < rhs.mDistance; }
+		bool		operator<=( const VertexDistance& rhs ) { return mDistance <= rhs.mDistance; }
+		bool		operator>( const VertexDistance& rhs ) { return mDistance > rhs.mDistance; }
+		bool		operator>=( const VertexDistance& rhs ) { return mDistance >= rhs.mDistance; }
 	};*/
 };

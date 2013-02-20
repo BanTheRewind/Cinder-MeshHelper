@@ -103,7 +103,7 @@ private:
 	ci::gl::GlslProg			mShader;
 
 	// Instance grid
-	void						drawInstanced( const ci::gl::VboMesh &vbo, size_t count = 1 );
+	void						drawInstanced( const ci::gl::VboMesh& vbo, size_t count = 1 );
 	ci::Vec2i					mGridSize;
 	ci::Vec2f					mGridSpacing;
 
@@ -165,8 +165,8 @@ void InstancedSampleApp::createMeshes()
 	Vec3f offset( -0.5f, 0.5f, 0.0f );
 
 	// Iterate through rows and columns using segment count
-	for ( int32_t y = 0; y < mResolution.y; y++ ) {
-		for ( int32_t x = 0; x < mResolution.x; x++ ) {
+	for ( int32_t y = 0; y < mResolution.y; ++y ) {
+		for ( int32_t x = 0; x < mResolution.x; ++x ) {
 
 			// Set texture coordinate in [ 0 - 1, 0 - 1 ] range
 			Vec2f texCoord( (float)x / (float)mResolution.x, (float)y / (float)mResolution.y );
@@ -195,8 +195,8 @@ void InstancedSampleApp::createMeshes()
 	}
 
 	// Iterate through again to set normals
-	for ( int32_t y = 0; y < mResolution.y - 1; y++ ) {
-		for ( int32_t x = 0; x < mResolution.x - 1; x++ ) {
+	for ( int32_t y = 0; y < mResolution.y - 1; ++y ) {
+		for ( int32_t x = 0; x < mResolution.x - 1; ++x ) {
 			Vec3f vert0 = positions[ indices[ ( x + mResolution.x * y ) * 6 ] ];
 			Vec3f vert1 = positions[ indices[ ( ( x + 1 ) + mResolution.x * y ) * 6 ] ];
 			Vec3f vert2 = positions[ indices[ ( ( x + 1 ) + mResolution.x * ( y + 1 ) ) * 6 ] ];
@@ -222,7 +222,7 @@ void InstancedSampleApp::draw()
 	if ( mLightEnabled ) {
 		gl::enable( GL_LIGHTING );
 	}
-	if ( mTextureEnabled && mTexture ) {
+	if ( mTextureEnabled &&  mTexture ) {
 		gl::enable( GL_TEXTURE_2D );
 		mTexture.bind( 0 );
 	}
@@ -289,7 +289,7 @@ void InstancedSampleApp::draw()
 	if ( mWireframe ) {
 		gl::disableWireframe();
 	}
-	if ( mTextureEnabled && mTexture ) {
+	if ( mTextureEnabled &&  mTexture ) {
 		mTexture.unbind();
 		gl::disable( GL_TEXTURE_2D );
 	}
@@ -307,7 +307,7 @@ void InstancedSampleApp::draw()
 }
 
 // Draw VBO instanced
-void InstancedSampleApp::drawInstanced( const gl::VboMesh &vbo, size_t count )
+void InstancedSampleApp::drawInstanced( const gl::VboMesh& vbo, size_t count )
 {
 	vbo.enableClientStates();
 	vbo.bindAllData();
@@ -428,7 +428,7 @@ void InstancedSampleApp::setup()
 	mParams.addParam( "Enable light",	&mLightEnabled,									"key=l"										);
 	mParams.addParam( "Enable texture",	&mTextureEnabled,								"key=t"										);
 	mParams.addParam( "Ico division",	&mDivision,										"keyDecr=d keyIncr=D min=1 max=10 step=1"	);
-	mParams.addParam( "Mesh type",		mMeshTitles, &mMeshIndex,						"keyDecr=m keyIncr=M"						);
+	mParams.addParam( "Mesh type",		mMeshTitles,& mMeshIndex,						"keyDecr=m keyIncr=M"						);
 	mParams.addParam( "Resolution X",	&mResolution.x,									"keyDecr=x keyIncr=X min=1 max=1024 step=1"	);
 	mParams.addParam( "Resolution Y",	&mResolution.y,									"keyDecr=y keyIncr=Y min=1 max=1024 step=1"	);
 	mParams.addParam( "Resolution Z",	&mResolution.z,									"keyDecr=z keyIncr=Z min=1 max=1024 step=1"	);
@@ -436,8 +436,8 @@ void InstancedSampleApp::setup()
 	mParams.addParam( "Wireframe",		&mWireframe,									"key=w"										);
 	mParams.addSeparator();
 	mParams.addParam( "Full screen",	&mFullScreen,									"key=f"										);
-	mParams.addButton( "Screen shot",	bind( &InstancedSampleApp::screenShot, this ),	"key=space"									);
-	mParams.addButton( "Quit",			bind( &InstancedSampleApp::quit, this ),		"key=q"										);
+	mParams.addButton( "Screen shot",	bind(& InstancedSampleApp::screenShot, this ),	"key=space"									);
+	mParams.addButton( "Quit",			bind(& InstancedSampleApp::quit, this ),		"key=q"										);
 
 	// Generate meshes
 	createMeshes();
