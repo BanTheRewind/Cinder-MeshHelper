@@ -34,20 +34,20 @@
 * 
 */
 
-#include "cinder/app/AppNative.h"
+#include "cinder/app/AppBasic.h"
 #include "cinder/Arcball.h"
 #include "cinder/Camera.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/gl/Vbo.h"
 #include "cinder/params/Params.h"
 
-class SkyBoxSampleApp : public ci::app::AppNative 
+class SkyBoxSampleApp : public ci::app::AppBasic 
 {
 public:
 	void						draw();
 	void						mouseDown( ci::app::MouseEvent event );
 	void						mouseDrag( ci::app::MouseEvent event );
-	void						mouseWheel( ci::app::MouseEvent event );
+	void						prepareSettings( ci::app::AppBasic::Settings* settings );
 	void						setup();
 	void						update();
 private:
@@ -56,7 +56,7 @@ private:
 	ci::CameraPersp				mCamera;
 
 	// Skybox
-	ci::gl::VboMesh				mMesh[ 3 ];
+	ci::gl::VboMeshRef			mMesh;
 	ci::gl::Texture				mTexture;
 
 	// Params and utilities
@@ -79,21 +79,14 @@ using namespace std;
 void SkyBoxSampleApp::draw()
 {
 	// Set up view
-	gl::setViewport( Area( 0, 0, 1280, 720 ) );
+	gl::setViewport( getWindowBounds() );
 	gl::clear( Colorf::gray( 0.5f ) );
 	gl::setMatrices( mCamera );
 	glMultMatrixf( mArcball.getQuat() );
 
 	// Draw mesh
-	float x = -2.0f;
-	
 	gl::color( ColorAf::white() );
-	for ( size_t i = 0; i < 3; ++i, x += 2.0f ) {
-		gl::pushMatrices();
-		gl::translate( x, 0.0f, 0.0f );
-		gl::draw( mMesh[ i ] );
-		gl::popMatrices();
-	}
+	gl::draw( mMesh );
 	
 	// Draw params GUI
 	mParams.draw();
@@ -111,27 +104,26 @@ void SkyBoxSampleApp::mouseDrag( MouseEvent event )
 	mArcball.mouseDrag( event.getPos() );
 }
 
-void SkyBoxSampleApp::mouseWheel( MouseEvent event )
+void SkyBoxSampleApp::prepareSettings( Settings* settings )
 {
-	// Zoom in/out with mouse wheel
-	Vec3f eye = mCamera.getEyePoint();
-	eye.z += event.getWheelIncrement() * 0.1f;
-	mCamera.setEyePoint( eye );
+	settings->setFrameRate( 60.0f );
+	settings->setFullScreen( false );
+	settings->setResizable( false );
+	settings->setWindowSize( 1280, 720 );
 }
 
 // Saves screenshot
 void SkyBoxSampleApp::screenShot()
 {
-	writeImage( getAppPath() / ( "frame_" + toString( getElapsedFrames() ) + ".png" ), copyWindowSurface() );
+	fs::path path = getAppPath();
+#if !defined( CINDR_MSW )
+	path = path.parent_path();
+#endif
+	writeImage( path / ( "frame_" + toString( getElapsedFrames() ) + ".png" ), copyWindowSurface() );
 }
 
 void SkyBoxSampleApp::setup()
 {
-	// Setting an unrealistically high frame rate effectively
-	// disables frame rate limiting
-	setFrameRate( 60.0f );
-	setWindowSize( 1280, 720 );
-
 	gl::enable( GL_POLYGON_SMOOTH );
 	glHint( GL_POLYGON_SMOOTH_HINT, GL_NICEST );
 	gl::enable( GL_TEXTURE_2D );
@@ -148,8 +140,8 @@ void SkyBoxSampleApp::setup()
 	mArcball.setRadius( (float)getWindowHeight() * 0.5f );
 	
 	// Set up the camera
-	mCamera = CameraPersp( 1280, 720, 45.0f, 0.0001f, 10.0f );
-	mCamera.lookAt( Vec3f( 0.0f, 0.0f, 0.0001f ), Vec3f::zero() );
+	mCamera = CameraPersp( getWindowWidth(), getWindowHeight(), 45.0f, 0.0001f, 10.0f );
+	mCamera.lookAt( Vec3f( 0.0f, 0.0f, 0.5f ), Vec3f::zero() );
 	
 	// Set up the params GUI
 	mParams = params::InterfaceGl( "Params", Vec2i( 200, 200 ) );
@@ -163,29 +155,9 @@ void SkyBoxSampleApp::setup()
 	format.setMagFilter( GL_LINEAR );
 	format.setMinFilter( GL_LINEAR );
 	format.setWrap( GL_REPEAT, GL_REPEAT );
-	mTexture = gl::Texture( loadImage( loadResource( RES_TEXTURE_JPG ) ), format );
+	mTexture = gl::Texture( loadImage( loadResource( RES_TEXTURE_PNG ) ), format );
 	mTexture.bind();
 
-	// Use MeshHelepr to create a cube
-	TriMesh cube = MeshHelper::createCube();
-
-	for ( size_t i = 0; i < 3; ++i ) {
-	
-		// Declare a vector to hold new texture coordinates
-		vector<Vec2f> texCoords;
-		
-		// Double resolution of texcoords
-		float resolution = 2.0f + i * 2.0f;
-		for ( vector<Vec2f>::const_iterator iter = cube.getTexCoords().begin(); iter != cube.getTexCoords().end(); ++iter ) {
-			texCoords.push_back( *iter * resolution );
-		}
-
-		// Create the mesh using existing cube data and new texture coordinates
-		mMesh[ i ] = gl::VboMesh( MeshHelper::create( cube.getIndices(), cube.getVertices(), cube.getNormals(), texCoords ) );
-	}
-	
-	/*
-	
 	// Enumerate the side in the same order that MeshHelper
 	// builds a cube
 	enum : size_t {
@@ -249,8 +221,7 @@ void SkyBoxSampleApp::setup()
 	}
 	
 	// Create the mesh using existing cube data and new texture coordinates
-	mMesh = gl::VboMesh( MeshHelper::create( cube.getIndices(), cube.getVertices(), cube.getNormals(), texCoords ) );
-	 */
+	mMesh = gl::VboMesh::create( MeshHelper::create( cube.getIndices(), cube.getVertices(), cube.getNormals(), texCoords ) );
 }
 
 void SkyBoxSampleApp::update()

@@ -19,7 +19,6 @@
 		53E3CDFC0E86099300238D2B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E3CDFB0E86099300238D2B /* Carbon.framework */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		AE86373A17162EE6007FDA7E /* texture.png in Resources */ = {isa = PBXBuildFile; fileRef = AE86373917162EE6007FDA7E /* texture.png */; };
-		AE86373C17172F0D007FDA7E /* texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE86373B17172F0D007FDA7E /* texture.jpg */; };
 		BF10F06315ED9F0C0011DA77 /* MeshHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF10F06115ED9F0C0011DA77 /* MeshHelper.cpp */; };
 		BF10F06515ED9FB00011DA77 /* SkyBoxSampleApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF10F06415ED9FB00011DA77 /* SkyBoxSampleApp.cpp */; };
 /* End PBXBuildFile section */
@@ -43,7 +42,6 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SkyBoxSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkyBoxSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE86373917162EE6007FDA7E /* texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = texture.png; path = ../resources/texture.png; sourceTree = "<group>"; };
-		AE86373B17172F0D007FDA7E /* texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = texture.jpg; path = ../resources/texture.jpg; sourceTree = "<group>"; };
 		BF10F06115ED9F0C0011DA77 /* MeshHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MeshHelper.cpp; path = ../../../src/MeshHelper.cpp; sourceTree = "<group>"; };
 		BF10F06215ED9F0C0011DA77 /* MeshHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeshHelper.h; path = ../../../src/MeshHelper.h; sourceTree = "<group>"; };
 		BF10F06415ED9FB00011DA77 /* SkyBoxSampleApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SkyBoxSampleApp.cpp; path = ../src/SkyBoxSampleApp.cpp; sourceTree = "<group>"; };
@@ -139,7 +137,6 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				AE86373B17172F0D007FDA7E /* texture.jpg */,
 				AE86373917162EE6007FDA7E /* texture.png */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				00CCAF14116A9FEE008396D5 /* CinderApp.icns */,
@@ -217,7 +214,6 @@
 			files = (
 				00CCAF15116A9FEE008396D5 /* CinderApp.icns in Resources */,
 				AE86373A17162EE6007FDA7E /* texture.png in Resources */,
-				AE86373C17172F0D007FDA7E /* texture.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
