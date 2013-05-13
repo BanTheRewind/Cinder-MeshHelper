@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2012, Ban the Rewind
+* Copyright (c) 2013, Ban the Rewind
 * All rights reserved.
 * 
 * Redistribution and use in source and binary forms, with or 
@@ -34,7 +34,7 @@
 * 
 */
 
-#include "cinder/app/AppNative.h"
+#include "cinder/app/AppBasic.h"
 #include "cinder/Arcball.h"
 #include "cinder/Camera.h"
 #include "cinder/gl/Light.h"
@@ -43,13 +43,14 @@
 #include "cinder/gl/Vbo.h"
 #include "cinder/params/Params.h"
 
-class InstancedSampleApp : public ci::app::AppNative 
+class InstancedSampleApp : public ci::app::AppBasic
 {
 public:
 	void						draw();
 	void						mouseDown( ci::app::MouseEvent event );
 	void						mouseDrag( ci::app::MouseEvent event );
 	void						mouseWheel( ci::app::MouseEvent event );
+	void						prepareSettings( ci::app::AppBasic::Settings* settings );
 	void						setup();
 	void						shutdown();
 	void						update();
@@ -61,8 +62,8 @@ private:
 		MESH_TYPE_SPHERE, 
 		MESH_TYPE_CYLINDER, 
 		MESH_TYPE_CONE, 
-		MESH_TYPE_TORUS, 
 		MESH_TYPE_ICOSAHEDRON,
+		MESH_TYPE_TORUS,
 		MESH_TYPE_CIRCLE, 
 		MESH_TYPE_SQUARE, 
 		MESH_TYPE_RING, 
@@ -108,7 +109,7 @@ private:
 	ci::Vec2f					mGridSpacing;
 
 	// Lighting
-	ci::gl::Light				*mLight;
+	ci::gl::Light*				mLight;
 	bool						mLightEnabled;
 
 	// Texture map
@@ -312,7 +313,6 @@ void InstancedSampleApp::drawInstanced( const gl::VboMesh& vbo, size_t count )
 	vbo.enableClientStates();
 	vbo.bindAllData();
 	glDrawElementsInstancedARB( vbo.getPrimitiveType(), vbo.getNumIndices(), GL_UNSIGNED_INT, (GLvoid*)( sizeof(uint32_t) * 0 ), count );
-	//glDrawElementsInstancedEXT( vbo.getPrimitiveType(), vbo.getNumIndices(), GL_UNSIGNED_INT, (GLvoid*)( sizeof(uint32_t) * 0 ), count ); // Try this if ARB doesn't work
 	gl::VboMesh::unbindBuffers();
 	vbo.disableClientStates();
 }
@@ -337,19 +337,26 @@ void InstancedSampleApp::mouseWheel( MouseEvent event )
 	mCamera.setEyePoint( eye );
 }
 
+void InstancedSampleApp::prepareSettings( Settings* settings )
+{
+	settings->setFrameRate( 60.0f );
+	settings->setFullScreen( false );
+	settings->setResizable( false );
+	settings->setWindowSize( 800, 600 );
+}
+
 // Saves screenshot
 void InstancedSampleApp::screenShot()
 {
-	writeImage( getAppPath() / ( "frame_" + toString( getElapsedFrames() ) + ".png" ), copyWindowSurface() );
+	fs::path path = getAppPath();
+#if !defined( CINDER_MSW )
+	path = path.parent_path();
+#endif
+	writeImage( path / ( "frame_" + toString( getElapsedFrames() ) + ".png" ), copyWindowSurface() );
 }
 
 void InstancedSampleApp::setup()
 {
-	// Setting an unrealistically high frame rate effectively
-	// disables frame rate limiting
-	setFrameRate( 10000.0f );
-	setWindowSize( 800, 600 );
-
 	// Set up OpenGL to work with default lighting
 	glShadeModel( GL_SMOOTH );
 	gl::enable( GL_POLYGON_SMOOTH );
@@ -363,8 +370,6 @@ void InstancedSampleApp::setup()
 		mShader = gl::GlslProg( loadResource( RES_SHADER_VERT ), loadResource( RES_SHADER_FRAG ) );
 	} catch ( gl::GlslProgCompileExc ex ) {
 		console() << ex.what() << endl;
-		OutputDebugStringA( ex.what() );
-		OutputDebugStringA( "\n" );
 	}
 
 	// Load the texture map

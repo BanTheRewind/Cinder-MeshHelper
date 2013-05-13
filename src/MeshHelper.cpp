@@ -112,6 +112,7 @@ TriMesh MeshHelper::createCube( const Vec3i& resolution )
 		texCoords.push_back( *iter );
 	}
 
+	// Front
 	normal = Vec3f( 0.0f, 0.0f, 1.0f ) * kNormal;
 	offset = normal * 0.5f;
 	transform.setToIdentity();
@@ -124,6 +125,7 @@ TriMesh MeshHelper::createCube( const Vec3i& resolution )
 		texCoords.push_back( *iter );
 	}
 
+	// Left
 	normal = Vec3f( -1.0f, 0.0f, 0.0f ) * kNormal;
 	offset = normal * 0.5f;
 	transform.setToIdentity();
@@ -155,6 +157,7 @@ TriMesh MeshHelper::createCube( const Vec3i& resolution )
 		texCoords.push_back( *iter );
 	}
 
+	// Top
 	normal = Vec3f( 0.0f, 1.0f, 0.0f ) * kNormal;
 	offset = normal * 0.5f;
 	transform.setToIdentity();
@@ -480,7 +483,7 @@ TriMesh MeshHelper::createSphere( const Vec2i& resolution )
 			float sinPhi = math<float>::sin( phi );
 			float x = sinPhi * math<float>::cos( theta );
 			float y = sinPhi * math<float>::sin( theta );
-			float z = -math<float>::cos( phi );
+			float z = math<float>::cos( phi );
 			Vec3f position( x, y, z );
 			Vec3f normal = position.normalized();
 			Vec2f texCoord = ( normal.xy() + Vec2f::one() ) * 0.5f;
