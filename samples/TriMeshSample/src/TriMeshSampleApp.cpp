@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2012, Ban the Rewind
+* Copyright (c) 2013, Ban the Rewind
 * All rights reserved.
 * 
 * Redistribution and use in source and binary forms, with or 
@@ -103,13 +103,13 @@ private:
 	bool						mLightEnabled;
 
 	// Texture map
-	ci::gl::Texture				mTexture;
+	ci::gl::TextureRef			mTexture;
 	bool						mTextureEnabled;
 
 	// Params and utilities
 	float						mFrameRate;
 	bool						mFullScreen;
-	ci::params::InterfaceGl		mParams;
+	ci::params::InterfaceGlRef	mParams;
 	bool						mWireframe;
 	void						screenShot();
 };
@@ -215,7 +215,7 @@ void TriMeshSampleApp::draw()
 	}
 	if ( mTextureEnabled && mTexture ) {
 		gl::enable( GL_TEXTURE_2D );
-		mTexture.bind();
+		mTexture->bind();
 	}
 	if ( mWireframe ) {
 		gl::enableWireframe();
@@ -267,7 +267,7 @@ void TriMeshSampleApp::draw()
 		gl::disableWireframe();
 	}
 	if ( mTextureEnabled && mTexture ) {
-		mTexture.unbind();
+		mTexture->unbind();
 		gl::disable( GL_TEXTURE_2D );
 	}
 	if ( mLightEnabled ) {
@@ -275,7 +275,7 @@ void TriMeshSampleApp::draw()
 	}
 
 	// Draw params GUI
-	mParams.draw();
+	mParams->draw();
 }
 
 void TriMeshSampleApp::mouseDown( MouseEvent event )
@@ -321,7 +321,7 @@ void TriMeshSampleApp::setup()
 	gl::enableDepthWrite();
 
 	// Load the texture map
-	mTexture = gl::Texture( loadImage( loadResource( RES_TEXTURE ) ) );
+	mTexture = gl::Texture::create( loadImage( loadResource( RES_TEXTURE ) ) );
 
 	// Define properties
 	mDivision			= 1;
@@ -366,22 +366,22 @@ void TriMeshSampleApp::setup()
 	mMeshTitles.push_back( "Custom" );
 
 	// Set up the params GUI
-	mParams = params::InterfaceGl( "Params", Vec2i( 200, 320 ) );
-	mParams.addParam( "Frame rate",		&mFrameRate,									"", true									);
-	mParams.addSeparator();
-	mParams.addParam( "Enable light",	&mLightEnabled,									"key=l"										);
-	mParams.addParam( "Enable texture",	&mTextureEnabled,								"key=t"										);
-	mParams.addParam( "Ico division",	&mDivision,										"keyDecr=d keyIncr=D min=1 max=8 step=1"	);
-	mParams.addParam( "Mesh type",		mMeshTitles, &mMeshIndex,						"keyDecr=m keyIncr=M"						);
-	mParams.addParam( "Resolution X",	&mResolution.x,									"keyDecr=x keyIncr=X min=1 max=1024 step=1"	);
-	mParams.addParam( "Resolution Y",	&mResolution.y,									"keyDecr=y keyIncr=Y min=1 max=1024 step=1"	);
-	mParams.addParam( "Resolution Z",	&mResolution.z,									"keyDecr=z keyIncr=Z min=1 max=1024 step=1"	);
-	mParams.addParam( "Scale",			&mScale																						);
-	mParams.addParam( "Wireframe",		&mWireframe,									"key=w"										);
-	mParams.addSeparator();
-	mParams.addParam( "Full screen",	&mFullScreen,									"key=f"										);
-	mParams.addButton( "Screen shot",	bind( &TriMeshSampleApp::screenShot, this ),	"key=space"									);
-	mParams.addButton( "Quit",			bind( &TriMeshSampleApp::quit, this ),			"key=q"										);
+	mParams = params::InterfaceGl::create( "Params", Vec2i( 200, 320 ) );
+	mParams->addParam( "Frame rate",		&mFrameRate,									"", true									);
+	mParams->addSeparator();
+	mParams->addParam( "Enable light",		&mLightEnabled,									"key=l"										);
+	mParams->addParam( "Enable texture",	&mTextureEnabled,								"key=t"										);
+	mParams->addParam( "Ico division",		&mDivision,										"keyDecr=d keyIncr=D min=1 max=8 step=1"	);
+	mParams->addParam( "Mesh type",			mMeshTitles, &mMeshIndex,						"keyDecr=m keyIncr=M"						);
+	mParams->addParam( "Resolution X",		&mResolution.x,									"keyDecr=x keyIncr=X min=1 max=1024 step=1"	);
+	mParams->addParam( "Resolution Y",		&mResolution.y,									"keyDecr=y keyIncr=Y min=1 max=1024 step=1"	);
+	mParams->addParam( "Resolution Z",		&mResolution.z,									"keyDecr=z keyIncr=Z min=1 max=1024 step=1"	);
+	mParams->addParam( "Scale",				&mScale																						);
+	mParams->addParam( "Wireframe",			&mWireframe,									"key=w"										);
+	mParams->addSeparator();
+	mParams->addParam( "Full screen",		&mFullScreen,									"key=f"										);
+	mParams->addButton( "Screen shot",		bind( &TriMeshSampleApp::screenShot, this ),	"key=space"									);
+	mParams->addButton( "Quit",				bind( &TriMeshSampleApp::quit, this ),			"key=q"										);
 
 	// Generate meshes
 	createMeshes();
