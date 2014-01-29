@@ -7,8 +7,15 @@ uniform sampler2D	tex;
 
 void main( void )
 {
-	gl_FragData[ 0 ] = vec4( 1.0 ) * texture2D( tex, uv );
-	gl_FragData[ 1 ] = vec4( glow ? 1.0 : 0.0 );
-	gl_FragData[ 2 ] = vec4( normal, 1.0 );
-	gl_FragData[ 3 ] = position;
+	if ( glow ) {
+		gl_FragData[ 0 ] = vec4( 0.0 );
+		gl_FragData[ 1 ] = vec4( 1.0 );
+		gl_FragData[ 2 ] = vec4( 0.0 );
+		gl_FragData[ 3 ] = position;
+	} else {
+		gl_FragData[ 0 ] = vec4( 1.0 ) * texture2D( tex, uv );
+		gl_FragData[ 1 ] = vec4( 0.0 );
+		gl_FragData[ 2 ] = vec4( normal, 1.0 );
+		gl_FragData[ 3 ] = position;
+	}
 }

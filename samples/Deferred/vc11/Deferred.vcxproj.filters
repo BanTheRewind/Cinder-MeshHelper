@@ -62,5 +62,11 @@
     <None Include="..\resources\light_vert.glsl">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\resources\blur_frag.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resources\blur_vert.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
